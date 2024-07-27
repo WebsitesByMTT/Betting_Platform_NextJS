@@ -1,33 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+  
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+.parant:hover .my-svg-icon{
+    fill:url(#paint0_linear_1_808);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.parant .my-svg-icon{
+    fill:url(#paint0_linear_1_881);
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+
+.transition{
+    transition: .6s;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.parant .my-arrow-svg{
+    fill: white;
+}
+
+.parant:hover .my-arrow-svg{
+    fill:url(#paint0_linear_41_897);
 }

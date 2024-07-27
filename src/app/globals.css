@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+  
+
+
+.parant:hover .my-svg-icon{
+    fill:url(#paint0_linear_1_808);
+}
+
+.parant .my-svg-icon{
+    fill:url(#paint0_linear_1_881);
+}
+
+
+.transition{
+    transition: .6s;
+}
+
+.parant .my-arrow-svg{
+    fill: white;
+}
+
+.parant:hover .my-arrow-svg{
+    fill:url(#paint0_linear_41_897);
+}

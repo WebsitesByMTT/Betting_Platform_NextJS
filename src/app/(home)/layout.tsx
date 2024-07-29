@@ -13,7 +13,7 @@ export default function RootLayout({
     return (
         <div className="grid  grid-cols-12">
             <Sidebar />
-            <div className="col-span-12 md:col-span-10  bg-secondary">{children}</div>
+            <div className="col-span-12 lg:col-span-10  bg-secondary">{children}</div>
         </div>
     );
 }

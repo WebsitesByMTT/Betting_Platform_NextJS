@@ -14,7 +14,7 @@ const BetCard = () => {
                 </svg>
             </div>
             <div className='pt-3 grid grid-cols-12 gap-5'>
-                <div className='bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-3'>
+                <div className='bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-6 lg:col-span-3'>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center space-x-[.5px]'>
                             <Image src={'/assets/image/categoryicon6.png'} alt='game' className='w-[16px] mr-[5px]' width={100} height={100} quality={100} />
@@ -95,7 +95,7 @@ const BetCard = () => {
                         </div>
                     </div>
                 </div>
-                <div className='bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-3'>
+                <div className='bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-6 lg:col-span-3'>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center space-x-[.5px]'>
                             <Image src={'/assets/image/categoryicon6.png'} alt='game' className='w-[16px] mr-[5px]' width={100} height={100} quality={100} />
@@ -176,7 +176,7 @@ const BetCard = () => {
                         </div>
                     </div>
                 </div>
-                <div className='bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-3'>
+                <div className='bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-6 lg:col-span-3'>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center space-x-[.5px]'>
                             <Image src={'/assets/image/categoryicon6.png'} alt='game' className='w-[16px] mr-[5px]' width={100} height={100} quality={100} />

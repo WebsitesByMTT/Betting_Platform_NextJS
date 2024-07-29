@@ -24,3 +24,7 @@
 .parant:hover .my-arrow-svg{
     fill:url(#paint0_linear_41_897);
 }
+
+::-webkit-scrollbar {
+    display: none;
+  }

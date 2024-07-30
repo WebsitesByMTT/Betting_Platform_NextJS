@@ -27,7 +27,7 @@ const TopBetsCarousel: React.FC = () => {
                             <div className="flex justify-between p-3 space-x-4  bg-[#292D2E] rounded-lg">
                                 <div>
                                     <div className='p-4 flex w-[50px] md:w-[60px] mx-auto  relative rounded-2xl bg-[#343434]'>
-                                        <Image src={'/assets/image/categoryicon12.png'} alt='Image' width={500} height={500} quality={100} className='w-[20px] md:w-[30px]' />
+                                        <Image src={'/assets/image/categoryicon12.svg'} alt='Image' width={500} height={500} quality={100} className='w-[20px] md:w-[30px]' />
                                         <span className='inline-block h-[7px] w-[7px] bg-red-600 rounded-full absolute top-3 left-2'></span>
                                     </div>
                                     <div className='text-white text-center text-[.8rem] md:text-[.9rem] pt-1.5'>Live</div>

@@ -14,21 +14,21 @@ const QuickBet = () => {
 
     return (
 
-        <div className={`transition-all text-white  fixed ${open?'bottom-0':'-bottom-[18rem] md:-bottom-[17rem]'} z-50 mx-[5%] left-0 md:left-auto md:right-20 w-[90%] md:w-[45%] lg:w-[25%]`}>
-            <div onClick={handelOpen} className='from-[#FFC400] rounded-tr-3xl rounded-tl-3xl cursor-pointer px-4 py-3 to-[#D8890A]  bg-gradient-to-tr'>
+        <div className={`transition-all text-white   fixed ${open?'bottom-0':'-bottom-[14rem] md:-bottom-[17rem]'} z-[20] mx-[5%] left-0 md:left-auto md:right-20 w-[90%] md:w-[45%] lg:w-[25%]`}>
+            <div onClick={handelOpen} className='from-[#FFC400] rounded-tr-xl md:rounded-tr-3xl md:rounded-tl-3xl rounded-tl-xl cursor-pointer px-4 py-2 md:py-3 to-[#D8890A]  bg-gradient-to-tr'>
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center space-x-2 cursor-pointer'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-square-menu"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M7 8h10" /><path d="M7 12h10" /><path d="M7 16h10" /></svg>
-                        <div className='text-[1.1rem]'>Betslip</div>
-                        <svg width="15" height="10" viewBox="0 0 15 10" className={open?'-rotate-180 transition':'transition'} fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide md:w-[35px] w-[20px] lucide-square-menu"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M7 8h10" /><path d="M7 12h10" /><path d="M7 16h10" /></svg>
+                        <div className='text-[.9rem] md:text-[1.1rem]'>Betslip</div>
+                        <svg width="15" height="10" viewBox="0 0 15 10" className={open?'-rotate-180 transition-all md:w-[25px] w-[10px]':' md:w-[25px] w-[10px] transition-all'} fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14.948 1.33C14.8964 1.2054 14.809 1.09891 14.6969 1.02397C14.5848 0.949029 14.453 0.909017 14.3182 0.908989H0.682328C0.547405 0.908882 0.415483 0.948812 0.303264 1.02372C0.191046 1.09863 0.103576 1.20515 0.0519286 1.3298C0.000281235 1.45444 -0.0132214 1.59161 0.0131301 1.72394C0.0394816 1.85626 0.104502 1.9778 0.199961 2.07315L7.01787 8.89106C7.08119 8.95445 7.15639 9.00474 7.23915 9.03905C7.32192 9.07336 7.41064 9.09102 7.50024 9.09102C7.58984 9.09102 7.67856 9.07336 7.76132 9.03905C7.84409 9.00474 7.91929 8.95445 7.98261 8.89106L14.8005 2.07315C14.8958 1.97775 14.9607 1.85622 14.987 1.72394C15.0132 1.59165 14.9996 1.45456 14.948 1.33Z" fill="white" fill-opacity="0.5" />
                         </svg>
                     </div>
                     <div className='flex items-center space-x-3'>
-                        <div className='text-white text-[1rem]'>QUICK BET</div>
+                        <div className='text-white text-[.9rem] md:text-[1rem]'>QUICK BET</div>
                         <label
                             htmlFor="dark-mode-toggle"
-                            className="flex items-center cursor-pointer"
+                            className="flex items-center scale-75 md:scale-100 cursor-pointer"
                         >
                             <div className="relative">
                                 <input
@@ -48,12 +48,12 @@ const QuickBet = () => {
                     </div>
                 </div>
             </div>
-            <div className='bg-[#0E0F11] px-6 py-8'>
-                <div className='flex items-center justify-between'>
-                    <Image alt='betImage' src={'/assets/image/betimage.png'} width={300} height={300} quality={100} className='w-[60px]' />
+            <div className='bg-[#0E0F11] px-2 md:px-6 py-4 md:py-8'>
+                <div className='flex items-center justify-around md:justify-center space-x-5'>
+                    <Image alt='betImage' src={'/assets/image/betimage.png'} width={300} height={300} quality={100} className='w-[50px] md:w-[60px]' />
                     <div>
-                        <div className='text-white text-[1.2rem] font-semibold'>Place Your Bets</div>
-                        <div className='text-[1rem] text-opacity-70'>Your selection will appear in this area</div>
+                        <div className='text-white text-[1rem] md:text-[1.2rem] font-semibold'>Place Your Bets</div>
+                        <div className='text-[.9rem] md:text-[1rem] text-opacity-70'>Your selection will appear in this area</div>
                     </div>
                 </div>
                 <div className='pt-8 pb-6'>
@@ -73,6 +73,7 @@ const QuickBet = () => {
                     <div className='text-white text-[1rem]'>Odds Settings</div>
                 </div>
             </div>
+            <div onClick={handelOpen} className={`${open?'block':'hidden'} cursor-pointer md:hidden transition w-full h-full -z-[2] fixed top-0 left-0`}></div>
         </div>
     )
 }

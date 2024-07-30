@@ -21,7 +21,7 @@ const Banner: React.FC = () => {
             <CarouselContent>
                 {images.map((item, index) => (
                     <CarouselItem className='basis-[100%]' key={index}>
-                        <Image src={item} width={5000} height={5000} quality={100} className='w-full h-[170px] md:h-[350px]' alt='banner'  />
+                        <Image src={item} width={5000} height={5000} quality={100} className='w-full h-[130px] md:h-[350px]' alt='banner'  />
                     </CarouselItem>
                 ))}
             </CarouselContent>

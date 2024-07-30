@@ -7,7 +7,7 @@ import TopBetsCarousel from "@/components/home/TopBetsCarousel";
 
 export default function Home() {
   return (
-    <main className=" w-[95%] pb-[5rem] mx-auto">
+    <main className=" w-[95%] pb-[4rem] p-2 mx-auto">
       <Header />
       <Banner />
       <Categorys />

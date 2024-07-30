@@ -297,7 +297,7 @@ const Sidebar = () => {
       <div className={`${toggle ? 'transition-all left-0' : 'transition-all left-[-200%]'} text-white  z-50 lg:z-0  bg-primary h-screen overflow-y-scroll fixed lg:top-[-0px] lg:sticky w-[60%] md:w-[30%] lg:w-auto col-span-2 p-[1rem] md:p-[1rem]`}>
         <div className={`absolute left-3 top-2 lg:hidden cursor-pointer text-white text-opacity-60 ${toggle ? 'block' : 'hidden'}`} onClick={handeltoggle}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-x  w-[24px] md:w-[30px]"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg></div>
         <div>
-          <Image src="/assets/image/logo.png" height={500} width={500} quality={100} className='w-[100px] md:w-[120px] lg:w-[170px] mx-auto' alt="logo" />
+          <Image src="/assets/image/Logo.png" height={500} width={500} quality={100} className='w-[100px] md:w-[120px] lg:w-[170px] mx-auto' alt="logo" />
         </div>
         <div className='py-[1rem] space-y-[1rem]'>
           {

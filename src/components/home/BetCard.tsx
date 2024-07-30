@@ -25,7 +25,7 @@ const BetCard = () => {
                         <div key={ind} className='bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-6 lg:col-span-3'>
                             <div className='flex items-center justify-between'>
                                 <div className='flex items-center space-x-[.5px]'>
-                                    <Image src={'/assets/image/categoryicon6.png'} alt='game' className='w-[16px] mr-[5px]' width={100} height={100} quality={100} />
+                                    <Image src={'/assets/image/categoryicon6.svg'} alt='game' className='w-[16px] mr-[5px]' width={100} height={100} quality={100} />
                                     <div className='text-white text-opacity-60 text-[.7rem] md:text-[.9rem]'>International</div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide text-gray-400 lucide-chevron-right"><path d="m9 18 6-6-6-6" /></svg>
                                     <div className='text-white  text-[.7rem] md:text-[.8rem]'>TT Elite Series</div>

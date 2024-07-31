@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-/* Define custom properties for font weights and styles */
-body {
-    font-family: "Poppins", sans-serif;
-  }
- 
-
 .parant:hover .my-svg-icon{
     fill:url(#paint0_linear_1_808);
 }

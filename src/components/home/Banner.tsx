@@ -9,7 +9,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const Banner: React.FC = () => {
-    const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+    const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
     const images = ['/assets/image/crousal1.png', '/assets/image/crousal2.png', '/assets/image/crousal3.png', '/assets/image/crousal4.png'];
 
     return (
@@ -17,6 +17,7 @@ const Banner: React.FC = () => {
 
         <Carousel
             plugins={[plugin.current]}
+            
         >
             <CarouselContent>
                 {images.map((item, index) => (

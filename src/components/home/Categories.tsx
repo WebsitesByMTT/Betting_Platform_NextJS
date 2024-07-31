@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-const Categorys = () => {
+const Categories = () => {
 
     const data = [
         {
@@ -65,17 +65,17 @@ const Categorys = () => {
         <div className='pt-3'>
             <div className='md:bg-gradient-to-tr p-[1px] rounded-2xl overflow-x-scroll w-full from-[#D6A250] via-[#FFE500] to-[#ECB800]'>
                 <div className='rounded-2xl md:bg-[#232323] md:p-5'>
-                    <div className='flex overflow-x-scroll whitespace-nowrap md:justify-between lg:w-[80%] md:mx-auto'>
+                    <div className='flex overflow-x-scroll whitespace-nowrap justify-between lg:w-[80%] md:mx-auto'>
                         {
                             data?.map((item, ind) => (
                                 <div key={ind} className='cursor-pointer m-1 flex-shrink-0'>
-                                    <div className='hover:bg-gradient-to-tr mx-auto group   from-[#D6A250] via-[#FFE500] to-[#ECB800] w-[45px] md:w-[50px] p-[1px] rounded-xl'>
+                                    <div className='hover:bg-gradient-to-tr mx-auto group  from-[#D6A250] via-[#FFE500] to-[#ECB800] w-[45px] md:w-[50px] p-[1px] rounded-xl'>
                                         <div className='bg-[#343434] p-[.8rem] rounded-xl  shadow-inner shadow-[#232323]'>
-                                            <Image src={item.hovericon} alt='category'  width={100} className='group-hover:block hidden' height={100} quality={100} />
-                                            <Image src={item.icon} alt='category'  width={100} className='group-hover:hidden' height={100} quality={100} />
+                                            <Image src={item.hovericon} alt='categories'  width={100} className='group-hover:block hidden' height={100} quality={100} />
+                                            <Image src={item.icon} alt='categories'  width={100} className='group-hover:hidden' height={100} quality={100} />
                                         </div>
                                     </div>
-                                    <div className='text-center text-white md:block hidden text-[.85rem] pt-1'>{item.text}</div>
+                                    <div className='text-center text-white md:block hidden text-[.85rem] md:text-[.75rem] pt-1'>{item.text}</div>
                                 </div>
                             ))
                         }
@@ -85,7 +85,7 @@ const Categorys = () => {
             {/* Top 5 Bets Ui Starts Here */}
             <div className='bg-[#323232] flex items-center justify-between px-3 md:px-6 mt-3 md:mt-6 py-2 rounded-[1rem] shadow-inner shadow-[#232323]'>
                 <div className='flex items-center space-x-3 md:space-x-6'>
-                    <Image src={'/assets/image/topbets.svg'} alt='category' className='w-[25px] md:w-[45px]' width={100} height={100} quality={100} />
+                    <Image src={'/assets/image/topbets.svg'} alt='categories' className='w-[25px] md:w-[45px]' width={100} height={100} quality={100} />
                     <span className='text-[.8rem] md:text-[1rem] lg:text-[1.5rem] text-white'>Top Bets</span>
                 </div>
                 <div className='flex items-center space-x-3'>
@@ -125,4 +125,4 @@ const Categorys = () => {
     )
 }
 
-export default Categorys
+export default Categories

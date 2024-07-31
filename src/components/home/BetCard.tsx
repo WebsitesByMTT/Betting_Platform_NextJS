@@ -3,10 +3,16 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 
 const BetCard = () => {
-    const [state, setState] = useState(false)
-    const handelState = () => {
-        setState(!state)
-    }
+    const [index, setIndex] = useState<number[]>([]);
+    const handelopen = (ind: number) => {
+        setIndex(prevIndices => {
+          if (prevIndices.includes(ind)) {
+            return prevIndices.filter(i => i !== ind);
+          } else {
+            return [...prevIndices, ind];
+          }
+        });
+      };
     const data = [1, 2, 3]
     return (
         <>
@@ -77,14 +83,14 @@ const BetCard = () => {
                                             <path d="M5 7.7049H1.20711C0.761654 7.7049 0.53857 7.16633 0.853552 6.85134L7.14645 0.558448C7.46143 0.243466 8 0.466549 8 0.912002V4.7049C8 6.36175 6.65685 7.7049 5 7.7049Z" fill="#FF6060" />
                                         </svg>
                                     </div>
-                                    <div onClick={handelState} className='w-[18%] bg-[#1A1A1A] relative p-2 cursor-pointer rounded-md flex items-center justify-between'>
+                                    <div onClick={()=>handelopen(ind)} className='w-[18%] bg-[#1A1A1A] relative p-2 cursor-pointer rounded-md flex items-center justify-between'>
                                         <div className='text-white text-opacity-60 mx-auto'>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6" /></svg>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {<div className={`${state ? 'space-y-2 max-h-[500px] transition-all duration-300 ease-in-out overflow-hidden' : 'max-h-0 transition-all duration-300 ease-in-out overflow-hidden'}`}>
+                            {<div className={`${index.includes(ind)? 'space-y-2 max-h-[500px] transition-all duration-300 ease-in-out overflow-hidden' : 'max-h-0 transition-all duration-300 ease-in-out overflow-hidden'}`}>
                                 <div className='pt-4'>
                                     <div className='text-white text-[.8rem] md:text-[.9rem]'>Point handicap</div>
                                     <div className='flex items-center justify-between pt-2'>

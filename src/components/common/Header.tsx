@@ -1,12 +1,45 @@
+import { config } from '@/utils/config';
+import { cookies } from 'next/headers';
 import React from 'react'
 
-const Header = () => {
+async function getUser() {
+  "use server";
+  const token = cookies().get("token")?.value;
+  try {
+    const response = await fetch(
+      `${config.server}/api/users`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
+   
+  }
+}
+const Header = async() => {
+  const user = await getUser();
   return (
-       <div className='flex items-center justify-end space-x-[.6rem] py-[.5rem]'>
-          <button className='uppercase text-white text-[.8rem] md:text-[1.1rem] px-[1rem] py-[.5rem] rounded-[2rem]  bg-[#2E3134]'>Sign up</button>
-          <button className='uppercase text-white text-[.8rem] md:text-[1.1rem] px-[1rem] py-[.5rem] rounded-[2rem] bg-gradient-to-tr from-[#FFC400] to-[#D8890A]'>Sign in</button>
-       </div>
-  )
+    <div className="flex items-end justify-end space-x-[.6rem] py-[.5rem] flex-col">
+      <div className='flex flex-col items-center justify-center'>
+        <p className="text-white font-semibold text-xl capitalize">{user?.username}</p>
+        <p className="text-white font-semibold text-xl">$ {user?.credits}</p>
+      </div>
+    </div>
+  );
 }
 
 

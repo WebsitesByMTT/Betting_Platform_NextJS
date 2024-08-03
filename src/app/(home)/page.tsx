@@ -8,14 +8,14 @@ import TopBetsCarousel from "@/components/home/TopBetsCarousel";
 
 export default function Home() {
   return (
-    <main className=" w-[95%] p-2 mx-auto">
+    <div className=" w-[95%] p-2 mx-auto">
       <Header />
       <Banner />
       <Categories />
       <TopBetsCarousel />
       <QuickBet />
       <BetCard />
-      <Footer/>
-    </main> 
+      <Footer />
+    </div>
   );
 }

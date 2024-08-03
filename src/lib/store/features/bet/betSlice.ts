@@ -1,16 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Bet {
-  data: {
-    currentBet?: number; // Define currentBet as optional or required depending on your needs
-    // other properties
-  };
-  item: any; // Assuming item can be any type
-}
-
-interface BetState {
-  bets: Bet[];
-}
+import { BetState, Bet } from "@/utils/types";
 
 const initialState: BetState = {
   bets: [],

@@ -5,11 +5,8 @@ import { placeBet } from "@/utils/actions";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { BetSlipCardProps } from "@/utils/types";
 
-interface BetSlipCardProps {
-  matchData: any;
-  betData: any;
-}
 const QuickBet = () => {
   const [isBet, setIsBet] = useState(false);
   const [open, setOpen] = useState(false);

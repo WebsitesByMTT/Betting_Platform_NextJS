@@ -1,218 +1,18 @@
 "use client";
 import { add } from "@/lib/store/features/bet/betSlice";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { Leagues } from "@/utils/types";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const BetCard = () => {
-  const [index, setIndex] = useState<number[]>([]);
-  const handelopen = (ind: number) => {
-    setIndex((prevIndices) => {
-      if (prevIndices.includes(ind)) {
-        return prevIndices.filter((i) => i !== ind);
-      } else {
-        return [...prevIndices, ind];
-      }
-    });
-  };
   const dispatch = useAppDispatch();
-  const betData = [
-    {
-      id: 1,
-      matchDetails: "Alfonso, Switzerland V/S Zain, Algeria",
-      categoryIcon: "/assets/image/categoryicon6.svg",
-      categoryName: "International",
-      matchId: "1",
-      seriesName: "TT Elite Series",
-      currentBet: 100,
-      participants: [
-        {
-          name: "Alfonso, Switzerland",
-          flag: "/assets/image/plus.svg",
-          score: 4,
-          rank: 0,
-        },
-        {
-          name: "Zain, Algeria",
-          flag: "/assets/image/flag.png",
-          score: 4,
-          rank: 0,
-        },
-      ],
-      winner: [
-        {
-          position: 1,
-          name: "Alfonso, Switzerland",
-          teamId: "ddunb34",
-          odds: "+100",
-          iconColor: "#82FF60",
-        },
-        {
-          position: 2,
-          name: "Zain, Algeria",
-          teamId: "f23nb34",
-          odds: "-700",
-          iconColor: "#FF6060",
-        },
-      ],
-      details: {
-        pointHandicap: [
-          {
-            participant: "Alfonso, Switzerland",
-            handicap: "(1.4)",
-            odds: 1.9,
-          },
-          {
-            participant: "Zain, Algeria",
-            handicap: "(-1.5)",
-            odds: 1.8,
-          },
-        ],
-        totalPoint: [
-          {
-            condition: "over 80.5",
-            odds: 2.9,
-          },
-          {
-            condition: "under 80.5",
-            odds: 1.8,
-          },
-        ],
-      },
-    },
-    {
-      id: 2,
-      categoryIcon: "/assets/image/categoryicon6.svg",
-      categoryName: "International",
-      seriesName: "TT Elite Series",
-      currentBet: 100,
-      matchId: "2",
-      matchDetails: "Alfonso, Switzerland V/S Zain, Algeria",
-      participants: [
-        {
-          name: "Alfonso, Switzerland",
-          flag: "/assets/image/plus.svg",
-          score: 4,
-          rank: 0,
-        },
-        {
-          name: "Zain, Algeria",
-          flag: "/assets/image/flag.png",
-          score: 4,
-          rank: 0,
-        },
-      ],
-      winner: [
-        {
-          position: 1,
-          name: "Alfonso, Switzerland",
-          teamId: "ddunb34",
-          odds: "+100",
-          iconColor: "#82FF60",
-        },
-        {
-          position: 2,
-          name: "Zain, Algeria",
-          teamId: "f23nb34",
-          odds: "-700",
-          iconColor: "#FF6060",
-        },
-      ],
-      details: {
-        pointHandicap: [
-          {
-            participant: "Alfonso, Switzerland",
-            handicap: "(1.4)",
-            odds: 1.9,
-          },
-          {
-            participant: "Zain, Algeria",
-            handicap: "(-1.5)",
-            odds: 1.8,
-          },
-        ],
-        totalPoint: [
-          {
-            condition: "over 80.5",
-            odds: 2.9,
-          },
-          {
-            condition: "under 80.5",
-            odds: 1.8,
-          },
-        ],
-      },
-    },
-    {
-      id: 3,
-      categoryIcon: "/assets/image/categoryicon6.svg",
-      categoryName: "International",
-      seriesName: "TT Elite Series",
-      currentBet: 100,
-      matchId: "3",
-      matchDetails: "Alfonso, Switzerland V/S Zain, Algeria",
-      participants: [
-        {
-          teamId: "ddunk34",
-          name: "Alfonso, Switzerland",
-          flag: "/assets/image/plus.svg",
-          score: 4,
-          rank: 0,
-        },
-        {
-          teamId: "f23nk34",
-          name: "Zain, Algeria",
-          flag: "/assets/image/flag.png",
-          score: 4,
-          rank: 0,
-        },
-      ],
-      winner: [
-        {
-          position: 1,
-          name: "Alfonso, Switzerland",
-          teamId: "ddunb34",
-          odds: "+100",
-          iconColor: "#82FF60",
-        },
-        {
-          position: 2,
-          name: "Zain, Algeria",
-          teamId: "f23nb34",
-          odds: "-700",
-          iconColor: "#FF6060",
-        },
-      ],
-      details: {
-        pointHandicap: [
-          {
-            participant: "Alfonso, Switzerland",
-            handicap: "(1.4)",
-            odds: 1.9,
-          },
-          {
-            participant: "Zain, Algeria",
-            handicap: "(-1.5)",
-            odds: 1.8,
-          },
-        ],
-        totalPoint: [
-          {
-            condition: "over 80.5",
-            odds: 2.9,
-          },
-          {
-            condition: "under 80.5",
-            odds: 1.8,
-          },
-        ],
-      },
-    },
-  ];
+  const [eventLeagues, setEventLeagues] = useState<Leagues[]>([]);
+  const leagueData = useAppSelector((state) => state?.sports?.leagues);
 
-  const handleBet = async (data: any) => {
-    dispatch(add(data));
-  };
+  useEffect(() => {
+    setEventLeagues(leagueData);
+  }, [leagueData]);
 
   return (
     <>
@@ -244,41 +44,35 @@ const BetCard = () => {
         </svg>
       </div>
       <div className="pt-3 grid grid-cols-12 items-start gap-3">
-        {betData?.map((data, ind) => (
+        {eventLeagues?.map((data, ind) => (
           <div
             key={ind}
             className="bg-[#292D2E] shadow-xl  p-2 rounded-lg col-span-12 md:col-span-6 xl:col-span-3"
           >
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-[.5px]">
-                <Image
-                  src={data.categoryIcon}
-                  alt="game"
-                  className="w-[10px] mr-[5px]"
-                  width={100}
-                  height={100}
-                  quality={100}
-                />
-                <div className="text-white text-opacity-60 text-[.7rem] md:text-[.9rem]">
-                  {data.categoryName}
+              <div className="flex items-center justify-center space-x-[.5px]">
+                <div className="flex items-center justify-center text-white text-opacity-60 text-[.7rem] md:text-[.9rem]">
+                  {data.sport_title}
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide text-gray-400 lucide-chevron-right"
-                >
-                  <path d="m9 18 6-6-6-6" />
-                </svg>
-                <div className="text-white  text-[.7rem] md:text-[.8rem]">
+                <div className="h-[.9rem]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide text-gray-400 lucide-chevron-right h-full w-full"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </div>
+                {/* <div className="text-white  text-[.7rem] md:text-[.8rem]">
                   {data.seriesName}
-                </div>
+                </div> */}
               </div>
               <svg
                 width="16"
@@ -296,9 +90,9 @@ const BetCard = () => {
               </svg>
             </div>
             <div className="flex py-1 items-center justify-between">
-              <div className="text-[#67FFFF] text-[.8rem] md:text-[.9rem]">
+              {/* <div className="text-[#67FFFF] text-[.8rem] md:text-[.9rem]">
                 1st set
-              </div>
+              </div> */}
               <svg
                 width="15"
                 height="12"
@@ -312,12 +106,8 @@ const BetCard = () => {
                 />
               </svg>
             </div>
-            {data?.participants?.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center py-1.5 justify-between"
-              >
-                <div className="flex items-center space-x-2">
+            <div className="flex items-center py-1.5 justify-between">
+              {/* <div className="flex items-center space-x-2">
                   <Image
                     src={item.flag}
                     alt="icon"
@@ -329,18 +119,17 @@ const BetCard = () => {
                   <div className="text-white text-[.8rem] md:text-[.9rem]">
                     {item.name}
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
+                </div> */}
+              {/* <div className="flex items-center space-x-4">
                   <div className="text-white text-[.8rem] md:text-[.9rem]">
                     {item.score}
                   </div>
                   <div className="text-white text-opacity-60 text-[.8rem] md:text-[.9rem] px-3 border border-opacity-45 border-white bg-[#1A1A1A] rounded-md">
                     {item.rank}
                   </div>
-                </div>
-              </div>
-            ))}
-            <div className="pt-1">
+                </div> */}
+            </div>
+            {/* <div className="pt-1">
               <div className="text-white text-[.8rem] md:text-[.9rem]">
                 Winner
               </div>
@@ -348,7 +137,7 @@ const BetCard = () => {
                 {data.winner.map((item, index) => (
                   <button
                     key={index}
-                    onClick={() => handleBet({data, item})}
+                    onClick={() => handleBet({ data, item })}
                     className="w-[38%] bg-[#1A1A1A] relative p-2 rounded-md flex items-center justify-between"
                   >
                     <div className="text-white text-opacity-60">
@@ -398,112 +187,112 @@ const BetCard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             {
-              <div
-                className={`${
-                  index.includes(ind)
-                    ? "space-y-2 max-h-[500px] transition-all duration-300 ease-in-out overflow-hidden"
-                    : "max-h-0 transition-all duration-300 ease-in-out overflow-hidden"
-                }`}
-              >
-                <div className="pt-4">
-                  <div className="text-white text-[.8rem] md:text-[.9rem]">
-                    Point handicap
-                  </div>
-                  <div className="flex items-center justify-between pt-2">
-                    <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
-                      <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
-                        <div className="relative z-10">{`(1.4) Alfonso, Switzerland`}</div>{" "}
-                        {/* Text with shadow */}
-                      </div>
-                      <div className="text-white text-[.9rem]">1.9</div>
-                      <svg
-                        width="8"
-                        height="8"
-                        className="absolute top-0 right-0"
-                        viewBox="0 0 8 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 0.704895H1.20711C0.761654 0.704895 0.53857 1.24346 0.853552 1.55845L7.14645 7.85134C7.46143 8.16632 8 7.94324 8 7.49779V3.7049C8 2.04804 6.65685 0.704895 5 0.704895Z"
-                          fill="#82FF60"
-                        />
-                      </svg>
-                    </div>
-                    <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
-                      <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
-                        <div className="relative z-10">{`(-1.5) Zain,Algeria`}</div>
-                      </div>
-                      <div className="text-white text-[.9rem]">1.8</div>
-                      <svg
-                        width="8"
-                        height="8"
-                        className="absolute bottom-0 right-0"
-                        viewBox="0 0 8 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 7.7049H1.20711C0.761654 7.7049 0.53857 7.16633 0.853552 6.85134L7.14645 0.558448C7.46143 0.243466 8 0.466549 8 0.912002V4.7049C8 6.36175 6.65685 7.7049 5 7.7049Z"
-                          fill="#FF6060"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="pt-2">
-                  <div className="text-white text-[.8rem] md:text-[.9rem]">
-                    Total point
-                  </div>
-                  <div className="flex items-center justify-between pt-2">
-                    <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
-                      <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
-                        <div className="relative z-10">{`over 80.5`}</div>{" "}
-                        {/* Text with shadow */}
-                      </div>
-                      <div className="text-white text-[.8rem] md:text-[.9rem]">
-                        2.9
-                      </div>
-                      <svg
-                        width="8"
-                        height="8"
-                        className="absolute top-0 right-0"
-                        viewBox="0 0 8 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 0.704895H1.20711C0.761654 0.704895 0.53857 1.24346 0.853552 1.55845L7.14645 7.85134C7.46143 8.16632 8 7.94324 8 7.49779V3.7049C8 2.04804 6.65685 0.704895 5 0.704895Z"
-                          fill="#82FF60"
-                        />
-                      </svg>
-                    </div>
-                    <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
-                      <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
-                        <div className="relative z-10">{`under 80.5`}</div>
-                      </div>
-                      <div className="text-white text-[.8rem] md:text-[.9rem]">
-                        1.8
-                      </div>
-                      <svg
-                        width="8"
-                        height="8"
-                        className="absolute bottom-0 right-0"
-                        viewBox="0 0 8 8"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 7.7049H1.20711C0.761654 7.7049 0.53857 7.16633 0.853552 6.85134L7.14645 0.558448C7.46143 0.243466 8 0.466549 8 0.912002V4.7049C8 6.36175 6.65685 7.7049 5 7.7049Z"
-                          fill="#FF6060"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              // <div
+              //   className={`${
+              //     index.includes(ind)
+              //       ? "space-y-2 max-h-[500px] transition-all duration-300 ease-in-out overflow-hidden"
+              //       : "max-h-0 transition-all duration-300 ease-in-out overflow-hidden"
+              //   }`}
+              // >
+              //   <div className="pt-4">
+              //     <div className="text-white text-[.8rem] md:text-[.9rem]">
+              //       Point handicap
+              //     </div>
+              //     <div className="flex items-center justify-between pt-2">
+              //       <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
+              //         <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
+              //           <div className="relative z-10">{`(1.4) Alfonso, Switzerland`}</div>{" "}
+              //           {/* Text with shadow */}
+              //         </div>
+              //         <div className="text-white text-[.9rem]">1.9</div>
+              //         <svg
+              //           width="8"
+              //           height="8"
+              //           className="absolute top-0 right-0"
+              //           viewBox="0 0 8 8"
+              //           fill="none"
+              //           xmlns="http://www.w3.org/2000/svg"
+              //         >
+              //           <path
+              //             d="M5 0.704895H1.20711C0.761654 0.704895 0.53857 1.24346 0.853552 1.55845L7.14645 7.85134C7.46143 8.16632 8 7.94324 8 7.49779V3.7049C8 2.04804 6.65685 0.704895 5 0.704895Z"
+              //             fill="#82FF60"
+              //           />
+              //         </svg>
+              //       </div>
+              //       <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
+              //         <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
+              //           <div className="relative z-10">{`(-1.5) Zain,Algeria`}</div>
+              //         </div>
+              //         <div className="text-white text-[.9rem]">1.8</div>
+              //         <svg
+              //           width="8"
+              //           height="8"
+              //           className="absolute bottom-0 right-0"
+              //           viewBox="0 0 8 8"
+              //           fill="none"
+              //           xmlns="http://www.w3.org/2000/svg"
+              //         >
+              //           <path
+              //             d="M5 7.7049H1.20711C0.761654 7.7049 0.53857 7.16633 0.853552 6.85134L7.14645 0.558448C7.46143 0.243466 8 0.466549 8 0.912002V4.7049C8 6.36175 6.65685 7.7049 5 7.7049Z"
+              //             fill="#FF6060"
+              //           />
+              //         </svg>
+              //       </div>
+              //     </div>
+              //   </div>
+              //   <div className="pt-2">
+              //     <div className="text-white text-[.8rem] md:text-[.9rem]">
+              //       Total point
+              //     </div>
+              //     <div className="flex items-center justify-between pt-2">
+              //       <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
+              //         <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
+              //           <div className="relative z-10">{`over 80.5`}</div>{" "}
+              //           {/* Text with shadow */}
+              //         </div>
+              //         <div className="text-white text-[.8rem] md:text-[.9rem]">
+              //           2.9
+              //         </div>
+              //         <svg
+              //           width="8"
+              //           height="8"
+              //           className="absolute top-0 right-0"
+              //           viewBox="0 0 8 8"
+              //           fill="none"
+              //           xmlns="http://www.w3.org/2000/svg"
+              //         >
+              //           <path
+              //             d="M5 0.704895H1.20711C0.761654 0.704895 0.53857 1.24346 0.853552 1.55845L7.14645 7.85134C7.46143 8.16632 8 7.94324 8 7.49779V3.7049C8 2.04804 6.65685 0.704895 5 0.704895Z"
+              //             fill="#82FF60"
+              //           />
+              //         </svg>
+              //       </div>
+              //       <div className="w-[49%] bg-[#0A053B] relative p-2 rounded-md flex items-center justify-between">
+              //         <div className="text-white text-[.7rem] text-opacity-40 overflow-hidden text-overflow-ellipsis whitespace-nowrap max-w-[80%] fade-text">
+              //           <div className="relative z-10">{`under 80.5`}</div>
+              //         </div>
+              //         <div className="text-white text-[.8rem] md:text-[.9rem]">
+              //           1.8
+              //         </div>
+              //         <svg
+              //           width="8"
+              //           height="8"
+              //           className="absolute bottom-0 right-0"
+              //           viewBox="0 0 8 8"
+              //           fill="none"
+              //           xmlns="http://www.w3.org/2000/svg"
+              //         >
+              //           <path
+              //             d="M5 7.7049H1.20711C0.761654 7.7049 0.53857 7.16633 0.853552 6.85134L7.14645 0.558448C7.46143 0.243466 8 0.466549 8 0.912002V4.7049C8 6.36175 6.65685 7.7049 5 7.7049Z"
+              //             fill="#FF6060"
+              //           />
+              //         </svg>
+              //       </div>
+              //     </div>
+              //   </div>
+              // </div>
             }
           </div>
         ))}

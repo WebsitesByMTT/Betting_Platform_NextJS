@@ -11,10 +11,10 @@ import { useSocket } from "./SocketProvider";
 const Categories = () => {
   const [category, setCategory] = useState<string[]>();
   const { socket } = useSocket();
-  const sportsCategories = useAppSelector((state) => state?.sports?.categories);
+  const sportsCategories = useAppSelector((state:any) => state?.sports?.categories);
   const dispatch = useAppDispatch();
   const currentCategory = useAppSelector(
-    (state) => state?.sports?.selectedCategory
+    (state:any) => state?.sports?.selectedCategory
   );
 
   useEffect(() => {

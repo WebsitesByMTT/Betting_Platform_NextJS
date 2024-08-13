@@ -19,6 +19,8 @@ export interface BetState {
 interface FormData {
   username: string;
   password: string;
+  captcha: string;
+  captchaToken: string;
 }
 
 interface DecodedToken {

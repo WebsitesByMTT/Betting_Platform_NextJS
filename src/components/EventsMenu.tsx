@@ -63,7 +63,7 @@ const EventsMenu = () => {
   return (
     <div className="w-full flex gap-5 flex-col px-4">
       {currentCategory && (
-        <div className="px-3 py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B1400] rounded-full w-fit flex gap-2">
+        <div className="px-3 py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex gap-2">
           <div className="relative h-auto w-[30px]">
             <Image
               src={`/assets/image/sidebar/${currentCategory
@@ -74,8 +74,9 @@ const EventsMenu = () => {
               fill
             />
           </div>
-
-          <p className="text-white text-lg font-light">{currentCategory}</p>
+          <p className="text-white text-lg font-light uppercase">
+            {currentCategory}
+          </p>
         </div>
       )}
       <div className="flex gap-4 overflow-x-scroll">
@@ -92,7 +93,6 @@ const EventsMenu = () => {
             )}
             <div className="flex items-center">
               <World />
-
               <p
                 className={`text-sm font-light whitespace-nowrap py-1 ${
                   currentEvent === item.title ? "pr-3" : "px-2"

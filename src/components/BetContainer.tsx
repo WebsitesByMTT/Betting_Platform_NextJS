@@ -21,7 +21,7 @@ const BetContainer = () => {
   }, [leagueData]);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
       <div className="cursor-pointer flex space-x-2 items-center bg-[#1E1C22] w-full rounded-md px-4 py-2">
         <div className="flex gap-3 items-center">
           <LiveGame />

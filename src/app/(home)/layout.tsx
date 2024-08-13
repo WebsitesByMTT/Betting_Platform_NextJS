@@ -18,10 +18,10 @@ export default async function RootLayout({
     <SocketProvider token={token as string}>
       <StoreProvider>
         <div className="w-screen flex bg-[#0C0B14] h-screen overflow-hidden px-[1vw]">
-          <div className="lg:flex-[0.2]">
+          <div className="lg:w-[20%]">
             <Sidebar />
           </div>
-          <div className="flex-1">{children}</div>
+          <div className="w-full lg:w-[80%]">{children}</div>
         </div>
       </StoreProvider>
     </SocketProvider>

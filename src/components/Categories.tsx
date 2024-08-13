@@ -11,10 +11,12 @@ import { useSocket } from "./SocketProvider";
 const Categories = () => {
   const [category, setCategory] = useState<string[]>();
   const { socket } = useSocket();
-  const sportsCategories = useAppSelector((state:any) => state?.sports?.categories);
+  const sportsCategories = useAppSelector(
+    (state: any) => state?.sports?.categories
+  );
   const dispatch = useAppDispatch();
   const currentCategory = useAppSelector(
-    (state:any) => state?.sports?.selectedCategory
+    (state: any) => state?.sports?.selectedCategory
   );
 
   useEffect(() => {
@@ -56,10 +58,9 @@ const Categories = () => {
   }, [socket, dispatch]);
 
   return (
-    <div>
-      <div className="md:bg-gradient-to-tr p-[1px] rounded-2xl overflow-x-scroll w-full from-[#D6A250] via-[#FFE500] to-[#ECB800]">
-        <div className="rounded-2xl bg-gradient-to-b from-[#1c1a21] to-[#0d0c15] py-[1vw]">
-          <div className="flex overflow-x-scroll whitespace-nowrap justify-evenly w-[100%] md:mx-auto">
+      <div className="md:bg-gradient-to-tr p-[1px] rounded-2xl overflow-x-hidden from-[#D6A250] via-[#FFE500] to-[#ECB800]">
+        <div className="rounded-2xl bg-gradient-to-b from-[#1c1a21] to-[#0d0c15] px-2 py-8">
+          <div className="flex !overflow-x-scroll justify-evenly w-[65vw] mx-auto gap-5">
             {category?.map((item, ind) => (
               <div key={ind} className="cursor-pointer">
                 <div
@@ -88,7 +89,6 @@ const Categories = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

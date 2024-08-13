@@ -24,8 +24,8 @@ const EventsMenu = () => {
     dispatch(setSelectedEvent(title));
     if (socket) {
       socket.emit("data", {
-        action: "EVENTS",
-        payload: { sport: event },
+        action: "ODDS",
+        payload: { sport: event, regions: "us", markets: "h2h" },
       });
     } else {
       console.warn("Socket not connected!");
@@ -41,7 +41,7 @@ const EventsMenu = () => {
   useEffect(() => {
     const handleData = (data: any) => {
       switch (data.type) {
-        case "EVENTS":
+        case "ODDS":
           dispatch(setLeagues(data.data));
           break;
         default:

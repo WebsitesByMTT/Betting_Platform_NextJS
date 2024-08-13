@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface SportsState {
   categories: string[];
   events: [];
-  leagues: [];
+  leagues: any;
   selectedEvent: string;
   selectedLeague: string;
   selectedCategory: string;
@@ -12,7 +12,7 @@ interface SportsState {
 const initialState: SportsState = {
   categories: [],
   events: [],
-  leagues: [],
+  leagues: {},
   selectedEvent: "",
   selectedLeague: "",
   selectedCategory: "",

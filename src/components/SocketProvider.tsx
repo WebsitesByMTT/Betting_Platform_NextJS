@@ -36,6 +36,10 @@ export const SocketProvider: React.FC<{
         console.log("Connected with socket id:", socketInstance.id);
       });
 
+      socketInstance.on("error", (message) => {
+        console.log("Error from server", message);
+      });
+
       return () => {
         socketInstance.disconnect();
       };

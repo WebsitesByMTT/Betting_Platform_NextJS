@@ -10,6 +10,7 @@ import {
   setSelectedCategory,
   setSelectedEvent,
 } from "@/lib/store/features/sports/sportsSlice";
+import Logo from "./svg/Logo";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
@@ -149,14 +150,7 @@ const Sidebar = () => {
           </svg>
         </div>
         <div className="relative h-[5vw] w-[60%] lg:h-[4.5vw] lg:w-[90%] mx-auto min-h-[50px]">
-          <Image
-            src="/assets/image/Logo.png"
-            fill
-            quality={100}
-            sizes="100vw"
-            className="mx-auto"
-            alt="logo"
-          />
+          <Logo />
         </div>
         <div className="py-[0.5vw] space-y-[0.5vw] h-[calc(100vh-7vw)] overflow-y-scroll">
           {sidebar?.map((item, ind) => (

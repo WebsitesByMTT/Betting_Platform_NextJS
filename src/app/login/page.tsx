@@ -1,15 +1,22 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { DecodedToken, FormData } from "@/utils/types";
-import { login } from "@/utils/actions";
+import { GetCaptcha, login } from "@/utils/actions";
 import ShowEye from "@/components/svg/ShowEye";
 import HideEye from "@/components/svg/HideEye";
 
 const Login = () => {
-  const [data, setData] = useState<FormData>({ username: "", password: "" });
+  const [data, setData] = useState<FormData>({
+    username: "",
+    password: "",
+    captcha: "",
+    captchaToken: "",
+  });
+
+  const [captchaSrc, setCaptchaSrc] = useState("");
   const [hide, setHide] = useState(false);
   const router = useRouter();
 
@@ -18,14 +25,38 @@ const Login = () => {
     setData({ ...data, [name]: value });
   };
 
+  const fetchCaptcha = async () => {
+    try {
+      const captcha = await GetCaptcha();
+      if (captcha) {
+        setCaptchaSrc(captcha.responseData?.captcha);
+        setData((prevState) => ({
+          ...prevState,
+          captchaToken: captcha.responseData?.token,
+        }));
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (data.username == "" || data.password == "")
-      return alert("Both username and password are required!");
+    if (
+      data.username == "" ||
+      data.password == "" ||
+      data.captcha == "" ||
+      data.captchaToken == ""
+    )
+      return alert("All fields are required!");
 
     const response = await login(data);
-    console.log(response);
     if (response?.error) {
+      fetchCaptcha();
       return alert(response?.error || "Login failed");
     }
     const token = response?.token;
@@ -39,7 +70,7 @@ const Login = () => {
         alert("Access denied!");
       }
     } else {
-      alert("Inavlid Token!");
+      alert("Invalid Token!");
     }
   };
 
@@ -107,6 +138,30 @@ const Login = () => {
                         />
                       )}
                     </div>
+                  )}
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="captcha"
+                  className="text-lg font-extralight tracking-wider"
+                >
+                  Captcha
+                </label>
+                <div className="flex items-center justify-between space-x-3 bg-[#554e4e54] rounded-md text-md">
+                  <input
+                    name="captcha"
+                    placeholder="Enter Captcha"
+                    value={data.captcha}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                    className="outline-none w-full text-xl px-3 py-2 placeholder:text-xl font-extralight bg-transparent placeholder:font-extralight placeholder:text-[#a59f9fef]"
+                  />
+                  {captchaSrc && (
+                    <div
+                      dangerouslySetInnerHTML={{ __html: captchaSrc }}
+                      className="h-full border-[#dfdfdfbc]  bg-[#ffffffc5] rounded-md"
+                    ></div>
                   )}
                 </div>
               </div>

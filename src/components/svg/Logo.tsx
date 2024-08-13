@@ -2,10 +2,7 @@ import React from "react";
 
 const Logo = () => {
   return (
-    <div>
       <svg
-        width="100%"
-        height="100%"
         viewBox="0 0 758 292"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +180,6 @@ const Logo = () => {
           </linearGradient>
         </defs>
       </svg>
-    </div>
   );
 };
 

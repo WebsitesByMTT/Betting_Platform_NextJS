@@ -9,7 +9,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const Banner: React.FC = () => {
-    const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
+    const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
     const images = ['/assets/image/crousal1.png', '/assets/image/crousal2.png', '/assets/image/crousal3.png', '/assets/image/crousal4.png'];
 
     return (
@@ -22,7 +22,7 @@ const Banner: React.FC = () => {
             <CarouselContent>
                 {images.map((item, index) => (
                     <CarouselItem className='basis-[100%]' key={index}>
-                        <Image src={item} width={5000} height={5000} quality={100} className='w-full h-[130px] md:h-[350px]' alt='banner'  />
+                        <Image src={item} width={5000} height={5000} quality={100} className='w-full h-[130px] md:h-[350px] px-[20px]' alt='banner'  />
                     </CarouselItem>
                 ))}
             </CarouselContent>

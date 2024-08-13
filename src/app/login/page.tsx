@@ -1,23 +1,16 @@
 "use client";
-import { config } from "@/utils/config";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import { DecodedToken, FormData } from "@/utils/types";
+import { login } from "@/utils/actions";
+import ShowEye from "@/components/svg/ShowEye";
+import HideEye from "@/components/svg/HideEye";
 
 const Login = () => {
-  interface FormData {
-    username: string;
-    password: string;
-  }
-
-  interface decodedToken {
-    role: string;
-  }
-
   const [data, setData] = useState<FormData>({ username: "", password: "" });
   const [hide, setHide] = useState(false);
-
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,46 +18,28 @@ const Login = () => {
     setData({ ...data, [name]: value });
   };
 
-  const handlePasswordShowHide = () => {
-    setHide(!hide);
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (data.username == "" || data.password == "") return;
-    try {
-      const response = await fetch(`${config.server}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: data.username,
-          password: data.password,
-        }),
-      });
+    if (data.username == "" || data.password == "")
+      return alert("Both username and password are required!");
 
-      const responseData = await response.json();
-
-      if (response.ok) {
-        const token = responseData?.token;
-        if (token) {
-          const decodedToken = jwtDecode<decodedToken>(token);
-          if (decodedToken?.role === "player") {
-            alert("Login successfull!!");
-            Cookies.set("token", token);
-            router.push("/");
-          } else {
-            alert("Access denied!");
-          }
-        } else {
-          alert("Inavlid Token!");
-        }
+    const response = await login(data);
+    console.log(response);
+    if (response?.error) {
+      return alert(response?.error || "Login failed");
+    }
+    const token = response?.token;
+    if (token) {
+      const decodedToken = jwtDecode<DecodedToken>(token);
+      if (decodedToken?.role === "player") {
+        alert("Login successfull!!");
+        Cookies.set("token", token);
+        router.push("/");
       } else {
-        alert("Login failed");
+        alert("Access denied!");
       }
-    } catch (error) {
-      alert("An error occured! Please try again");
+    } else {
+      alert("Inavlid Token!");
     }
   };
 
@@ -119,41 +94,17 @@ const Login = () => {
                   {data.password.length > 0 && (
                     <div className="p-2">
                       {!hide ? (
-                        <svg
-                          onClick={handlePasswordShowHide}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="lucide cursor-pointer lucide-eye"
-                        >
-                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
+                        <ShowEye
+                          onClick={() => {
+                            setHide(!hide);
+                          }}
+                        />
                       ) : (
-                        <svg
-                          onClick={handlePasswordShowHide}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="lucide cursor-pointer lucide-eye-off"
-                        >
-                          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
-                          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
-                          <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
-                          <line x1="2" x2="22" y1="2" y2="22" />
-                        </svg>
+                        <HideEye
+                          onClick={() => {
+                            setHide(!hide);
+                          }}
+                        />
                       )}
                     </div>
                   )}

@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import betReducers from "./features/bet/betSlice";
+import sportsReducer from "./features/sports/sportsSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      bet: betReducers
+      bet: betReducers,
+      sports: sportsReducer,
     },
   });
 };

@@ -1,21 +1,25 @@
-import Footer from "@/components/common/Footer";
-import Header from "@/components/common/Header";
+import EventsMenu from "@/components/EventsMenu";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import Banner from "@/components/home/Banner";
-import BetCard from "@/components/home/BetCard";
-import Categories from "@/components/home/Categories";
-import QuickBet from "@/components/home/QuickBet";
-import TopBetsCarousel from "@/components/home/TopBetsCarousel";
+import BetContainer from "@/components/BetContainer";
+import Categories from "@/components/Categories";
+// import QuickBet from "@/components/home/QuickBet";
+// import TopBetsCarousel from "@/components/home/TopBetsCarousel";
 
 export default function Home() {
   return (
-    <div className=" w-[95%] p-2 mx-auto">
+    <div className="w-full px-[1vw] mx-auto h-full">
       <Header />
-      <Banner />
-      <Categories />
-      <TopBetsCarousel />
-      <QuickBet />
-      <BetCard />
-      <Footer />
+      <div className="h-[95vh] overflow-y-scroll py-5 space-y-[1vw]">
+        <Banner />
+        <Categories />
+        <EventsMenu />
+        {/* <TopBetsCarousel />  */}
+        {/* <QuickBet />  */}
+        <BetContainer />
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -149,7 +149,7 @@ const Sidebar = () => {
             <path d="m6 6 12 12" />
           </svg>
         </div>
-        <div className="relative h-[5vw] w-[60%] lg:h-[4.5vw] lg:w-[90%] mx-auto min-h-[50px]">
+        <div className="relative h-[5vw] w-[60%] lg:h-[4.5vw] lg:w-[90%] mx-auto min-h-[50px] my-4">
           <Logo />
         </div>
         <div className="py-[0.5vw] space-y-[0.5vw] h-[calc(100vh-7vw)] overflow-y-scroll">

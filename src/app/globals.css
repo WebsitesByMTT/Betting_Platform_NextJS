@@ -2,47 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-.parant:hover .my-svg-icon{
-    fill:url(#paint0_linear_1_808);
+.parant:hover .my-svg-icon {
+  fill: url(#paint0_linear_1_808);
 }
 
-.parant .my-svg-icon{
-    fill:url(#paint0_linear_1_881);
+.parant .my-svg-icon {
+  fill: url(#paint0_linear_1_881);
 }
 
-
-.transition{
-    transition: .4s;
+.transition {
+  transition: 0.4s;
 }
 
-.parant .my-arrow-svg{
-    fill: white;
+.parant .my-arrow-svg {
+  fill: white;
 }
 
-.parant:hover .my-arrow-svg{
-    fill:url(#paint0_linear_41_897);
+.parant:hover .my-arrow-svg {
+  fill: url(#paint0_linear_41_897);
 }
 
 ::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
 
-  .fade-text {
-    position: relative;
+.fade-text {
+  position: relative;
 }
 
 .fade-text::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to right, transparent, black);
-    opacity: 0.5; 
-    pointer-events: none; 
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, transparent, black);
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .fade-text > div {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); 
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

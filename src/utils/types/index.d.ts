@@ -5,15 +5,25 @@ export interface BetSlipCardProps {
   betData: any;
 }
 
-interface Bet {
-  data: {
-    currentBet?: number;
+interface Bet extends initialBets {
+  away_team: {
+    name: string;
+    odds: string;
   };
-  item: any;
-}
-
-export interface BetState {
-  bets: Bet[];
+  home_team: {
+    name: string;
+    odds: string;
+  };
+  bet_on: string;
+  market: string;
+  oddsFormat: string;
+  player: string;
+  sport: string;
+  sport_title: string;
+  event_id: string;
+  commence_time: string;
+  status: string;
+  amount: number;
 }
 
 interface FormData {

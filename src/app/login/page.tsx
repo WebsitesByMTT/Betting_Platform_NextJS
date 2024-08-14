@@ -7,6 +7,7 @@ import { DecodedToken, FormData } from "@/utils/types";
 import { GetCaptcha, login } from "@/utils/actions";
 import ShowEye from "@/components/svg/ShowEye";
 import HideEye from "@/components/svg/HideEye";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [data, setData] = useState<FormData>({
@@ -52,18 +53,18 @@ const Login = () => {
       data.captcha == "" ||
       data.captchaToken == ""
     )
-      return alert("All fields are required!");
+      return toast.error("All fields are required!");
 
     const response = await login(data);
     if (response?.error) {
       fetchCaptcha();
-      return alert(response?.error || "Login failed");
+      return toast.error(response?.error || "Login failed");
     }
     const token = response?.token;
     if (token) {
       const decodedToken = jwtDecode<DecodedToken>(token);
       if (decodedToken?.role === "player") {
-        alert("Login successfull!!");
+        toast.success("Login successfull!!");
         Cookies.set("token", token);
         router.push("/");
       } else {

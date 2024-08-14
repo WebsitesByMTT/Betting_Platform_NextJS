@@ -2,6 +2,7 @@
 
 import { config } from "@/utils/config";
 import { useEffect, useState, createContext, useContext } from "react";
+import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
 
 interface SocketContextType {
@@ -25,7 +26,6 @@ export const SocketProvider: React.FC<{
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    console.log("TOKEN", token);
     if (token) {
       const socketInstance = io(`${config.server}`, {
         auth: { token },
@@ -36,8 +36,9 @@ export const SocketProvider: React.FC<{
         console.log("Connected with socket id:", socketInstance.id);
       });
 
-      socketInstance.on("error", (message) => {
-        console.log("Error from server", message);
+      socketInstance.on("error", (error) => {
+        toast.remove();
+        toast.error(`Error from server: ${error.message}`);
       });
 
       return () => {

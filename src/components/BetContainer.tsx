@@ -1,5 +1,4 @@
 "use client";
-import { add } from "@/lib/store/features/bet/betSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { Leagues } from "@/utils/types";
 import Image from "next/image";

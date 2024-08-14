@@ -4,6 +4,7 @@ import React from "react";
 import Profile from "./svg/Profile";
 import Notification from "./svg/Notification";
 import { redirect } from "next/navigation";
+import User from "./User";
 
 async function getUser() {
   const token = cookies().get("token")?.value;
@@ -51,10 +52,8 @@ const Header = async () => {
         <div className="w-[2rem] h-[3rem] cursor-pointer group relative">
           <Profile />
           <div className="absolute top-[100%] right-[-100%] bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[100] rounded-md">
-            <div className=" hidden group-hover:flex text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col gap-3 text-center text-sm">
-              <button>My profile</button>
-              <button>My Bets</button>
-              <button>Logout</button>
+            <div className="hidden group-hover:flex text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col gap-3 text-center text-sm">
+              <User />
             </div>
           </div>
         </div>

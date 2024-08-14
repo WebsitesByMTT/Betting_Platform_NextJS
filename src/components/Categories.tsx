@@ -58,32 +58,31 @@ const Categories = () => {
   }, [socket, dispatch]);
 
   return (
-    <div className="md:bg-gradient-to-tr p-[1px] rounded-2xl overflow-x-hidden from-[#D6A250] via-[#FFE500] to-[#ECB800]">
-      <div className="rounded-2xl bg-gradient-to-b from-[#1c1a21] to-[#0d0c15] px-2 py-8">
-        <div className="flex !overflow-x-scroll justify-evenly w-[65vw] mx-auto gap-5">
+    <div className="md:bg-gradient-to-tr p-[1px] rounded-2xl overflow-x-hidden from-[#D6A250] via-[#FFE500] to-[#ECB800] w-full">
+      <div className="rounded-2xl bg-gradient-to-b from-[#1c1a21] to-[#0d0c15] py-2 lg:py-6">
+        <div className="flex !overflow-x-scroll justify-evenly w-[65vw] mx-auto gap-5 ">
           {category?.map((item, ind) => (
-            <div key={ind} className="cursor-pointer">
-              <div
-                className={`hover:bg-gradient-to-tr mx-auto group from-[#D6A250] via-[#FFE500] to-[#ECB800] w-[45px] md:w-[50px] p-[1px] rounded-xl h-[45px] md-h-[50px] transition-all ${
-                  currentCategory === item ? "bg-gradient-to-tr" : ""
-                }`}
+            <div
+              key={ind}
+              className={`hover:bg-gradient-to-tr cursor-pointer flex-none mx-auto group from-[#D6A250] via-[#FFE500] to-[#ECB800] h-[35px] w-[35px] md:w-[45px] md:h-[45px] p-[1px] rounded-xl transition-all ${
+                currentCategory === item ? "bg-gradient-to-tr" : ""
+              }`}
+            >
+              <button
+                className="bg-[#343434] hover:bg-[#292929] relative p-[1rem] py-[1.2rem] h-full w-full rounded-xl  shadow-inner shadow-[#232323] transition-all duration-500"
+                onClick={() => {
+                  fetchEvents(item);
+                }}
               >
-                <button
-                  className="bg-[#343434] hover:bg-[#292929] relative p-[1rem] py-[1.2rem] h-full w-full rounded-xl  shadow-inner shadow-[#232323] transition-all duration-500"
-                  onClick={() => {
-                    fetchEvents(item);
-                  }}
-                >
-                  <Image
-                    src={`/assets/image/sidebar/${item
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}.svg`}
-                    alt="categories"
-                    className="p-2"
-                    fill
-                  />
-                </button>
-              </div>
+                <Image
+                  src={`/assets/image/sidebar/${item
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}.svg`}
+                  alt="categories"
+                  className="p-2"
+                  fill
+                />
+              </button>
             </div>
           ))}
         </div>

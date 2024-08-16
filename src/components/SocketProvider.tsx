@@ -1,7 +1,14 @@
 "use client";
 
+import {
+  setCategories,
+  setEvents,
+  setLeagues,
+} from "@/lib/store/features/sports/sportsSlice";
+import { useAppDispatch } from "@/lib/store/hooks";
 import { config } from "@/utils/config";
 import { useEffect, useState, createContext, useContext } from "react";
+import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
 
 interface SocketContextType {
@@ -23,9 +30,9 @@ export const SocketProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ token, children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("TOKEN", token);
     if (token) {
       const socketInstance = io(`${config.server}`, {
         auth: { token },
@@ -35,9 +42,25 @@ export const SocketProvider: React.FC<{
       socketInstance.on("connect", () => {
         console.log("Connected with socket id:", socketInstance.id);
       });
-
-      socketInstance.on("error", (message) => {
-        console.log("Error from server", message);
+      socketInstance.on("data", (data: any) => {
+        switch (data.type) {
+          case "CATEGORIES":
+            dispatch(setCategories(data.data));
+            break;
+          case "CATEGORY_SPORTS":
+            dispatch(setEvents(data.data));
+            break;
+          case "ODDS":
+            console.log(data);
+            dispatch(setLeagues(data?.data));
+            break;
+          default:
+            break;
+        }
+      });
+      socketInstance.on("error", (error) => {
+        toast.remove();
+        toast.error(`Error from server: ${error.message}`);
       });
 
       return () => {

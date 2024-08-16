@@ -15,7 +15,7 @@ const initialState: SportsState = {
   leagues: {},
   selectedEvent: "",
   selectedLeague: "",
-  selectedCategory: "",
+  selectedCategory: "All",
 };
 
 const sportsSlice = createSlice({

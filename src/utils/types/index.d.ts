@@ -1,19 +1,25 @@
 import { Socket } from "socket.io-client";
 
-export interface BetSlipCardProps {
-  matchData: any;
-  betData: any;
-}
-
 interface Bet {
-  data: {
-    currentBet?: number;
+  id: string;
+  away_team: {
+    name: string;
+    odds: string;
   };
-  item: any;
-}
-
-export interface BetState {
-  bets: Bet[];
+  home_team: {
+    name: string;
+    odds: string;
+  };
+  bet_on: string;
+  market: string;
+  oddsFormat: string;
+  player: string;
+  sport: string;
+  sport_title: string;
+  event_id: string;
+  commence_time: string;
+  status: string;
+  amount: number;
 }
 
 interface FormData {
@@ -36,4 +42,21 @@ interface Leagues {
   sport_title: string;
   home_team: string;
   away_team: string;
+}
+
+interface Mybet {
+  commence_time: string;
+  home_team: {
+    name: string;
+    odds: number;
+  };
+  away_team: {
+    name: string;
+    odds: number;
+  };
+  bet_on: string;
+  amount: number;
+  status: string;
+  possibleWinningAmount: number;
+  retryCount: number;
 }

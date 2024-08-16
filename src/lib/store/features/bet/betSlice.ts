@@ -1,27 +1,44 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BetState, Bet } from "@/utils/types";
+import { Bet } from "@/utils/types";
+
+interface BetState {
+  allbets: Bet[];
+}
 
 const initialState: BetState = {
-  bets: [],
+  allbets: [],
 };
 
 export const betSlice = createSlice({
   name: "bets",
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<Bet>) => {
-      state.bets.push(action.payload);
+    addAllBets: (state, action: PayloadAction<Bet>) => {
+      const bet = state.allbets.find((bet) => bet.id === action.payload.id);
+      if (!bet) {
+        state.allbets.push(action.payload);
+      } else {
+        state.allbets = state.allbets.filter(
+          (bet) => bet.id !== action.payload.id
+        );
+      }
     },
-    updateCurrentBet: (state, action: PayloadAction<{ amount: number }>) => {
-      const { amount } = action.payload;
-      state.bets.forEach((bet) => {
-        if (bet.data) {
-          bet.data.currentBet = amount;
-        }
-      });
+    updateBetAmount: (
+      state,
+      action: PayloadAction<{ betId: string; amount: number }>
+    ) => {
+      const { betId, amount } = action.payload;
+      const bet = state.allbets.find((bet) => bet.id === betId);
+      if (bet) {
+        bet.amount = amount;
+      }
+    },
+    deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
+      const { betId } = action.payload;
+      state.allbets = state.allbets.filter((bet) => bet.id !== betId);
     },
   },
 });
 
-export const { add, updateCurrentBet } = betSlice.actions;
+export const { addAllBets, updateBetAmount, deleteBet } = betSlice.actions;
 export default betSlice.reducer;

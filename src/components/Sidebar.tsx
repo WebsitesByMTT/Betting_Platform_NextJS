@@ -4,12 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  setCategories,
-  setEvents,
-  setSelectedCategory,
-  setSelectedEvent,
-} from "@/lib/store/features/sports/sportsSlice";
+import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 import Logo from "./svg/Logo";
 
 const Sidebar = () => {
@@ -46,8 +41,10 @@ const Sidebar = () => {
   useEffect(() => {
     if (socket) {
       fetchSports();
+      fetchCategoryEvents("All");
     }
   }, [socket]);
+
   //event for a specific sports category
   const fetchCategoryEvents = (category: any) => {
     dispatch(setSelectedCategory(category));
@@ -60,32 +57,6 @@ const Sidebar = () => {
       console.warn("Socket is not connected");
     }
   };
-
-  //handle response from the socket and set in redux accordingly
-  useEffect(() => {
-    const handleData = (data: any) => {
-      switch (data.type) {
-        case "CATEGORIES":
-          dispatch(setCategories(data.data));
-          break;
-        case "CATEGORY_SPORTS":
-          dispatch(setEvents(data.data));
-          break;
-        default:
-          break;
-      }
-    };
-
-    if (socket) {
-      socket.on("data", handleData);
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("data", handleData);
-      }
-    };
-  }, [socket, dispatch]);
 
   //sidebar list
   const sidebar = [
@@ -125,7 +96,7 @@ const Sidebar = () => {
       <div
         className={`transition-all ${
           toggle ? "left-0" : "left-[-200%]"
-        } text-white z-50 h-[calc(100vh-20px)] bg-[#1E1C22] rounded-tr-3xl rounded-tl-3xl my-5 border-2 border-[#2E2D32] fixed lg:top-0 lg:sticky w-[30%] md:w-[25%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+        } text-white z-50 h-[calc(100vh-40px)] bg-[#1E1C22] rounded-3xl my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[30%] md:w-[25%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
           className={`absolute left-3 top-2 lg:hidden cursor-pointer text-white text-opacity-60 ${
@@ -149,27 +120,26 @@ const Sidebar = () => {
             <path d="m6 6 12 12" />
           </svg>
         </div>
-        <div className="relative h-[5vw] w-[60%] lg:h-[4.5vw] lg:w-[90%] mx-auto min-h-[50px] my-4">
+        <div className="relative w-[60%] lg:h-[80px] lg:w-[90%] mx-auto min-h-[50px] my-4">
           <Logo />
         </div>
-        <div className="py-[0.5vw] space-y-[0.5vw] h-[calc(100vh-7vw)] overflow-y-scroll">
+        <div className="py-[0.5vw] space-y-[0.5vw] h-[82vh] overflow-y-scroll">
           {sidebar?.map((item, ind) => (
-            <>
+            <div key={ind}>
               <div
-                key={ind}
-                className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-[1.35rem] font-light p-[1px]"
+                className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px]"
               >
-                <div className="uppercase bg-gradient-to-b from-[#36353C] to-[#1C1A21] px-[1vw] rounded-[1.35rem] py-[0.6rem] flex gap-2 items-center text-xl">
+                <div className="uppercase bg-gradient-to-b from-[#36353C] to-[#1C1A21] px-[1vw] rounded-full py-[0.6rem] flex gap-2 items-center text-xl">
                   {item.icon}
                   <span className="font-medium">{item.title}</span>
                 </div>
               </div>
-              <div className="flex flex-col gap-3 text-lg font-light px-[.5vw] py-2">
+              <div className="flex flex-col gap-3 text-lg font-light px-[.8vw] py-2">
                 {item?.subTitle?.map((subitem, subind) => (
                   <button
                     onClick={() => fetchCategoryEvents(subitem)}
                     key={subind}
-                    className={`transition-all duration-1000 ease-in-out cursor-pointer flex gap-2 py-[0.6rem] hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
+                    className={`transition-all duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
                       currentCategory === subitem ? "bg-gradient-to-b" : ""
                     }`}
                   >
@@ -182,11 +152,13 @@ const Sidebar = () => {
                         fill
                       />
                     </div>
-                    <p className="whitespace-nowrap">{subitem}</p>
+                    <p className="whitespace-nowrap text-left col-span-3">
+                      {subitem}
+                    </p>
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>

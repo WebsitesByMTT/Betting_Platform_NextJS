@@ -21,9 +21,9 @@ const Sports = () => {
           width="32"
           height="34"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -57,13 +57,13 @@ const Sports = () => {
           y2="5.93695"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D6A250" />
-          <stop offset="0.502921" stop-color="#FFE500" />
-          <stop offset="1" stop-color="#ECB800" />
+          <stop stopColor="#D6A250" />
+          <stop offset="0.502921" stopColor="#FFE500" />
+          <stop offset="1" stopColor="#ECB800" />
         </linearGradient>
       </defs>
     </svg>
   );
-}
+};
 
-export default Sports
+export default Sports;

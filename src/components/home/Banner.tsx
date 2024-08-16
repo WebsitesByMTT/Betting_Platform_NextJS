@@ -7,6 +7,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { useAppSelector } from "@/lib/store/hooks";
 
 const Banner: React.FC = () => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
@@ -16,26 +17,34 @@ const Banner: React.FC = () => {
     "/assets/image/carousel/crousal3.png",
     "/assets/image/carousel/crousal4.png",
   ];
+  const currentCategory = useAppSelector(
+    (state) => state.sports.selectedCategory
+  );
 
   return (
-    <div className="pt-5 md:pt-0">
-      <Carousel plugins={[plugin.current]}>
-        <CarouselContent>
-          {images.map((item, index) => (
-            <CarouselItem className="basis-[100%]" key={index}>
-              <Image
-                src={item}
-                width={5000}
-                height={5000}
-                quality={100}
-                className="w-full h-[130px] md:h-[350px] px-[20px]"
-                alt="banner"
-              />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-    </div>
+    <>
+      {currentCategory === "All" && (
+        <div className="pt-5 md:pt-0">
+          <Carousel plugins={[plugin.current]}>
+            <CarouselContent>
+              {images.map((item, index) => (
+                <CarouselItem className="basis-[100%]" key={index}>
+                  <div className="relative h-[23vw] min-h-[250px]">
+                    <Image
+                      src={item}
+                      fill
+                      quality={100}
+                      className="w-full"
+                      alt="banner"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
+      )}
+    </>
   );
 };
 

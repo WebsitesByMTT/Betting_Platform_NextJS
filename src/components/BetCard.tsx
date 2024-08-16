@@ -3,12 +3,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Favourite from "./svg/Favourite";
 import World from "./svg/World";
-import { Bet } from "@/utils/types";
+import { Bet, DecodedToken } from "@/utils/types";
 import { addAllBets } from "@/lib/store/features/bet/betSlice";
+import { getCookie } from "@/utils/utils";
+import { jwtDecode } from "jwt-decode";
 
 const BetCard: React.FC<any> = ({ betsData }) => {
   const [leagues, setLeagues] = useState(betsData);
   const dispatch = useAppDispatch();
+  const allbets = useAppSelector((state) => state.bet.allbets);
 
   useEffect(() => {
     setLeagues(betsData);
@@ -17,8 +20,15 @@ const BetCard: React.FC<any> = ({ betsData }) => {
     (state) => state?.sports?.selectedCategory
   );
 
-  const handleBet = (betOn: string, betsData: any) => {
+  const handleBet = async (betOn: string, betsData: any) => {
+    const token = await getCookie();
+    let playerId: string = "";
+    if (token) {
+      const decodedToken = jwtDecode<any>(token);
+      playerId = decodedToken?.userId;
+    }
     const betData: Bet = {
+      id: betOn + betsData.id + betsData.markets[0]?.key,
       away_team: {
         name: betsData.away_team,
         odds: betsData.markets
@@ -27,14 +37,14 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       },
       home_team: {
         name: betsData.home_team,
-        odds: betsData.markets
+        odds: betsData?.markets
           .flatMap((market: any) => market.outcomes)
           .find((outcome: any) => outcome.name === betsData.home_team)?.price,
       },
       bet_on: betOn,
       market: betsData.markets[0]?.key,
       oddsFormat: "decimal",
-      player: "66b4669df50c0da50679c821",
+      player: playerId,
       sport: betsData.sport_key,
       sport_title: betsData.sport_title,
       event_id: betsData.id,
@@ -43,6 +53,10 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       amount: 50,
     };
     dispatch(addAllBets(betData));
+  };
+
+  const isBetInAllBets = (betId: string) => {
+    return allbets.some((bet) => bet.id === betId);
   };
 
   return (
@@ -76,7 +90,9 @@ const BetCard: React.FC<any> = ({ betsData }) => {
             </p>
           </div>
           <p className="text-[#dfdfdf89] border-[1px] border-[#818181] rounded-md py-[1px]">
-            5
+            {betsData?.scores?.find(
+              (item: any) => item.name === betsData.home_team
+            )?.score || 0}
           </p>
         </button>
         <button className="grid grid-cols-5 space-x-2">
@@ -87,7 +103,9 @@ const BetCard: React.FC<any> = ({ betsData }) => {
             </div>
           </div>
           <p className="text-[#dfdfdf89] border-[1px] border-[#818181] rounded-md py-[1px]">
-            10
+            {betsData?.scores?.find(
+              (item: any) => item.name === betsData.away_team
+            )?.score || 0}
           </p>
         </button>
       </div>
@@ -96,11 +114,16 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       </div>
       <div className="flex gap-2 w-full">
         <button
-          className="flex-1 bg-[#040404] py-2 rounded-md"
+          className={`flex-1 py-2 rounded-lg text-sm transition-colors border-[1px] flex justify-between px-2 ${
+            isBetInAllBets("home_team" + betsData.id + betsData.markets[0]?.key)
+              ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
+              : "bg-[#040404] border-transparent"
+          }`}
           onClick={() => {
             handleBet("home_team", betsData);
           }}
         >
+          <p className="text-[#dfdfdf76]">1</p>
           <p className="text-white">
             {
               betsData.markets
@@ -111,11 +134,16 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           </p>
         </button>
         <button
-          className="flex-1 bg-[#040404] py-2 rounded-md"
+          className={`flex-1 py-2 rounded-lg text-sm transition-colors border-[1px] flex justify-between px-2 ${
+            isBetInAllBets("away_team" + betsData.id + betsData.markets[0]?.key)
+              ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
+              : "bg-[#040404] border-transparent "
+          }`}
           onClick={() => {
             handleBet("away_team", betsData);
           }}
         >
+          <p className="text-[#dfdfdf76]">2</p>
           <p className="text-white">
             {
               betsData.markets

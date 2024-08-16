@@ -24,9 +24,9 @@ const World = () => {
           width="26"
           height="28.3262"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -60,8 +60,8 @@ const World = () => {
           y2="29.9488"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#5F6368" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#5F6368" />
         </linearGradient>
       </defs>
     </svg>

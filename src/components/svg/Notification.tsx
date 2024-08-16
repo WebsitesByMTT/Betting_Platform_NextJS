@@ -25,8 +25,8 @@ const Notification = () => {
           y2="29.4989"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFC400" />
-          <stop offset="1" stop-color="#D8890A" />
+          <stop stopColor="#FFC400" />
+          <stop offset="1" stopColor="#D8890A" />
         </linearGradient>
       </defs>
     </svg>

@@ -3,12 +3,10 @@ import { Bet } from "@/utils/types";
 
 interface BetState {
   allbets: Bet[];
-  placedbets: Bet[];
 }
 
 const initialState: BetState = {
   allbets: [],
-  placedbets: [],
 };
 
 export const betSlice = createSlice({
@@ -16,20 +14,31 @@ export const betSlice = createSlice({
   initialState,
   reducers: {
     addAllBets: (state, action: PayloadAction<Bet>) => {
-      state.allbets.push(action.payload);
+      const bet = state.allbets.find((bet) => bet.id === action.payload.id);
+      if (!bet) {
+        state.allbets.push(action.payload);
+      } else {
+        state.allbets = state.allbets.filter(
+          (bet) => bet.id !== action.payload.id
+        );
+      }
     },
     updateBetAmount: (
       state,
       action: PayloadAction<{ betId: string; amount: number }>
     ) => {
       const { betId, amount } = action.payload;
-      const bet = state.allbets.find((bet) => bet.event_id === betId);
+      const bet = state.allbets.find((bet) => bet.id === betId);
       if (bet) {
         bet.amount = amount;
       }
     },
+    deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
+      const { betId } = action.payload;
+      state.allbets = state.allbets.filter((bet) => bet.id !== betId);
+    },
   },
 });
 
-export const { addAllBets, updateBetAmount } = betSlice.actions;
+export const { addAllBets, updateBetAmount, deleteBet } = betSlice.actions;
 export default betSlice.reducer;

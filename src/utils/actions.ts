@@ -1,8 +1,12 @@
 "use server";
+import { JwtPayload } from "jsonwebtoken";
 import { config } from "./config";
 import { FormData } from "./types";
-import { getCookie } from "./utils";
+import { getCookie, getCurrentUser } from "./utils";
 
+interface Player extends JwtPayload {
+  userId: string;
+}
 export const GetCaptcha = async () => {
   try {
     const response = await fetch(`${config.server}/api/auth/captcha`, {
@@ -25,7 +29,6 @@ export const GetCaptcha = async () => {
 
 export const login = async (data: FormData) => {
   try {
-    console.log("DATA", data);
     const response = await fetch(`${config.server}/api/auth/login`, {
       method: "POST",
       headers: {
@@ -49,24 +52,28 @@ export const login = async (data: FormData) => {
   }
 };
 
-export const placeBet = async (data: any) => {
+export const GetPlayerBets = async () => {
+  const player = (await getCurrentUser()) as Player;
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/bets`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/bets/player/${player?.userId}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
       return { error: error.message };
     }
     const responseData = await response.json();
-    return responseData;
+    console.log(responseData);
+    return { responseData };
   } catch (error) {
     console.log("error:", error);
   }

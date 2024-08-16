@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const Quickbet = () => {
   return (
@@ -11,8 +11,8 @@ const Quickbet = () => {
     >
       <g filter="url(#filter0_d_502_3535)">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M5 2C3.34315 2 2 3.34315 2 5V27C2 28.6569 3.34315 30 5 30H21C22.6569 30 24 28.6569 24 27V5C24 3.34315 22.6569 2 21 2H5ZM7 8.5C6.17157 8.5 5.5 9.17157 5.5 10C5.5 10.8284 6.17157 11.5 7 11.5H19C19.8284 11.5 20.5 10.8284 20.5 10C20.5 9.17157 19.8284 8.5 19 8.5H7ZM5.5 15.5C5.5 14.6716 6.17157 14 7 14H19C19.8284 14 20.5 14.6716 20.5 15.5C20.5 16.3284 19.8284 17 19 17H7C6.17157 17 5.5 16.3284 5.5 15.5ZM7 20C6.17157 20 5.5 20.6716 5.5 21.5C5.5 22.3284 6.17157 23 7 23H19C19.8284 23 20.5 22.3284 20.5 21.5C20.5 20.6716 19.8284 20 19 20H7Z"
           fill="white"
         />
@@ -25,9 +25,9 @@ const Quickbet = () => {
           width="26"
           height="32"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -56,6 +56,6 @@ const Quickbet = () => {
       </defs>
     </svg>
   );
-}
+};
 
-export default Quickbet
+export default Quickbet;

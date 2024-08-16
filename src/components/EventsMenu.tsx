@@ -38,43 +38,21 @@ const EventsMenu = () => {
     fetchLeagues(sportsEvents[0]?.key, sportsEvents[0]?.title);
   }, [sportsEvents]);
 
-  useEffect(() => {
-    const handleData = (data: any) => {
-      switch (data.type) {
-        case "ODDS":
-          dispatch(setLeagues(data.data));
-          break;
-        default:
-          break;
-      }
-    };
-
-    if (socket) {
-      socket.on("data", handleData);
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("data", handleData);
-      }
-    };
-  }, [socket, dispatch]);
-
   return (
     <div className="w-full flex gap-5 flex-col px-4">
       {currentCategory && (
-        <div className="px-3 py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex gap-2">
-          <div className="relative h-auto w-[30px]">
+        <div className="px-3 py-2 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex gap-2">
+          <div className="relative h-auto w-[30px] md:w-[40px]">
             <Image
               src={`/assets/image/sidebar/${currentCategory
                 .toLowerCase()
                 .replace(/\s+/g, "-")}.svg`}
               alt="category"
-              className="p-1"
+              className="md:p-1"
               fill
             />
           </div>
-          <p className="text-white text-lg font-light uppercase">
+          <p className="text-white text-sm md:text-lg font-light uppercase">
             {currentCategory}
           </p>
         </div>
@@ -94,7 +72,7 @@ const EventsMenu = () => {
             <div className="flex items-center">
               <World />
               <p
-                className={`text-sm font-light whitespace-nowrap py-1 ${
+                className={`text-[12px] md:text-sm font-light whitespace-nowrap py-1 ${
                   currentEvent === item.title ? "pr-3" : "px-2"
                 }`}
               >

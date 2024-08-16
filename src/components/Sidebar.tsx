@@ -4,12 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import {
-  setCategories,
-  setEvents,
-  setSelectedCategory,
-  setSelectedEvent,
-} from "@/lib/store/features/sports/sportsSlice";
+import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 import Logo from "./svg/Logo";
 
 const Sidebar = () => {
@@ -46,8 +41,10 @@ const Sidebar = () => {
   useEffect(() => {
     if (socket) {
       fetchSports();
+      fetchCategoryEvents("All");
     }
   }, [socket]);
+
   //event for a specific sports category
   const fetchCategoryEvents = (category: any) => {
     dispatch(setSelectedCategory(category));
@@ -60,32 +57,6 @@ const Sidebar = () => {
       console.warn("Socket is not connected");
     }
   };
-
-  //handle response from the socket and set in redux accordingly
-  useEffect(() => {
-    const handleData = (data: any) => {
-      switch (data.type) {
-        case "CATEGORIES":
-          dispatch(setCategories(data.data));
-          break;
-        case "CATEGORY_SPORTS":
-          dispatch(setEvents(data.data));
-          break;
-        default:
-          break;
-      }
-    };
-
-    if (socket) {
-      socket.on("data", handleData);
-    }
-
-    return () => {
-      if (socket) {
-        socket.off("data", handleData);
-      }
-    };
-  }, [socket, dispatch]);
 
   //sidebar list
   const sidebar = [
@@ -154,9 +125,8 @@ const Sidebar = () => {
         </div>
         <div className="py-[0.5vw] space-y-[0.5vw] h-[82vh] overflow-y-scroll">
           {sidebar?.map((item, ind) => (
-            <>
+            <div key={ind}>
               <div
-                key={ind}
                 className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px]"
               >
                 <div className="uppercase bg-gradient-to-b from-[#36353C] to-[#1C1A21] px-[1vw] rounded-full py-[0.6rem] flex gap-2 items-center text-xl">
@@ -188,7 +158,7 @@ const Sidebar = () => {
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           ))}
         </div>
       </div>

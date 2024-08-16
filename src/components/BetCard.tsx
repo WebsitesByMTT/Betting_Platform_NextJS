@@ -91,7 +91,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           </div>
           <p className="text-[#dfdfdf89] border-[1px] border-[#818181] rounded-md py-[1px]">
             {betsData?.scores?.find(
-              (item: any) => item.name === betsData.home_team
+              (item: any) => item?.name === betsData?.home_team
             )?.score || 0}
           </p>
         </button>
@@ -110,7 +110,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
         </button>
       </div>
       <div>
-        <p className="text-white text-sm">{betsData?.markets[0].key}</p>
+        <p className="text-white text-sm">{betsData?.markets[0]?.key}</p>
       </div>
       <div className="flex gap-2 w-full">
         <button

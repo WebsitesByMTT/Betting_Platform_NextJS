@@ -28,7 +28,7 @@ const BetContainer = () => {
         </div>
       </div>
       <div className="pt-3 grid grid-cols-12 items-start gap-3">
-        {liveEventLeagues?.length > 0 ? (
+        {liveEventLeagues && liveEventLeagues?.length > 0 ? (
           liveEventLeagues?.map((data, index) => (
             <BetCard key={index} betsData={data} />
           ))
@@ -47,7 +47,7 @@ const BetContainer = () => {
         </div>
       </div>
       <div className="pt-3 grid grid-cols-12 items-start gap-3">
-        {upcomingEventLeagues?.length > 0 ? (
+        {upcomingEventLeagues && upcomingEventLeagues?.length > 0 ? (
           upcomingEventLeagues?.map((data, index) => (
             <BetCard key={index} betsData={data} />
           ))

@@ -7,7 +7,13 @@ const User = () => {
   return (
     <div className="flex flex-col gap-3">
       <button>My profile</button>
-      <button>My Bets</button>
+      <button
+        onClick={() => {
+          router.push("/mybets");
+        }}
+      >
+        My Bets
+      </button>
       <button
         onClick={() => {
           router.push("/logout");

@@ -53,6 +53,19 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.icon {
+  transition: fill 0.3s ease; /* Smooth transition */
+  fill: #8b8b8b; /* Default color */
+}
+
+.icon-hover {
+  fill: #000; /* Hover color */
+}
+
+.shadow-inner {
+  box-shadow: inset 0 2px 4px 0 rgba(199, 194, 194, 0.05);
 }

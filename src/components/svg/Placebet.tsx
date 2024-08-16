@@ -37,9 +37,9 @@ const Placebet = () => {
           y2="0"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D6A250" />
-          <stop offset="0.502921" stop-color="#FFE500" />
-          <stop offset="1" stop-color="#ECB800" />
+          <stop stopColor="#D6A250" />
+          <stop offset="0.502921" stopColor="#FFE500" />
+          <stop offset="1" stopColor="#ECB800" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_502_3521"
@@ -49,8 +49,8 @@ const Placebet = () => {
           y2="47"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D71B21" />
-          <stop offset="1" stop-color="#780005" />
+          <stop stopColor="#D71B21" />
+          <stop offset="1" stopColor="#780005" />
         </linearGradient>
       </defs>
     </svg>

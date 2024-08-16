@@ -29,7 +29,7 @@ const Banner: React.FC = () => {
             <CarouselContent>
               {images.map((item, index) => (
                 <CarouselItem className="basis-[100%]" key={index}>
-                  <div className="relative h-[40vh]">
+                  <div className="relative h-[23vw] min-h-[250px]">
                     <Image
                       src={item}
                       fill

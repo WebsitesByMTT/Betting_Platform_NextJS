@@ -20,11 +20,11 @@ const BetContainer = () => {
   }, [leagueData]);
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="cursor-pointer flex space-x-2 items-center bg-[#1E1C22] w-full rounded-md px-4 py-2">
+    <div className="flex flex-col gap-5 py-3">
+      <div className="cursor-pointer flex space-x-2 items-center bg-[#1E1C22] w-full rounded-lg p-2 md:p-4 shadow-inner">
         <div className="flex gap-3 items-center">
           <LiveGame />
-          <div className="text-xl md:text-lg text-white font-light">Live</div>
+          <div className="text-md md:text-lg text-white font-light">Live</div>
         </div>
       </div>
       <div className="pt-3 grid grid-cols-12 items-start gap-3">
@@ -33,15 +33,15 @@ const BetContainer = () => {
             <BetCard key={index} betsData={data} />
           ))
         ) : (
-          <p className="w-full text-center col-span-12 text-white my-5">
+          <p className="w-full text-center col-span-12 text-white my-5 text-sm">
             Nothing to show here
           </p>
         )}
       </div>
-      <div className="cursor-pointer flex space-x-2 items-center bg-[#1E1C22] w-full rounded-md px-4 py-2">
+      <div className="cursor-pointer flex space-x-2 items-center bg-[#1E1C22] w-full rounded-lg p-2 md:p-4 shadow-inner">
         <div className="flex gap-3 items-center">
           <UpcomingGame />
-          <div className="text-xl md:text-lg text-white font-light">
+          <div className="text-md md:text-lg text-white font-light">
             Upcoming
           </div>
         </div>
@@ -52,7 +52,7 @@ const BetContainer = () => {
             <BetCard key={index} betsData={data} />
           ))
         ) : (
-          <p className="w-full text-center col-span-12 text-white my-5">
+          <p className="w-full text-center col-span-12 text-white my-5 text-sm">
             Nothing to show here
           </p>
         )}

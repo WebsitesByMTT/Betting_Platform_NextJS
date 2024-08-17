@@ -72,7 +72,6 @@ export const GetPlayerBets = async () => {
       return { error: error.message };
     }
     const responseData = await response.json();
-    console.log(responseData);
     return { responseData };
   } catch (error) {
     console.log("error:", error);

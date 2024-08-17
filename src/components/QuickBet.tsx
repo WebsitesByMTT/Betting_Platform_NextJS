@@ -1,5 +1,5 @@
 "use client";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppSelector } from "@/lib/store/hooks";
 import React, { useEffect, useRef, useState } from "react";
 import { Bet } from "@/utils/types";
 import { useSocket } from "./SocketProvider";
@@ -10,7 +10,6 @@ import Dropdown from "./svg/Dropdown";
 import BetSlip from "./BetSlip";
 
 const QuickBet = () => {
-  const [isBet, setIsBet] = useState(false);
   const [open, setOpen] = useState(false);
   const [allBets, setAllBets] = useState<Bet[]>([]);
   const bets = useAppSelector((state) => state.bet.allbets);

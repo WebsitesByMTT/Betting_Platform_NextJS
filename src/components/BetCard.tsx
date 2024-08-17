@@ -45,7 +45,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       market: betsData.markets[0]?.key,
       oddsFormat: "decimal",
       player: playerId,
-      sport: betsData.sport_key,
+      sport_key: betsData.sport_key,
       sport_title: betsData.sport_title,
       event_id: betsData.id,
       commence_time: betsData.commence_time,

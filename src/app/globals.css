@@ -69,3 +69,49 @@ input[type="number"] {
 .shadow-inner {
   box-shadow: inset 0 2px 4px 0 rgba(199, 194, 194, 0.05);
 }
+
+.betslip:has(button.button:hover) {
+  border: 1px solid #d71b21;
+  transition: all 0.3s ease;
+}
+.betslip:has(button.button:hover) input.betamount {
+  border: 1px solid #d71b21;
+  transition: all 0.3s ease;
+  background: linear-gradient(
+    180deg,
+    rgba(215, 27, 33, 0.2) 16.6%,
+    rgba(120, 0, 5, 0.2) 85.75%
+  );
+}
+
+.svg-icon {
+  transition: fill 0.3s ease;
+}
+
+.group:hover .svg-path {
+  fill: url(#gradient1);
+}
+
+.bet-slip {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.bet-slip-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.bet-slip-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.bet-slip-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.bet-slip-exit-active {
+  transform: translateX(100%);
+  opacity: 0;
+}

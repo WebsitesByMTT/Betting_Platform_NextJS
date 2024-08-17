@@ -3,8 +3,10 @@ import { cookies } from "next/headers";
 import React from "react";
 import Profile from "./svg/Profile";
 import Notification from "./svg/Notification";
-import { redirect } from "next/navigation";
 import User from "./User";
+import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 async function getUser() {
   const token = cookies().get("token")?.value;
@@ -19,25 +21,22 @@ async function getUser() {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error status: ${response.status}`);
+      const error = await response.json();
+      console.log(error.message);
     }
 
     const data = await response.json();
-
     return data;
   } catch (error) {
-    console.log(error);
+    console.log("HERE", error);
   }
-}
-
-async function deleteToken() {
-  "use server";
-  cookies().delete("token");
-  redirect("/login");
 }
 
 const Header = async () => {
   const user = await getUser();
+  if (user?.role !== "player") {
+    redirect("/logout");
+  }
   return (
     <div className="flex items-end justify-end space-x-[.6rem] p-[.5rem] flex-col ">
       <div className="flex items-center justify-center gap-5">

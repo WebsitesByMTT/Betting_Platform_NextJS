@@ -6,12 +6,14 @@ import Sports from "./svg/sidebar/Sports";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 import Logo from "./svg/Logo";
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
   const [sports, setSports] = useState<string[]>();
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   //sports categories for sidebar from redux
   const sportsCategories = useAppSelector((state) => state?.sports.categories);
@@ -41,13 +43,14 @@ const Sidebar = () => {
   useEffect(() => {
     if (socket) {
       fetchSports();
-      fetchCategoryEvents("All");
+      fetchCategoryEvents(currentCategory);
     }
   }, [socket]);
 
   //event for a specific sports category
   const fetchCategoryEvents = (category: any) => {
-    dispatch(setSelectedCategory(category));
+    router.push("/");
+    dispatch(setSelectedCategory(category || "All"));
     if (socket) {
       socket.emit("data", {
         action: "CATEGORY_SPORTS",
@@ -126,9 +129,7 @@ const Sidebar = () => {
         <div className="py-[0.5vw] space-y-[0.5vw] h-[82vh] overflow-y-scroll">
           {sidebar?.map((item, ind) => (
             <div key={ind}>
-              <div
-                className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px]"
-              >
+              <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px]">
                 <div className="uppercase bg-gradient-to-b from-[#36353C] to-[#1C1A21] px-[1vw] rounded-full py-[0.6rem] flex gap-2 items-center text-xl">
                   {item.icon}
                   <span className="font-medium">{item.title}</span>

@@ -6,7 +6,6 @@ import BetContainer from "@/components/BetContainer";
 import Categories from "@/components/Categories";
 import QuickBet from "@/components/QuickBet";
 import MyBets from "@/components/MyBets";
-// import TopBetsCarousel from "@/components/home/TopBetsCarousel";
 
 export default function Home() {
   return (

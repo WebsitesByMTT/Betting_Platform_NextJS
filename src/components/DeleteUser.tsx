@@ -10,6 +10,7 @@ const DeleteUser: React.FC<DeleteUserProps> = ({ deleteToken }) => {
 
   useEffect(() => {
     deleteTokensRef.current = deleteToken;
+    localStorage.removeItem("persist:root");
   }, [deleteToken]);
 
   useEffect(() => {

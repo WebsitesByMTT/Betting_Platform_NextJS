@@ -14,7 +14,7 @@ interface Bet {
   market: string;
   oddsFormat: string;
   player: string;
-  sport: string;
+  sport_key: string;
   sport_title: string;
   event_id: string;
   commence_time: string;

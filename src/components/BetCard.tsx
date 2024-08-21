@@ -51,6 +51,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       commence_time: betsData.commence_time,
       status: "pending",
       amount: 50,
+      selected: betsData.selected,
     };
     dispatch(addAllBets(betData));
   };

@@ -1,11 +1,11 @@
 "use client";
-import { GetPlayerBets } from "@/utils/actions";
+import { GetPlayerBets, redeemPlayerBet } from "@/utils/actions";
 import { Mybet } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const MyBets = () => {
-  const [myBets, setMyBets] = useState<Mybet[]>([]);
+  const [myBets, setMyBets] = useState<any[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("all");
   const options = ["all", "live", "won", "lost"];
 
@@ -39,6 +39,10 @@ const MyBets = () => {
     return `${datePart} at ${timePart}`;
   };
 
+  const handleRedeem = async (betId: string) => {
+    const response = await redeemPlayerBet(betId);
+  };
+
   return (
     <div className="z-[100] text-white h-full">
       <div className="w-full flex gap-5 py-6">
@@ -69,6 +73,7 @@ const MyBets = () => {
               <th className="font-semibold uppercase py-3">Status</th>
               <th className="font-semibold uppercase py-3">Outcome</th>
               <th className="font-semibold uppercase py-3">Match Info.</th>
+              <th className="font-semibold uppercase py-3">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -90,6 +95,11 @@ const MyBets = () => {
                   <td className="py-2">{item.possibleWinningAmount}</td>
                   <td className="py-2">
                     {item.home_team.name} v/s {item.away_team.name}
+                  </td>
+                  <td>
+                    <button className="bg-[#d6405178] px-2 py-1 rounded-md text-sm" onClick={() => handleRedeem(item._id)}>
+                      Redeem
+                    </button>
                   </td>
                 </tr>
               ))}

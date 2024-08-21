@@ -4,7 +4,7 @@ import { deleteBet, updateBetAmount } from "@/lib/store/features/bet/betSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CrossIcon from "./svg/CrossIcon";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const BetSlip: React.FC<any> = ({ betinfo }) => {
   const dispatch = useAppDispatch();
@@ -13,6 +13,10 @@ const BetSlip: React.FC<any> = ({ betinfo }) => {
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
+
+  useEffect(() => {
+    setAmount(betinfo.amount);
+  }, [betinfo]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newAmount = Number(e.target.value);
@@ -24,7 +28,6 @@ const BetSlip: React.FC<any> = ({ betinfo }) => {
     setShow(false);
     setTimeout(() => {
       dispatch(deleteBet({ betId: betId }));
-      console.log("deleyte,", betId);
       setShow(true);
     }, 300);
   };

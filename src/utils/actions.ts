@@ -52,12 +52,36 @@ export const login = async (data: FormData) => {
   }
 };
 
+export const getUser = async () => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/auth`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error(error.message);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const GetPlayerBets = async () => {
   const player = (await getCurrentUser()) as Player;
   const token = await getCookie();
   try {
     const response = await fetch(
-      `${config.server}/api/bets/player/${player?.userId}`,
+      `${config.server}/api/bets/${player?.userId}/bets?type=id`,
       {
         method: "GET",
         credentials: "include",

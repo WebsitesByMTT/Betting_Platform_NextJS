@@ -33,12 +33,27 @@ export const betSlice = createSlice({
         bet.amount = amount;
       }
     },
+    updateAllBetsAmount: (state, action: PayloadAction<{ amount: number }>) => {
+      const { amount } = action.payload;
+      state.allbets.forEach((bet) => {
+        bet.amount = amount;
+      });
+    },
     deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
       const { betId } = action.payload;
       state.allbets = state.allbets.filter((bet) => bet.id !== betId);
     },
+    deleteAllBets: (state) => {
+      state.allbets = [];
+    },
   },
 });
 
-export const { addAllBets, updateBetAmount, deleteBet } = betSlice.actions;
+export const {
+  addAllBets,
+  updateBetAmount,
+  updateAllBetsAmount,
+  deleteBet,
+  deleteAllBets,
+} = betSlice.actions;
 export default betSlice.reducer;

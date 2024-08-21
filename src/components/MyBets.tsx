@@ -10,14 +10,14 @@ const MyBets = () => {
   const options = ["all", "live", "won", "lost"];
 
   useEffect(() => {
-    const fetchBetch = async () => {
+    const fetchBet = async () => {
       const response = await GetPlayerBets();
       if (response?.error) {
         return toast.error(response.error || "Error fetching Bets");
       }
-      setMyBets(response?.responseData?.Bets);
+      setMyBets(response?.responseData?.bets);
     };
-    fetchBetch();
+    fetchBet();
   }, []);
 
   const formatDateTime = (dateTimeString: string) => {
@@ -40,7 +40,7 @@ const MyBets = () => {
   };
 
   return (
-    <div className=" z-[100] text-white">
+    <div className="z-[100] text-white h-full">
       <div className="w-full flex gap-5 py-6">
         {options.map((item, index) => (
           <button
@@ -59,45 +59,43 @@ const MyBets = () => {
           </button>
         ))}
       </div>
-      <table className="w-[90%] mx-auto mt-8">
-        <thead>
-          <tr className="text-xl">
-            <th className="font-semibold uppercase py-3">Date and Time</th>
-            <th className="font-semibold uppercase py-3">Stake</th>
-            <th className="font-semibold uppercase py-3">Odds</th>
-            <th className="font-semibold uppercase py-3">Status</th>
-            <th className="font-semibold uppercase py-3">Outcome</th>
-            <th className="font-semibold uppercase py-3">Match Info.</th>
-          </tr>
-        </thead>
-        <tbody>
-          {myBets &&
-            myBets?.map((item, index) => (
-              <tr
-                key={index}
-                className="text-center font-extralight text-lg hover:bg-[#8585851A]"
-              >
-                <td className="py-2">{formatDateTime(item.commence_time)}</td>
-                <td className="py-2">{item.status}</td>
-                <td className="py-2">
-                  {" "}
-                  {item.bet_on === "away_team"
-                    ? item.away_team.odds
-                    : item.home_team.odds}
-                </td>
-                <td className="py-2">
-                  {item.home_team.name} v/s {item.away_team.name}
-                </td>
-                <td className="py-2">{item.amount}</td>
-                <td className="py-2">
-                  {item.bet_on === "away_team"
-                    ? item.away_team.name
-                    : item.home_team.name}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div className="h-full overflow-y-scroll">
+        <table className="w-full mx-auto h-full">
+          <thead>
+            <tr className="text-xl">
+              <th className="font-semibold uppercase py-3">Date and Time</th>
+              <th className="font-semibold uppercase py-3">Stake</th>
+              <th className="font-semibold uppercase py-3">Odds</th>
+              <th className="font-semibold uppercase py-3">Status</th>
+              <th className="font-semibold uppercase py-3">Outcome</th>
+              <th className="font-semibold uppercase py-3">Match Info.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {myBets &&
+              myBets?.map((item, index) => (
+                <tr
+                  key={index}
+                  className="text-center font-extralight text-lg hover:bg-[#8585851A]"
+                >
+                  <td className="py-2">{formatDateTime(item.commence_time)}</td>
+                  <td className="py-2">$ {item.amount}</td>
+                  <td className="py-2">
+                    {" "}
+                    {item.bet_on === "away_team"
+                      ? item.away_team.odds
+                      : item.home_team.odds}
+                  </td>
+                  <td className="py-2">{item.status}</td>
+                  <td className="py-2">{item.possibleWinningAmount}</td>
+                  <td className="py-2">
+                    {item.home_team.name} v/s {item.away_team.name}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

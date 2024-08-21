@@ -1,51 +1,37 @@
-import { config } from "@/utils/config";
-import { cookies } from "next/headers";
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Profile from "./svg/Profile";
 import Notification from "./svg/Notification";
 import User from "./User";
-import { NextResponse } from "next/server";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import Line from "./svg/Line";
+import { getUser } from "@/utils/actions";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { setUserCredits } from "@/lib/store/features/user/userSlice";
 
-async function getUser() {
-  const token = cookies().get("token")?.value;
-  try {
-    const response = await fetch(`${config.server}/api/auth`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+const Header = () => {
+  const dispatch = useAppDispatch();
+  const credits = useAppSelector((state) => state.user.credits);
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const user = await getUser();
+      if (user?.user?.role !== "player") {
+        // redirect("/logout");
+      }
+      dispatch(setUserCredits(user?.user?.credits));
+    };
+    fetchCurrentUser();
+  }, []);
 
-    if (!response.ok) {
-      const error = await response.json();
-      console.log(error.message);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log("HERE", error);
-  }
-}
-
-const Header = async () => {
-  const user = await getUser();
-  if (user?.role !== "player") {
-    redirect("/logout");
-  }
   return (
-    <div className="flex items-end justify-end space-x-[.6rem] p-[.5rem] flex-col ">
+    <div className="flex items-end justify-end space-x-[.6rem] p-[.5rem] flex-col gap-5">
       <div className="flex items-center justify-center gap-5">
         <div className="w-[2rem] h-[3rem]">
           <Notification />
         </div>
         <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
           <p className="text-white px-5 py-1 bg-[#323232] font-light text-xl rounded-md">
-            {user?.credits} $
+            {credits} $
           </p>
         </div>
         <div className="w-[2rem] h-[3rem] cursor-pointer group relative">
@@ -57,6 +43,7 @@ const Header = async () => {
           </div>
         </div>
       </div>
+      <Line />
     </div>
   );
 };

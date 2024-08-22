@@ -40,6 +40,7 @@ const QuickBet = () => {
         { action: "PLACE", payload: bets },
         (response: any) => {
           toast.success(response.message);
+          dispatch(deleteAllBets());
         }
       );
     } else {

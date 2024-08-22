@@ -20,6 +20,7 @@ interface Bet {
   commence_time: string;
   status: string;
   amount: number;
+  selected: string;
 }
 
 interface FormData {

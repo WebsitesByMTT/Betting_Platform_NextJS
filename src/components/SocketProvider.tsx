@@ -4,6 +4,7 @@ import {
   setCategories,
   setEvents,
   setLeagues,
+  setLoading,
 } from "@/lib/store/features/sports/sportsSlice";
 import { setUserCredits } from "@/lib/store/features/user/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
@@ -43,9 +44,6 @@ export const SocketProvider: React.FC<{
       socketInstance.on("connect", () => {
         console.log("Connected with socket id:", socketInstance.id);
       });
-      socketInstance.on("credits", (data) => {
-        console.log("update credits", data);
-      });
       socketInstance.on("data", (data: any) => {
         switch (data.type) {
           case "CATEGORIES":
@@ -55,7 +53,7 @@ export const SocketProvider: React.FC<{
             dispatch(setEvents(data.data));
             break;
           case "ODDS":
-            console.log(data);
+            dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
             break;
           case "CREDITS":

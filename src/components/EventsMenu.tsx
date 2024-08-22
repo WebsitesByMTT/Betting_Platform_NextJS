@@ -59,7 +59,7 @@ const EventsMenu = () => {
           </p>
         </div>
       )}
-      <div className="flex gap-4 overflow-x-scroll">
+      <div className="flex gap-4 overflow-x-scroll hideScrollBar">
         {events?.map((item, index) => (
           <button
             className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-r-[#D6A250] border-r-[1px] border-t-[1px]"

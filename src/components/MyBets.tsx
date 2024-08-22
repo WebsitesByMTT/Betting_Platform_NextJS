@@ -4,10 +4,13 @@ import { Mybet } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "./Loader";
+import Modal from "./ui/Modal";
 
 const MyBets = () => {
   const [myBets, setMyBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [betID, setBetID] = useState();
   const [selectedOption, setSelectedOption] = useState<string>("all");
   const options = ["all", "live", "won", "lost"];
 
@@ -16,6 +19,7 @@ const MyBets = () => {
     if (response?.error) {
       return toast.error(response.error || "Error fetching Bets");
     }
+    console.log(response);
     setMyBets(response?.responseData?.bets);
   };
 
@@ -73,8 +77,8 @@ const MyBets = () => {
           </button>
         ))}
       </div>
-      <div className="h-full overflow-y-scroll">
-        <table className="w-full mx-auto">
+      <div className="h-full overflow-y-scroll hideScrollBar">
+        <table className="w-full mx-auto h-auto">
           <thead>
             <tr className="text-xl">
               <th className="font-semibold uppercase py-3">Date and Time</th>
@@ -114,7 +118,10 @@ const MyBets = () => {
                           ? "text-gray-400 bg-[#3837376e]"
                           : ""
                       }`}
-                      onClick={() => handleRedeem(item._id)}
+                      onClick={() => {
+                        setOpen(true);
+                        setBetID(item._id);
+                      }}
                     >
                       Redeem
                     </button>
@@ -125,6 +132,15 @@ const MyBets = () => {
         </table>
       </div>
       {loading && <Loader />}
+      {open && (
+        <Modal
+          text="Are you sure you want to redeem this bet?"
+          buttonText="Redeem"
+          id={betID}
+          handler={handleRedeem}
+          setOpen={setOpen}
+        />
+      )}
     </div>
   );
 };

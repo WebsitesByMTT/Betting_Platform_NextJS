@@ -3,6 +3,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { config } from "./config";
 import { FormData } from "./types";
 import { getCookie, getCurrentUser } from "./utils";
+import { revalidatePath } from "next/cache";
 
 interface Player extends JwtPayload {
   userId: string;
@@ -118,8 +119,11 @@ export const redeemPlayerBet = async (betId: string) => {
       return { error: error.message };
     }
     const responseData = await response.json();
+    revalidatePath("/mybets");
     return { responseData };
   } catch (error) {
     console.log("error:", error);
+  } finally {
+    revalidatePath("/mybets");
   }
 };

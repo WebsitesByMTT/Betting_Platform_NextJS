@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import {
   setLeagues,
+  setLoading,
   setSelectedEvent,
 } from "@/lib/store/features/sports/sportsSlice";
 import { Event } from "@/utils/types";
@@ -23,6 +24,7 @@ const EventsMenu = () => {
   const fetchLeagues = (event: string, title: string) => {
     dispatch(setSelectedEvent(title));
     if (socket) {
+      dispatch(setLoading(true));
       socket.emit("data", {
         action: "ODDS",
         payload: { sport: event, regions: "us", markets: "h2h" },

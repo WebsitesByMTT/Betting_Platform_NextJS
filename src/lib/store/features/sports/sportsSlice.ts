@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SportsState {
+  loading: boolean;
   categories: string[];
   events: [];
   leagues: any;
@@ -10,6 +11,7 @@ interface SportsState {
 }
 
 const initialState: SportsState = {
+  loading: false,
   categories: [],
   events: [],
   leagues: {},
@@ -40,6 +42,9 @@ const sportsSlice = createSlice({
     setSelectedCategory(state, action: PayloadAction<string>) {
       state.selectedCategory = action.payload;
     },
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
+    },
   },
 });
 
@@ -50,6 +55,7 @@ export const {
   setSelectedCategory,
   setSelectedEvent,
   setSelectedLeague,
+  setLoading,
 } = sportsSlice.actions;
 
 export default sportsSlice.reducer;

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -7,20 +8,8 @@ const User = () => {
   return (
     <div className="flex flex-col gap-3">
       <button>My profile</button>
-      <button
-        onClick={() => {
-          router.push("/mybets");
-        }}
-      >
-        My Bets
-      </button>
-      <button
-        onClick={() => {
-          router.push("/logout");
-        }}
-      >
-        Logout
-      </button>
+      <Link href="/mybets">My Bets</Link>
+      <Link href="/logout">Logout</Link>
     </div>
   );
 };

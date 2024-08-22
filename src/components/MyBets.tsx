@@ -3,20 +3,23 @@ import { GetPlayerBets, redeemPlayerBet } from "@/utils/actions";
 import { Mybet } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
 
 const MyBets = () => {
   const [myBets, setMyBets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>("all");
   const options = ["all", "live", "won", "lost"];
 
+  const fetchBet = async () => {
+    const response = await GetPlayerBets();
+    if (response?.error) {
+      return toast.error(response.error || "Error fetching Bets");
+    }
+    setMyBets(response?.responseData?.bets);
+  };
+
   useEffect(() => {
-    const fetchBet = async () => {
-      const response = await GetPlayerBets();
-      if (response?.error) {
-        return toast.error(response.error || "Error fetching Bets");
-      }
-      setMyBets(response?.responseData?.bets);
-    };
     fetchBet();
   }, []);
 
@@ -40,7 +43,14 @@ const MyBets = () => {
   };
 
   const handleRedeem = async (betId: string) => {
+    setLoading(true);
     const response = await redeemPlayerBet(betId);
+    setLoading(false);
+    if (response?.error) {
+      return toast.error(response.error);
+    }
+    toast.success(response?.responseData?.message);
+    fetchBet();
   };
 
   return (
@@ -64,7 +74,7 @@ const MyBets = () => {
         ))}
       </div>
       <div className="h-full overflow-y-scroll">
-        <table className="w-full mx-auto h-full">
+        <table className="w-full mx-auto">
           <thead>
             <tr className="text-xl">
               <th className="font-semibold uppercase py-3">Date and Time</th>
@@ -81,7 +91,7 @@ const MyBets = () => {
               myBets?.map((item, index) => (
                 <tr
                   key={index}
-                  className="text-center font-extralight text-lg hover:bg-[#8585851A]"
+                  className="text-center font-extralight text-md hover:bg-[#8585851A]"
                 >
                   <td className="py-2">{formatDateTime(item.commence_time)}</td>
                   <td className="py-2">$ {item.amount}</td>
@@ -97,7 +107,15 @@ const MyBets = () => {
                     {item.home_team.name} v/s {item.away_team.name}
                   </td>
                   <td>
-                    <button className="bg-[#d6405178] px-2 py-1 rounded-md text-sm" onClick={() => handleRedeem(item._id)}>
+                    <button
+                      disabled={item.status === "redeem"}
+                      className={`bg-[#d6405178] px-2 py-1 rounded-md text-sm ${
+                        item.status === "redeem"
+                          ? "text-gray-400 bg-[#3837376e]"
+                          : ""
+                      }`}
+                      onClick={() => handleRedeem(item._id)}
+                    >
                       Redeem
                     </button>
                   </td>
@@ -106,6 +124,7 @@ const MyBets = () => {
           </tbody>
         </table>
       </div>
+      {loading && <Loader />}
     </div>
   );
 };

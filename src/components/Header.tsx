@@ -15,10 +15,10 @@ const Header = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();
-      if (user?.user?.role !== "player") {
+      if (user?.role !== "player") {
         // redirect("/logout");
       }
-      dispatch(setUserCredits(user?.user?.credits));
+      dispatch(setUserCredits(user?.credits));
     };
     fetchCurrentUser();
   }, []);

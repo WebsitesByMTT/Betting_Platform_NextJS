@@ -4,7 +4,9 @@ import {
   setCategories,
   setEvents,
   setLeagues,
+  setLoading,
 } from "@/lib/store/features/sports/sportsSlice";
+import { setUserCredits } from "@/lib/store/features/user/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { config } from "@/utils/config";
 import { useEffect, useState, createContext, useContext } from "react";
@@ -51,8 +53,11 @@ export const SocketProvider: React.FC<{
             dispatch(setEvents(data.data));
             break;
           case "ODDS":
-            console.log(data);
+            dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
+            break;
+          case "CREDITS":
+            dispatch(setUserCredits(data?.credits));
             break;
           default:
             break;

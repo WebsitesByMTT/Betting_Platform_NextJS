@@ -6,12 +6,15 @@ import React, { useEffect, useState } from "react";
 import LiveGame from "./svg/LiveGame";
 import UpcomingGame from "./svg/UpcomingGame";
 import BetCard from "./BetCard";
+import SkeletonCard from "./SkeletonCard";
+import { Loader } from "lucide-react";
 
 const BetContainer = () => {
   const [liveEventLeagues, setLiveEventLeagues] = useState<Leagues[]>([]);
   const [upcomingEventLeagues, setUpcomingEventLeagues] = useState<Leagues[]>(
     []
   );
+  const loading = useAppSelector((state) => state.sports.loading);
   const leagueData = useAppSelector((state) => state?.sports?.leagues);
 
   useEffect(() => {
@@ -28,14 +31,21 @@ const BetContainer = () => {
         </div>
       </div>
       <div className="pt-3 grid grid-cols-12 items-start gap-3">
-        {liveEventLeagues && liveEventLeagues?.length > 0 ? (
-          liveEventLeagues?.map((data, index) => (
-            <BetCard key={index} betsData={data} />
-          ))
+        {!loading ? (
+          liveEventLeagues && liveEventLeagues?.length > 0 ? (
+            liveEventLeagues?.map((data, index) => (
+              <BetCard key={index} betsData={data} />
+            ))
+          ) : (
+            <p className="w-full text-center col-span-12 text-white my-5 text-sm">
+              Nothing to show here
+            </p>
+          )
         ) : (
-          <p className="w-full text-center col-span-12 text-white my-5 text-sm">
-            Nothing to show here
-          </p>
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
         )}
       </div>
       <div className="cursor-pointer flex space-x-2 items-center bg-[#1E1C22] w-full rounded-lg p-2 md:p-4 shadow-inner">
@@ -47,14 +57,23 @@ const BetContainer = () => {
         </div>
       </div>
       <div className="pt-3 grid grid-cols-12 items-start gap-3">
-        {upcomingEventLeagues && upcomingEventLeagues?.length > 0 ? (
-          upcomingEventLeagues?.map((data, index) => (
-            <BetCard key={index} betsData={data} />
-          ))
+        {!loading ? (
+          upcomingEventLeagues && upcomingEventLeagues?.length > 0 ? (
+            upcomingEventLeagues?.map((data, index) => (
+              <BetCard key={index} betsData={data} />
+            ))
+          ) : (
+            <p className="w-full text-center col-span-12 text-white my-5 text-sm">
+              Nothing to show here
+            </p>
+          )
         ) : (
-          <p className="w-full text-center col-span-12 text-white my-5 text-sm">
-            Nothing to show here
-          </p>
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
         )}
       </div>
     </div>

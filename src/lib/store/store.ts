@@ -1,17 +1,19 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import sessionStorage from "redux-persist/es/storage/session";
 import betReducers from "./features/bet/betSlice";
 import sportsReducer from "./features/sports/sportsSlice";
+import userReducer from "./features/user/userSlice";
 
 const persistConfig = {
   key: "root",
-  storage,
+  storage: sessionStorage,
 };
 
 const rootReducer = combineReducers({
   bet: betReducers,
   sports: sportsReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

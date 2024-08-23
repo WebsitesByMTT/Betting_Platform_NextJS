@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 import Logo from "./svg/Logo";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
@@ -124,9 +125,11 @@ const Sidebar = () => {
           </svg>
         </div>
         <div className="relative w-[60%] lg:h-[80px] lg:w-[90%] mx-auto min-h-[50px] my-4">
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>
         </div>
-        <div className="py-[0.5vw] space-y-[0.5vw] h-[82vh] overflow-y-scroll">
+        <div className="py-[0.5vw] space-y-[0.5vw] h-[82vh] overflow-y-scroll hideScrollBar">
           {sidebar?.map((item, ind) => (
             <div key={ind}>
               <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px]">

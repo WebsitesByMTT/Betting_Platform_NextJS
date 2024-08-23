@@ -22,7 +22,7 @@ export default async function RootLayout({
           <div className="lg:w-[300px]">
             <Sidebar />
           </div>
-          <div className="w-full lg:w-[calc(100vw-350px)] px-[1vw] mx-auto">
+          <div className="w-full lg:w-[calc(100vw-350px)] px-[1vw] mx-auto relative">
             <Header />
             <div>{children}</div>
           </div>

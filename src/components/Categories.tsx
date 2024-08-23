@@ -38,7 +38,7 @@ const Categories = () => {
   return (
     <div className="md:bg-gradient-to-tr p-[1px] rounded-2xl overflow-x-hidden from-[#D6A250] via-[#FFE500] to-[#ECB800] w-full">
       <div className="rounded-2xl md:bg-gradient-to-b from-[#1c1a21] to-[#0d0c15] py-2 lg:py-6">
-        <div className="flex !overflow-x-scroll overflow-y-hidden justify-evenly w-[90%] lg:w-[70%] mx-auto gap-5 ">
+        <div className="flex !overflow-x-scroll hideScrollBar overflow-y-hidden justify-evenly w-[90%] lg:w-[70%] mx-auto gap-5 ">
           {category?.map((item, ind) => (
             <div
               key={ind}

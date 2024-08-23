@@ -1,24 +1,30 @@
 "use client";
-import { GetPlayerBets } from "@/utils/actions";
+import { GetPlayerBets, redeemPlayerBet } from "@/utils/actions";
 import { Mybet } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
+import Modal from "./ui/Modal";
 
 const MyBets = () => {
-  const [myBets, setMyBets] = useState<Mybet[]>([]);
+  const [myBets, setMyBets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [betID, setBetID] = useState();
   const [selectedOption, setSelectedOption] = useState<string>("all");
-  const options = ["all", "live", "won", "lost"];
+  const options = ["all", "pending", "won", "lost", "redeem"];
+
+  const fetchBet = async () => {
+    const response = await GetPlayerBets(selectedOption);
+    if (response?.error) {
+      return toast.error(response.error || "Error fetching Bets");
+    }
+    setMyBets(response?.responseData);
+  };
 
   useEffect(() => {
-    const fetchBetch = async () => {
-      const response = await GetPlayerBets();
-      if (response?.error) {
-        return toast.error(response.error || "Error fetching Bets");
-      }
-      setMyBets(response?.responseData?.Bets);
-    };
-    fetchBetch();
-  }, []);
+    fetchBet();
+  }, [selectedOption]);
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
@@ -39,8 +45,19 @@ const MyBets = () => {
     return `${datePart} at ${timePart}`;
   };
 
+  const handleRedeem = async (betId: string) => {
+    setLoading(true);
+    const response = await redeemPlayerBet(betId);
+    setLoading(false);
+    if (response?.error) {
+      return toast.error(response.error);
+    }
+    toast.success(response?.responseData?.message);
+    fetchBet();
+  };
+
   return (
-    <div className=" z-[100] text-white">
+    <div className="z-[100] text-white h-full">
       <div className="w-full flex gap-5 py-6">
         {options.map((item, index) => (
           <button
@@ -59,45 +76,71 @@ const MyBets = () => {
           </button>
         ))}
       </div>
-      <table className="w-[90%] mx-auto mt-8">
-        <thead>
-          <tr className="text-xl">
-            <th className="font-semibold uppercase py-3">Date and Time</th>
-            <th className="font-semibold uppercase py-3">Stake</th>
-            <th className="font-semibold uppercase py-3">Odds</th>
-            <th className="font-semibold uppercase py-3">Status</th>
-            <th className="font-semibold uppercase py-3">Outcome</th>
-            <th className="font-semibold uppercase py-3">Match Info.</th>
-          </tr>
-        </thead>
-        <tbody>
-          {myBets &&
-            myBets?.map((item, index) => (
-              <tr
-                key={index}
-                className="text-center font-extralight text-lg hover:bg-[#8585851A]"
-              >
-                <td className="py-2">{formatDateTime(item.commence_time)}</td>
-                <td className="py-2">{item.status}</td>
-                <td className="py-2">
-                  {" "}
-                  {item.bet_on === "away_team"
-                    ? item.away_team.odds
-                    : item.home_team.odds}
-                </td>
-                <td className="py-2">
-                  {item.home_team.name} v/s {item.away_team.name}
-                </td>
-                <td className="py-2">{item.amount}</td>
-                <td className="py-2">
-                  {item.bet_on === "away_team"
-                    ? item.away_team.name
-                    : item.home_team.name}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <div className="h-full overflow-y-scroll hideScrollBar">
+        <table className="w-full mx-auto h-auto">
+          <thead>
+            <tr className="text-xl">
+              <th className="font-semibold uppercase py-3">Date and Time</th>
+              <th className="font-semibold uppercase py-3">Stake</th>
+              <th className="font-semibold uppercase py-3">Odds</th>
+              <th className="font-semibold uppercase py-3">Status</th>
+              <th className="font-semibold uppercase py-3">Outcome</th>
+              <th className="font-semibold uppercase py-3">Match Info.</th>
+              <th className="font-semibold uppercase py-3">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {myBets &&
+              myBets.length > 0 &&
+              myBets?.map((item, index) => (
+                <tr
+                  key={index}
+                  className="text-center font-extralight text-md hover:bg-[#8585851A]"
+                >
+                  <td className="py-2">{formatDateTime(item.commence_time)}</td>
+                  <td className="py-2">$ {item.amount}</td>
+                  <td className="py-2">
+                    {" "}
+                    {item.bet_on === "away_team"
+                      ? item.away_team.odds
+                      : item.home_team.odds}
+                  </td>
+                  <td className="py-2">{item.status}</td>
+                  <td className="py-2">{item.possibleWinningAmount}</td>
+                  <td className="py-2">
+                    {item.home_team.name} v/s {item.away_team.name}
+                  </td>
+                  <td>
+                    <button
+                      disabled={item.status === "redeem"}
+                      className={`bg-[#d6405178] px-2 py-1 rounded-md text-sm ${
+                        item.status === "redeem"
+                          ? "text-gray-400 bg-[#3837376e]"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setOpen(true);
+                        setBetID(item._id);
+                      }}
+                    >
+                      Redeem
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+      {loading && <Loader />}
+      {open && (
+        <Modal
+          text="Are you sure you want to redeem this bet?"
+          buttonText="Redeem"
+          id={betID}
+          handler={handleRedeem}
+          setOpen={setOpen}
+        />
+      )}
     </div>
   );
 };

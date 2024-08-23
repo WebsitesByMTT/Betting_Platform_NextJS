@@ -1,5 +1,5 @@
 "use client";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import React, { useEffect, useRef, useState } from "react";
 import { Bet } from "@/utils/types";
 import { useSocket } from "./SocketProvider";
@@ -8,12 +8,20 @@ import Quickbet from "./svg/Quickbet";
 import Placebet from "./svg/Placebet";
 import Dropdown from "./svg/Dropdown";
 import BetSlip from "./BetSlip";
+import {
+  deleteAllBets,
+  updateAllBetsAmount,
+} from "@/lib/store/features/bet/betSlice";
+import DeleteIcon from "./svg/DeleteIcon";
 
 const QuickBet = () => {
   const [open, setOpen] = useState(false);
   const [allBets, setAllBets] = useState<Bet[]>([]);
   const bets = useAppSelector((state) => state.bet.allbets);
   const { socket } = useSocket();
+  const dispatch = useAppDispatch();
+
+  const betAmount = [20, 50, 100, 500];
 
   const betsContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,8 +33,6 @@ const QuickBet = () => {
     setOpen(!open);
   };
 
-  const betAmount = [50, 100, 200, 500];
-
   const handleSubmit = async () => {
     if (socket) {
       socket.emit(
@@ -34,11 +40,20 @@ const QuickBet = () => {
         { action: "PLACE", payload: bets },
         (response: any) => {
           toast.success(response.message);
+          dispatch(deleteAllBets());
         }
       );
     } else {
       console.log("SOCKET NOT CONNECTED");
     }
+  };
+
+  const handleAmount = (amount: number) => {
+    dispatch(updateAllBetsAmount({ amount: amount }));
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteAllBets());
   };
 
   useEffect(() => {
@@ -113,20 +128,28 @@ const QuickBet = () => {
             <div className="w-full flex justify-between gap-2 px-2 py-4">
               {betAmount.map((item, index) => (
                 <button
-                  //   onClick={() => handleAmount(item)}
+                  onClick={() => handleAmount(item)}
                   key={index}
-                  className="rounded-full w-[20%] flex items-center justify-center bg-slate-800 py-2"
+                  className="rounded-md w-[20%] text-sm flex items-center justify-center bg-gradient-to-b border-[1px] border-[#3A3A3A] from-[#0000004D] to-[#5F63684D] py-1"
                 >
                   {item}
                 </button>
               ))}
             </div>
-            <button
-              onClick={handleSubmit}
-              className="w-full py-2 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
-            >
-              Place Bet
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={handleDelete}
+                className="w-fit px-4 py-1 text-[#fff] uppercase border-[#3A3A3A] border-2 font-semibold rounded-md bg-gradient-to-b from-[#0000004D] to-[#5F63684D] text-lg "
+              >
+                <DeleteIcon />
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
+              >
+                Place Bet
+              </button>
+            </div>
           </>
         )}
       </div>

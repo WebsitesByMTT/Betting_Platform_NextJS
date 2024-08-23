@@ -106,7 +106,9 @@ const MyBets = () => {
                       : item.home_team.odds}
                   </td>
                   <td className="py-2">{item.status}</td>
-                  <td className="py-2">{item.possibleWinningAmount}</td>
+                  <td className="py-2">
+                    {item.possibleWinningAmount.toFixed(3)}
+                  </td>
                   <td className="py-2">
                     {item.home_team.name} v/s {item.away_team.name}
                   </td>

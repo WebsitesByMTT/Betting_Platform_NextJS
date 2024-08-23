@@ -2,6 +2,7 @@ import { Socket } from "socket.io-client";
 
 interface Bet {
   id: string;
+  betType: string;
   away_team: {
     name: string;
     odds: string;

@@ -6,7 +6,7 @@ import CrossIcon from "./svg/CrossIcon";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const BetSlip: React.FC<any> = ({ betinfo }) => {
+const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const dispatch = useAppDispatch();
   const [amount, setAmount] = useState(betinfo.amount);
   const [show, setShow] = useState(true);
@@ -73,12 +73,14 @@ const BetSlip: React.FC<any> = ({ betinfo }) => {
               ? betinfo.home_team.odds
               : betinfo.away_team.odds}
           </p>
-          <input
-            value={amount}
-            onChange={handleAmountChange}
-            type="number"
-            className="text-center py-1 text-sm bg-gray-700 rounded-md outline-none appearance-none col-span-1 betamount border-[1px] border-transparent"
-          ></input>
+          {betType === "single" && (
+            <input
+              value={amount}
+              onChange={handleAmountChange}
+              type="number"
+              className="text-center py-1 text-sm bg-gray-700 rounded-md outline-none appearance-none col-span-1 betamount border-[1px] border-transparent"
+            ></input>
+          )}
         </div>
       </div>
     </div>

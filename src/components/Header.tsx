@@ -31,7 +31,7 @@ const Header = () => {
         </div>
         <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
           <p className="text-white px-5 py-1 bg-[#323232] font-light text-xl rounded-md">
-            {credits} $
+            {credits.toFixed(3)} $
           </p>
         </div>
         <div className="w-[2rem] h-[3rem] cursor-pointer group relative">

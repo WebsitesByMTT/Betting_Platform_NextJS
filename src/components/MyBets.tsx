@@ -12,20 +12,19 @@ const MyBets = () => {
   const [open, setOpen] = useState(false);
   const [betID, setBetID] = useState();
   const [selectedOption, setSelectedOption] = useState<string>("all");
-  const options = ["all", "live", "won", "lost"];
+  const options = ["all", "pending", "won", "lost", "redeem"];
 
   const fetchBet = async () => {
-    const response = await GetPlayerBets();
+    const response = await GetPlayerBets(selectedOption);
     if (response?.error) {
       return toast.error(response.error || "Error fetching Bets");
     }
-    console.log(response);
-    setMyBets(response?.responseData?.bets);
+    setMyBets(response?.responseData);
   };
 
   useEffect(() => {
     fetchBet();
-  }, []);
+  }, [selectedOption]);
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
@@ -92,6 +91,7 @@ const MyBets = () => {
           </thead>
           <tbody>
             {myBets &&
+              myBets.length > 0 &&
               myBets?.map((item, index) => (
                 <tr
                   key={index}

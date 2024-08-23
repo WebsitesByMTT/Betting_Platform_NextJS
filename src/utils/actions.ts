@@ -77,12 +77,12 @@ export const getUser = async () => {
   }
 };
 
-export const GetPlayerBets = async () => {
+export const GetPlayerBets = async (status: string) => {
   const player = (await getCurrentUser()) as Player;
   const token = await getCookie();
   try {
     const response = await fetch(
-      `${config.server}/api/bets/${player?.userId}/bets?type=id`,
+      `${config.server}/api/bets/${player?.userId}/bets?type=id&status=${status}`,
       {
         method: "GET",
         credentials: "include",

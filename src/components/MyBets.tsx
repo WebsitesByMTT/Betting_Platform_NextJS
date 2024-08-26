@@ -1,6 +1,5 @@
 "use client";
 import { GetPlayerBets, redeemPlayerBet } from "@/utils/actions";
-import { Mybet } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "./Loader";
@@ -16,6 +15,7 @@ const MyBets = () => {
 
   const fetchBet = async () => {
     const response = await GetPlayerBets(selectedOption);
+    console.log("My bets response", response);
     if (response?.error) {
       return toast.error(response.error || "Error fetching Bets");
     }
@@ -86,50 +86,55 @@ const MyBets = () => {
               <th className="font-semibold uppercase py-3">Status</th>
               <th className="font-semibold uppercase py-3">Outcome</th>
               <th className="font-semibold uppercase py-3">Match Info.</th>
+              <th className="font-semibold uppercase py-3">Type</th>
               <th className="font-semibold uppercase py-3">Action</th>
             </tr>
           </thead>
           <tbody>
             {myBets &&
               myBets.length > 0 &&
-              myBets?.map((item, index) => (
-                <tr
-                  key={index}
-                  className="text-center font-extralight text-md hover:bg-[#8585851A]"
-                >
-                  <td className="py-2">{formatDateTime(item.commence_time)}</td>
-                  <td className="py-2">$ {item.amount}</td>
-                  <td className="py-2">
-                    {" "}
-                    {item.bet_on === "away_team"
-                      ? item.away_team.odds
-                      : item.home_team.odds}
-                  </td>
-                  <td className="py-2">{item.status}</td>
-                  <td className="py-2">
-                    {item.possibleWinningAmount.toFixed(3)}
-                  </td>
-                  <td className="py-2">
-                    {item.home_team.name} v/s {item.away_team.name}
-                  </td>
-                  <td>
-                    <button
-                      disabled={item.status === "redeem"}
-                      className={`bg-[#d6405178] px-2 py-1 rounded-md text-sm ${
-                        item.status === "redeem"
-                          ? "text-gray-400 bg-[#3837376e]"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        setOpen(true);
-                        setBetID(item._id);
-                      }}
-                    >
-                      Redeem
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              myBets.flatMap((item) =>
+                item.data.map((data: any, dataIndex: any) => (
+                  <tr
+                    key={`${item._id}-${dataIndex}`}
+                    className="text-center font-extralight text-md hover:bg-[#8585851A]"
+                  >
+                    <td className="py-2">
+                      {formatDateTime(data.commence_time)}
+                    </td>
+                    <td className="py-2">$ {item.amount}</td>
+                    <td className="py-2">
+                      {data.bet_on === "away_team"
+                        ? data.away_team.odds
+                        : data.home_team.odds}
+                    </td>
+                    <td className="py-2">{data.status}</td>
+                    <td className="py-2">
+                      {item.possibleWinningAmount.toFixed(3)}
+                    </td>
+                    <td className="py-2">
+                      {data.home_team.name} v/s {data.away_team.name}
+                    </td>
+                    <td>{item.betType}</td>
+                    <td>
+                      <button
+                        disabled={data.status === "redeem"}
+                        className={`bg-[#d6405178] px-2 py-1 rounded-md text-sm ${
+                          data.status === "redeem"
+                            ? "text-gray-400 bg-[#3837376e]"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setOpen(true);
+                          setBetID(item._id);
+                        }}
+                      >
+                        Redeem
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
           </tbody>
         </table>
       </div>

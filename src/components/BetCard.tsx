@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Favourite from "./svg/Favourite";
 import World from "./svg/World";
-import { Bet, DecodedToken } from "@/utils/types";
+import { Bet, BetDetails, DecodedToken } from "@/utils/types";
 import { addAllBets } from "@/lib/store/features/bet/betSlice";
 import { getCookie } from "@/utils/utils";
 import { jwtDecode } from "jwt-decode";
@@ -21,13 +21,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
   );
 
   const handleBet = async (betOn: string, betsData: any) => {
-    const token = await getCookie();
-    let playerId: string = "";
-    if (token) {
-      const decodedToken = jwtDecode<any>(token);
-      playerId = decodedToken?.userId;
-    }
-    const betData: Bet = {
+    const betDetails: BetDetails = {
       id: betOn + betsData.id + betsData.markets[0]?.key,
       away_team: {
         name: betsData.away_team,
@@ -44,17 +38,20 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       bet_on: betOn,
       market: betsData.markets[0]?.key,
       oddsFormat: "decimal",
-      player: playerId,
       sport_key: betsData.sport_key,
       sport_title: betsData.sport_title,
       event_id: betsData.id,
       commence_time: betsData.commence_time,
-      status: "pending",
-      amount: 50,
       selected: betsData.selected,
-      betType: "single",
+      amount: 50,
     };
-    dispatch(addAllBets(betData));
+    // const bet: Bet = {
+    //   player: playerId,
+    //   data: betDetails,
+    //   amount: 50,
+    //   betType: "single",
+    // };
+    dispatch(addAllBets(betDetails));
   };
 
   const isBetInAllBets = (betId: string) => {

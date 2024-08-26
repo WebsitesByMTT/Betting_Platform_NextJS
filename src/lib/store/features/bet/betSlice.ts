@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Bet } from "@/utils/types";
+import { Bet, BetDetails } from "@/utils/types";
 
 interface BetState {
-  allbets: Bet[];
+  allbets: BetDetails[];
   totalBetAmount: any;
   potentialWin: any;
   totalOdds: any;
@@ -19,7 +19,7 @@ export const betSlice = createSlice({
   name: "bets",
   initialState,
   reducers: {
-    addAllBets: (state, action: PayloadAction<Bet>) => {
+    addAllBets: (state, action: PayloadAction<BetDetails>) => {
       const bet = state.allbets.find((bet) => bet.id === action.payload.id);
       if (!bet) {
         state.allbets.push(action.payload);
@@ -38,22 +38,16 @@ export const betSlice = createSlice({
       if (bet) {
         bet.amount = amount;
       }
-      calculateTotalBetAmount();
-      calculateTotalOdds();
     },
     updateAllBetsAmount: (state, action: PayloadAction<{ amount: number }>) => {
       const { amount } = action.payload;
       state.allbets.forEach((bet) => {
         bet.amount = amount;
       });
-      calculateTotalBetAmount();
-      calculateTotalOdds();
     },
     deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
       const { betId } = action.payload;
       state.allbets = state.allbets.filter((bet) => bet.id !== betId);
-      calculateTotalBetAmount();
-      calculateTotalOdds();
     },
     deleteAllBets: (state) => {
       state.allbets = [];

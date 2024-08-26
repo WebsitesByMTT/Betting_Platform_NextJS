@@ -1,7 +1,7 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import React, { useEffect, useRef, useState } from "react";
-import { Bet } from "@/utils/types";
+import { Bet, BetDetails } from "@/utils/types";
 import { useSocket } from "./SocketProvider";
 import toast from "react-hot-toast";
 import Quickbet from "./svg/Quickbet";
@@ -16,10 +16,12 @@ import {
   deleteAllBets,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
+import { jwtDecode } from "jwt-decode";
+import { getCookie } from "@/utils/utils";
 
 const QuickBet = () => {
   const [open, setOpen] = useState(false);
-  const [allBets, setAllBets] = useState<Bet[]>([]);
+  const [allBets, setAllBets] = useState<BetDetails[]>([]);
   const [currentBetType, setCurrentBetType] = useState<String>("single");
   const [comboBetAmount, setCombobetAmount] = useState<any>(100);
   const potentialWin = useAppSelector((state) => state.bet.potentialWin);
@@ -58,10 +60,22 @@ const QuickBet = () => {
   }, [bets]);
 
   const handleSubmit = async () => {
+    let playerId: string = "";
+    const token = await getCookie();
+    if (token) {
+      const decodedToken = jwtDecode<any>(token);
+      playerId = decodedToken?.userId;
+    }
+    const finalbets: any = {
+      player: playerId,
+      data: allBets,
+      amount: currentBetType === "single" ? 0 : comboBetAmount,
+      betType: currentBetType,
+    };
     if (socket) {
       socket.emit(
         "bet",
-        { action: "PLACE", payload: bets },
+        { action: "PLACE", payload: finalbets },
         (response: any) => {
           toast.success(response.message);
           dispatch(deleteAllBets());

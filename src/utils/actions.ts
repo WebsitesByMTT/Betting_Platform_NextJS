@@ -106,6 +106,7 @@ export const GetPlayerBets = async (status: string) => {
 export const redeemPlayerBet = async (betId: string) => {
   const token = await getCookie();
   try {
+    
     const response = await fetch(`${config.server}/api/bets/${betId}`, {
       method: "PUT",
       credentials: "include",

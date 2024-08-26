@@ -1,43 +1,81 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import React, { useEffect, useRef, useState } from "react";
-import { Bet } from "@/utils/types";
+import { Bet, BetDetails } from "@/utils/types";
 import { useSocket } from "./SocketProvider";
 import toast from "react-hot-toast";
 import Quickbet from "./svg/Quickbet";
 import Placebet from "./svg/Placebet";
 import Dropdown from "./svg/Dropdown";
+import DeleteIcon from "./svg/DeleteIcon";
 import BetSlip from "./BetSlip";
 import {
+  calculatePotentialWin,
+  calculateTotalBetAmount,
+  calculateTotalOdds,
   deleteAllBets,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
-import DeleteIcon from "./svg/DeleteIcon";
+import { jwtDecode } from "jwt-decode";
+import { getCookie } from "@/utils/utils";
 
 const QuickBet = () => {
   const [open, setOpen] = useState(false);
-  const [allBets, setAllBets] = useState<Bet[]>([]);
+  const [allBets, setAllBets] = useState<BetDetails[]>([]);
+  const [currentBetType, setCurrentBetType] = useState<String>("single");
+  const [comboBetAmount, setCombobetAmount] = useState<any>(100);
+  const potentialWin = useAppSelector((state) => state.bet.potentialWin);
+  const totalBetAmount = useAppSelector((state) => state.bet.totalBetAmount);
+  const totalBetOdds = useAppSelector((state) => state.bet.totalOdds);
   const bets = useAppSelector((state) => state.bet.allbets);
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
+  const betsContainerRef = useRef<HTMLDivElement | null>(null);
 
   const betAmount = [20, 50, 100, 500];
-
-  const betsContainerRef = useRef<HTMLDivElement | null>(null);
+  const betType = ["single", "combo"];
 
   useEffect(() => {
     setAllBets(bets);
+    if (bets.length <= 0) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+
+    //Do not place combo bet if length of bet is less than 1
+    if (bets.length <= 1) {
+      setCurrentBetType("single");
+    }
+
+    //calculate all the values whenevr bet changes
+    dispatch(calculateTotalOdds());
+    dispatch(calculateTotalBetAmount());
+    dispatch(
+      calculatePotentialWin({
+        betType: currentBetType,
+        comboBetAmount: comboBetAmount,
+      })
+    );
   }, [bets]);
 
-  const handelOpen = () => {
-    setOpen(!open);
-  };
-
   const handleSubmit = async () => {
+    let playerId: string = "";
+    const token = await getCookie();
+    if (token) {
+      const decodedToken = jwtDecode<any>(token);
+      playerId = decodedToken?.userId;
+    }
+    const finalbets: any = {
+      player: playerId,
+      data: allBets,
+      amount: currentBetType === "single" ? 0 : comboBetAmount,
+      betType: currentBetType,
+    };
     if (socket) {
       socket.emit(
         "bet",
-        { action: "PLACE", payload: bets },
+        { action: "PLACE", payload: finalbets },
         (response: any) => {
           toast.success(response.message);
           dispatch(deleteAllBets());
@@ -48,7 +86,25 @@ const QuickBet = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(
+      calculatePotentialWin({
+        betType: currentBetType,
+        comboBetAmount: comboBetAmount,
+      })
+    );
+    dispatch(calculateTotalBetAmount());
+    dispatch(calculateTotalOdds());
+  }, [currentBetType]);
+
   const handleAmount = (amount: number) => {
+    if (currentBetType === "combo") {
+      setCombobetAmount(amount);
+      calculatePotentialWin({
+        betType: currentBetType,
+        comboBetAmount: amount,
+      });
+    }
     dispatch(updateAllBetsAmount({ amount: amount }));
   };
 
@@ -63,18 +119,16 @@ const QuickBet = () => {
     }
   }, [allBets]);
 
-  useEffect(() => {
-    setOpen(true);
-  }, [bets]);
-
   return (
     <div
       className={`transition-all text-white  ${
-        open ? "bottom-0" : "-bottom-[2rem]"
+        open ? "bottom-0" : "-bottom-[1rem]"
       }  fixed  z-[100] md:right-10 right-auto w-[360px] max-h-[80vh]`}
     >
       <div
-        onClick={handelOpen}
+        onClick={() => {
+          setOpen(!open);
+        }}
         className="bg-gradient-to-b from-[#D71B21] to-[#780005] rounded-tr-xl rounded-tl-xl cursor-pointer px-4 py-2"
       >
         <div className="flex items-center justify-between">
@@ -99,7 +153,7 @@ const QuickBet = () => {
           open
             ? "space-y-2 transition-all duration-300 ease-in-out"
             : "max-h-0  transition-all duration-300 ease-in-out"
-        } px-2  py-4 `}
+        } px-2  py-2 `}
       >
         {allBets?.length <= 0 ? (
           <>
@@ -117,15 +171,47 @@ const QuickBet = () => {
           </>
         ) : (
           <>
+            <div className="flex text-md">
+              {betType?.map((item, index) => (
+                <button
+                  key={index}
+                  disabled={bets.length < 2 && item === "combo"}
+                  onClick={() => setCurrentBetType(item)}
+                  className={`flex-1 py-1 border-b-[2px] capitalize transition-all disabled:text-[#dfdfdf6f] ${
+                    item === currentBetType
+                      ? "border-b-[#Bf141a]"
+                      : "border-transparent"
+                  } `}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
             <div
               ref={betsContainerRef}
               className="w-full flex flex-col gap-2 max-h-[40vh] overflow-y-scroll"
             >
               {allBets?.map((item, index) => (
-                <BetSlip key={index} betinfo={item} />
+                <BetSlip key={index} betinfo={item} betType={currentBetType} />
               ))}
             </div>
-            <div className="w-full flex justify-between gap-2 px-2 py-4">
+            {currentBetType === "combo" && (
+              <input
+                value={comboBetAmount}
+                onChange={(e) => {
+                  setCombobetAmount(e.target.value);
+                  dispatch(
+                    calculatePotentialWin({
+                      betType: currentBetType,
+                      comboBetAmount: parseInt(e.target.value) || 0,
+                    })
+                  );
+                }}
+                type="number"
+                className="text-right py-1 px-3 text-sm bg-black rounded-md outline-none appearance-none w-full betamount border-[1px] border-transparent"
+              ></input>
+            )}
+            <div className="w-full flex justify-between gap-2 px-2 py-1">
               {betAmount.map((item, index) => (
                 <button
                   onClick={() => handleAmount(item)}
@@ -135,6 +221,24 @@ const QuickBet = () => {
                   {item}
                 </button>
               ))}
+            </div>
+            <div className="space-y-1 py-4">
+              {currentBetType === "combo" && (
+                <div className="flex px-2 text-sm text-[#dfdfdfa8]">
+                  <p className="flex-1">Total Odds</p>
+                  <p className="flex-1 text-right">{totalBetOdds.toFixed(3)}</p>
+                </div>
+              )}
+              {currentBetType === "single" && (
+                <div className="flex px-2 text-sm text-[#dfdfdfa8]">
+                  <p className="flex-1">Total Bet</p>
+                  <p className="flex-1 text-right">{totalBetAmount} $</p>
+                </div>
+              )}
+              <div className="flex px-2 text-sm">
+                <p className="flex-1 uppercase">Potential win</p>
+                <p className="flex-1 text-right">{potentialWin.toFixed(1)} $</p>
+              </div>
             </div>
             <div className="flex gap-3">
               <button
@@ -154,7 +258,9 @@ const QuickBet = () => {
         )}
       </div>
       <div
-        onClick={handelOpen}
+        onClick={() => {
+          setOpen(!open);
+        }}
         className={`${
           open ? "block" : "hidden"
         } cursor-pointer md:hidden transition w-full h-full z-[-5] fixed top-0 left-0`}

@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 
-interface Bet {
+interface BetDetails {
   id: string;
   away_team: {
     name: string;
@@ -13,14 +13,19 @@ interface Bet {
   bet_on: string;
   market: string;
   oddsFormat: string;
-  player: string;
   sport_key: string;
   sport_title: string;
   event_id: string;
   commence_time: string;
-  status: string;
-  amount: number;
   selected: string;
+  amount: number;
+}
+
+interface Bet extends BetDetails {
+  player: string;
+  data: BetDetails[];
+  amount: number;
+  betType: string;
 }
 
 interface FormData {

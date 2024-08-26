@@ -3,20 +3,21 @@ import React, { useEffect, useState } from "react";
 import Profile from "./svg/Profile";
 import Notification from "./svg/Notification";
 import User from "./User";
-import { redirect } from "next/navigation";
 import Line from "./svg/Line";
 import { getUser } from "@/utils/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setUserCredits } from "@/lib/store/features/user/userSlice";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const credits = useAppSelector((state) => state.user.credits);
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();
       if (user?.role !== "player") {
-        // redirect("/logout");
+        router.push("/logout");
       }
       dispatch(setUserCredits(user?.credits));
     };
@@ -31,7 +32,7 @@ const Header = () => {
         </div>
         <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
           <p className="text-white px-5 py-1 bg-[#323232] font-light text-xl rounded-md">
-            {credits} $
+            {credits?.toFixed(3)} $
           </p>
         </div>
         <div className="w-[2rem] h-[3rem] cursor-pointer group relative">

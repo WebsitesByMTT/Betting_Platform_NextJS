@@ -8,6 +8,8 @@ import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 import Logo from "./svg/Logo";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Hamburger from "./svg/sidebar/Hamburger";
+import CrossIcon from "./svg/CrossIcon";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
@@ -74,33 +76,18 @@ const Sidebar = () => {
 
   return (
     <div>
-      <div
-        className={`absolute left-5 top-4 lg:hidden cursor-pointer text-white ${
+      <button
+        className={`absolute left-5 top-5 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${
           toggle ? "hidden" : "block"
         }`}
         onClick={handeltoggle}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="30"
-          height="30"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="lucide w-[26px] md:w-[30px] lucide-align-left"
-        >
-          <line x1="21" x2="3" y1="6" y2="6" />
-          <line x1="15" x2="3" y1="12" y2="12" />
-          <line x1="17" x2="3" y1="18" y2="18" />
-        </svg>
-      </div>
+        <Hamburger />
+      </button>
       <div
         className={`transition-all ${
-          toggle ? "left-0" : "left-[-200%]"
-        } text-white z-50 h-[calc(100vh-40px)] bg-[#1E1C22] rounded-3xl my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[30%] md:w-[25%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+          toggle ? "left-0 " : "left-[-200%]"
+        } text-white z-[500] h-[calc(100vh-40px)] bg-[#1E1C22] rounded-3xl my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[30%] md:w-[25%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
           className={`absolute left-3 top-2 lg:hidden cursor-pointer text-white text-opacity-60 ${
@@ -108,21 +95,7 @@ const Sidebar = () => {
           }`}
           onClick={handeltoggle}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-x  w-[24px] md:w-[30px]"
-          >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
+          <CrossIcon />
         </div>
         <div className="relative w-[60%] lg:h-[80px] lg:w-[90%] mx-auto min-h-[50px] my-4">
           <Link href="/">

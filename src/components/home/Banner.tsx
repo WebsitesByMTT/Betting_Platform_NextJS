@@ -24,12 +24,12 @@ const Banner: React.FC = () => {
   return (
     <>
       {currentCategory === "All" && (
-        <div className="py-5 md:pt-0">
+        <div className="">
           <Carousel plugins={[plugin.current]}>
             <CarouselContent>
               {images.map((item, index) => (
                 <CarouselItem className="basis-[100%]" key={index}>
-                  <div className="relative h-[23vw] aspect-auto">
+                  <div className="relative min-h-[150px] h-[23vw]">
                     <Image
                       src={item}
                       fill

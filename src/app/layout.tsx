@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={`${poppins.className} bg-[#1a1a1d]`}>
         {children}
         <Toaster
           position="top-right"

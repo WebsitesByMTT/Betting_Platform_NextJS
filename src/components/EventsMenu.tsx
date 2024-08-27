@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import {
-  setLeagues,
   setLoading,
   setSelectedEvent,
 } from "@/lib/store/features/sports/sportsSlice";
@@ -62,7 +61,7 @@ const EventsMenu = () => {
       <div className="flex gap-4 overflow-x-scroll hideScrollBar">
         {events?.map((item, index) => (
           <button
-            className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-r-[#D6A250] border-r-[1px] border-t-[1px]"
+            className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-x-[#D6A250] border-x-[1px] border-t-[1px]"
             key={index}
             onClick={() => {
               fetchLeagues(item.key, item.title);

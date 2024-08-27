@@ -3,7 +3,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="h-[87vh] overflow-hidden">
+    <div className="h-[89.5vh] overflow-hidden">
       <MyBets />
     </div>
   );

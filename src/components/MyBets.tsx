@@ -68,13 +68,14 @@ const MyBets = () => {
     if (response?.error) {
       return toast.error(response.error);
     }
+    console.log("MYBETS", response);
     toast.success(response?.responseData?.message);
     fetchBet();
   };
 
   return (
     <div className="z-[100] text-white h-full">
-      <div className="w-full flex gap-5 py-6">
+      <div className="w-full flex gap-5 py-3">
         {options.map((item, index) => (
           <button
             onClick={() => setSelectedOption(item)}
@@ -85,7 +86,7 @@ const MyBets = () => {
               <div className="h-full px-1 rounded-tl-lg rounded-bl-lg bg-gradient-to-b from-[#ECB800] to-[#58565D00]"></div>
             )}
             <p
-              className={`text-lg font-medium whitespace-nowrap py-1 ${
+              className={`text-sm lg:text-lg font-medium whitespace-nowrap py-1 ${
                 selectedOption === item ? "px-3" : "px-5"
               } capitalize `}
             >
@@ -94,7 +95,7 @@ const MyBets = () => {
           </button>
         ))}
       </div>
-      <div className="h-[calc(100%-9vh)] hideScrollBar border-[1px] border-[#484848] rounded-2xl overflow-y-scroll">
+      <div className="h-[calc(100%-13vh)] hideScrollBar border-[1px] border-[#484848] rounded-2xl overflow-y-scroll">
         <table className="w-[calc(100%-2rem)] mx-auto h-auto">
           <thead>
             <tr className="text-xl">

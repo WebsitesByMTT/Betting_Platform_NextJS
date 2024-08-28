@@ -9,6 +9,7 @@ import {
 import { Event } from "@/utils/types";
 import Image from "next/image";
 import World from "./svg/World";
+import { svgMap } from "./svg/SvgMap";
 
 const EventsMenu = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -16,6 +17,7 @@ const EventsMenu = () => {
   const currentCategory = useAppSelector(
     (state) => state?.sports?.selectedCategory
   );
+  const IconComponent = svgMap[currentCategory.toLowerCase()];
   const currentEvent = useAppSelector((state) => state?.sports?.selectedEvent);
   const sportsEvents: any = useAppSelector((state) => state?.sports?.events);
   const dispatch = useAppDispatch();
@@ -40,18 +42,11 @@ const EventsMenu = () => {
   }, [sportsEvents]);
 
   return (
-    <div className="w-full flex gap-5 flex-col px-4">
+    <div className="w-full flex gap-5 flex-col md:px-4">
       {currentCategory && (
-        <div className="px-3 py-2 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex gap-2">
-          <div className="relative h-auto w-[30px] md:w-[40px]">
-            <Image
-              src={`/assets/image/sidebar/${currentCategory
-                .toLowerCase()
-                .replace(/\s+/g, "-")}.svg`}
-              alt="category"
-              className="md:p-1"
-              fill
-            />
+        <div className="border-[1px] border-[#2e3134] px-3 py-2 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex items-center gap-2">
+          <div className="relative h-auto w-[30px] md:w-[40px] p-2">
+            {IconComponent}
           </div>
           <p className="text-white text-sm md:text-lg font-light uppercase">
             {currentCategory}

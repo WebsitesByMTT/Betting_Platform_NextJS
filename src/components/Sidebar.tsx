@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Hamburger from "./svg/sidebar/Hamburger";
 import CrossIcon from "./svg/CrossIcon";
+import { svgMap } from "./svg/SvgMap";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
@@ -112,28 +113,25 @@ const Sidebar = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-3 text-lg font-light px-[.8vw] py-2">
-                {item?.subTitle?.map((subitem, subind) => (
-                  <button
-                    onClick={() => fetchCategoryEvents(subitem)}
-                    key={subind}
-                    className={`transition-all duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
-                      currentCategory === subitem ? "bg-gradient-to-b" : ""
-                    }`}
-                  >
-                    <div className="relative h-[20px] w-[20px] my-auto">
-                      <Image
-                        alt={subitem}
-                        src={`/assets/image/sidebar/${subitem
-                          .toLowerCase()
-                          .replace(/\s+/g, "-")}.svg`}
-                        fill
-                      />
-                    </div>
-                    <p className="whitespace-nowrap text-left col-span-3">
-                      {subitem}
-                    </p>
-                  </button>
-                ))}
+                {item?.subTitle?.map((subitem, subind) => {
+                  const IconComponent = svgMap[subitem.toLowerCase()];
+                  return (
+                    <button
+                      onClick={() => fetchCategoryEvents(subitem)}
+                      key={subind}
+                      className={`transition-all duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
+                        currentCategory === subitem ? "bg-gradient-to-b" : ""
+                      }`}
+                    >
+                      <div className="relative h-[20px] w-[20px] my-auto">
+                        {IconComponent}
+                      </div>
+                      <p className="whitespace-nowrap text-left col-span-3">
+                        {subitem}
+                      </p>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ))}

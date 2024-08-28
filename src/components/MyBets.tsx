@@ -75,11 +75,11 @@ const MyBets = () => {
 
   return (
     <div className="z-[100] text-white h-full">
-      <div className="w-full flex gap-5 py-3">
+      <div className="w-full overflow-auto flex gap-x-3  md:gap-5 py-3">
         {options.map((item, index) => (
           <button
             onClick={() => setSelectedOption(item)}
-            className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-r-[#D6A250] border-r-[1px] border-t-[1px]"
+            className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b pt-1 md:pt-0 from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-r-[#D6A250] border-r-[1px] border-t-[1px]"
             key={index}
           >
             {selectedOption === item && (
@@ -96,17 +96,17 @@ const MyBets = () => {
         ))}
       </div>
       <div className="h-[calc(100%-13vh)] hideScrollBar border-[1px] border-[#484848] rounded-2xl overflow-y-scroll">
-        <table className="w-[calc(100%-2rem)] mx-auto h-auto">
+        <table className="w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
           <thead>
             <tr className="text-xl">
               {headers.map((item, index) => (
                 <th
                   key={index}
-                  className="font-light uppercase py-5 border-b-[1px] border-b-[#484848]"
+                  className="font-extralight uppercase py-5 border-b-[1px] border-b-[#484848]"
                 >
                   <div className="flex w-full items-center justify-center gap-2">
                     <span>{item.icon}</span>
-                    <span>{item.text}</span>
+                    <span className="text-sm md:text-base">{item.text}</span>
                   </div>
                 </th>
               ))}

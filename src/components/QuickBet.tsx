@@ -34,10 +34,10 @@ const QuickBet = () => {
 
   const betAmount = [20, 50, 100, 500];
   const betType = ["single", "combo"];
-
+  const screenWidth = window.matchMedia("(max-width: 700px)"); 
   useEffect(() => {
     setAllBets(bets);
-    if (bets.length <= 0) {
+    if (bets.length <= 0 || screenWidth.matches) {
       setOpen(false);
     } else {
       setOpen(true);

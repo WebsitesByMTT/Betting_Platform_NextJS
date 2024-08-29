@@ -77,7 +77,7 @@ export const getUser = async () => {
   }
 };
 
-export const GetPlayerBets = async (status: string) => {
+export const GetPlayerBets = async (status?: string) => {
   const player = (await getCurrentUser()) as Player;
   const token = await getCookie();
   try {
@@ -106,7 +106,6 @@ export const GetPlayerBets = async (status: string) => {
 export const redeemPlayerBet = async (betId: string) => {
   const token = await getCookie();
   try {
-    
     const response = await fetch(`${config.server}/api/bets/${betId}`, {
       method: "PUT",
       credentials: "include",

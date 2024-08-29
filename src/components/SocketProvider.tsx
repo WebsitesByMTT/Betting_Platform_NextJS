@@ -53,6 +53,7 @@ export const SocketProvider: React.FC<{
             dispatch(setEvents(data.data));
             break;
           case "ODDS":
+            console.log("ODDS DATA", data.data);
             dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
             break;

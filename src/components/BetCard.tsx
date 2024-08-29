@@ -3,15 +3,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Favourite from "./svg/Favourite";
 import World from "./svg/World";
-import { Bet, BetDetails, DecodedToken } from "@/utils/types";
+import { BetDetails } from "@/utils/types";
 import { addAllBets } from "@/lib/store/features/bet/betSlice";
-import { getCookie } from "@/utils/utils";
-import { jwtDecode } from "jwt-decode";
 
 const BetCard: React.FC<any> = ({ betsData }) => {
   const [leagues, setLeagues] = useState(betsData);
   const dispatch = useAppDispatch();
   const allbets = useAppSelector((state) => state.bet.allbets);
+  const myBets = useAppSelector((state) => state.bet.myBets);
+  console.log(myBets);
 
   useEffect(() => {
     setLeagues(betsData);
@@ -45,17 +45,18 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       selected: betsData.selected,
       amount: 50,
     };
-    // const bet: Bet = {
-    //   player: playerId,
-    //   data: betDetails,
-    //   amount: 50,
-    //   betType: "single",
-    // };
     dispatch(addAllBets(betDetails));
   };
 
   const isBetInAllBets = (betId: string) => {
     return allbets.some((bet) => bet.id === betId);
+  };
+
+  const isBetDisabled = (betOn: string, event_id: string) => {
+    return myBets[2]?.data?.some((bet: any) => {
+      console.log(bet);
+      bet.event_id === event_id && bet.bet_on === betOn;
+    });
   };
 
   return (
@@ -121,6 +122,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           onClick={() => {
             handleBet("home_team", betsData);
           }}
+          disabled={isBetDisabled("home_team", betsData.event_id)}
         >
           <p className="text-[#dfdfdf76]">1</p>
           <p className="text-white">
@@ -141,6 +143,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           onClick={() => {
             handleBet("away_team", betsData);
           }}
+          disabled={isBetDisabled("away_team", betsData.event_id)}
         >
           <p className="text-[#dfdfdf76]">2</p>
           <p className="text-white">

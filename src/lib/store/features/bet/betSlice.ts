@@ -6,6 +6,7 @@ interface BetState {
   totalBetAmount: any;
   potentialWin: any;
   totalOdds: any;
+  myBets: any;
 }
 
 const initialState: BetState = {
@@ -13,6 +14,7 @@ const initialState: BetState = {
   totalBetAmount: 0,
   potentialWin: 0,
   totalOdds: 0,
+  myBets: [],
 };
 
 export const betSlice = createSlice({
@@ -98,6 +100,9 @@ export const betSlice = createSlice({
           break;
       }
     },
+    setMyBets(state, action: PayloadAction<[]>) {
+      state.myBets = action.payload;
+    },
   },
 });
 
@@ -110,5 +115,6 @@ export const {
   calculateTotalBetAmount,
   calculateTotalOdds,
   calculatePotentialWin,
+  setMyBets,
 } = betSlice.actions;
 export default betSlice.reducer;

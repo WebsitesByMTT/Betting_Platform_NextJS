@@ -19,7 +19,7 @@ const BetContainer = () => {
 
   useEffect(() => {
     setLiveEventLeagues(leagueData?.live_games);
-    setUpcomingEventLeagues(leagueData?.upcoming_games);
+    setUpcomingEventLeagues(leagueData?.future_upcoming_games);
   }, [leagueData]);
 
   return (

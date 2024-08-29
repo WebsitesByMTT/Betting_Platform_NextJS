@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
@@ -120,8 +119,8 @@ const Sidebar = () => {
                     <button
                       onClick={() => fetchCategoryEvents(subitem)}
                       key={subind}
-                      className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
-                        currentCategory === subitem ? "bg-gradient-to-b  border-[#4A4940]  from-[#201E2700] to-[#30302D]"  : ""
+                      className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
+                        currentCategory === subitem ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"  : ""
                       }`}
                     >
                       <div className="relative h-[20px] w-[20px] my-auto">

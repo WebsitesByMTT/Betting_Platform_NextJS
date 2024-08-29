@@ -79,7 +79,7 @@ const MyBets = () => {
         {options.map((item, index) => (
           <button
             onClick={() => setSelectedOption(item)}
-            className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b pt-1 md:pt-0 from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-r-[#D6A250] border-r-[1px] border-t-[1px]"
+            className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-r-[#D6A250] border-r-[1px] border-t-[1px]"
             key={index}
           >
             {selectedOption === item && (
@@ -202,47 +202,47 @@ const MyBets = () => {
                           dataIndex === item.data.length - 1
                             ? "border-b-[#d8d2d2a3]"
                             : "border-b-[#414141]"
-                        }  hover:bg-[#8585851A] bg-gradient-to-b from-[#1c1a2176] to-[#0d0c156d]`}
+                        }  hover:bg-[#8585851A] ${data.status==='redeem'?'bg-[#121216]':' bg-gradient-to-b from-[#1c1a2176] to-[#0d0c156d]'}`}
                       >
                         <td className="w-[20%] py-4">
                           <div className="w-full flex flex-col gap-1 px-3">
-                            <span className="font-medium text-left text-sm md:text-lg">
+                            <span className={`${data.status==='redeem'?'text-[#55545a]':'text-white'} font-medium text-left text-sm md:text-lg`}>
                               {data.sport_title}
                             </span>
                             <span className="text-[10px] md:text-[13px] text-left">
                               <span
                                 className={
                                   data.bet_on === "home_team"
-                                    ? "text-[#FFC400]"
-                                    : "text-white"
+                                  ? `${data.status==='redeem'?'text-[#57555f]':'text-[#FFC400]'}`
+                                  : `${data.status==='redeem'?'text-[#424149]':'text-white'}`
                                 }
                               >
                                 {data.home_team.name}
                               </span>{" "}
-                              v/s{" "}
+                              <span className={data.status==='redeem'?'text-[#424149]':'text-white'}>v/s</span>{" "}
                               <span
                                 className={
                                   data.bet_on === "away_team"
-                                    ? "text-[#FFC400]"
-                                    : "text-white"
+                                  ? `${data.status==='redeem'?'text-[#57555f]':'text-[#FFC400]'}`
+                                  : `${data.status==='redeem'?'text-[#424149]':'text-white'}`
                                 }
                               >
                                 {data.away_team.name}
                               </span>
                             </span>
-                            <span className="text-[9px] md:text-[11px] p-1 text-[#A1A1A1] border-[1px] border-[#414141] bg-[#303030] rounded-lg w-fit">
+                            <span className={`text-[9px] md:text-[11px] p-1 ${data.status==='redeem'?'bg-[#17161f] text-[#56555d] border-[#353342]':'bg-[#303030] text-[#A1A1A1] border-[#414141] '} border-[1px]  rounded-lg w-fit`}>
                               {formatDateTime(data.commence_time)}
                             </span>
                           </div>
                         </td>
                         <td className="text-sm md:text-lg text-gray-500">--/--</td>
-                        <td className="uppercase text-sm md:text-lg">{data.market}</td>
+                        <td className={`uppercase text-sm md:text-lg ${data.status==='redeem'?'text-[#555458]':''}`}>{data.market}</td>
                         <td className="text-sm md:text-lg">
                           <div className="flex flex-col gap-2">
-                            <span className="text-gray-400">
+                            <span className={`text-sm ${data.status==='redeem'?'text-[#403f4b]':'text-gray-400'}`}>
                               {data.oddsFormat}
                             </span>
-                            <span>
+                            <span className={`${data.status==='redeem'?'text-[#555458]':''}`}>
                               {data.bet_on === "away_team"
                                 ? data.away_team.odds
                                 : data.home_team.odds}
@@ -250,7 +250,7 @@ const MyBets = () => {
                           </div>
                         </td>
                         <td className="text-sm md:text-lg text-gray-500">--/--</td>
-                        <td className="text-sm md:text-lg capitalize text-[#FF6A00]">
+                        <td className={`text-sm ${data.status==='redeem'?'text-gray-500':'text-[#FF6A00]'}  md:text-lg capitalize `}>
                           {data.status}
                         </td>
                         <td className="text-gray-500">--/--</td>
@@ -258,13 +258,13 @@ const MyBets = () => {
                     ))}
                     <tr className="text-center font-extralight bg-gradient-to-b from-[#1c1a2176] to-[#0d0c156d] border-[1px] border-[#f3aa357c]">
                       <td className="py-3"></td>
-                      <td className="py-3 text-lf">$ {item.amount}</td>
+                        <td className={`py-3 text-lf ${item.status==='redeem'?'text-[#55545a]':'text-white'}`}>$ {item.amount}</td>
                       <td className="py-3"></td>
                       <td className="py-3"></td>
-                      <td className="py-3 text-lf">
+                        <td className={`py-3 text-lf ${item.status==='redeem'?'text-[#55545a]':'text-white'}`}>
                         {item.possibleWinningAmount.toFixed(3)}
                       </td>
-                      <td className="py-3 text-sm md:text-lg capitalize text-[#FF6A00]">
+                      <td className={`text-sm ${item.status==='redeem'?'text-gray-500':'text-[#FF6A00]'} py-3 md:text-lg capitalize `}>
                         {item.status}
                       </td>
                       <td className="py-3">
@@ -272,8 +272,8 @@ const MyBets = () => {
                           disabled={item.status === "redeem"}
                           className={` px-4 py-1 rounded-lg text-sm md:text-lg ${
                             item.status === "redeem"
-                              ? "text-gray-400"
-                              : "text-[#00C8FF] bg-white bg-opacity-10"
+                              ? "text-gray-500"
+                              : "text-[#00C8FF] bg-white  bg-opacity-10"
                           }`}
                           onClick={() => {
                             setOpen(true);

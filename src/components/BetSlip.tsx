@@ -34,7 +34,7 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   return (
     <div
       className={`border-[1.5px] border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
-        show ? "bet-slip-enter-active" : "bet-slip-exit-active"
+          show ? "bet-slip-enter-active" : "bet-slip-exit-active"
       }`}
     >
       <button

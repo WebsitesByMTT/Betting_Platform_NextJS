@@ -10,7 +10,7 @@ import MyBets from "@/components/MyBets";
 export default function Home() {
   return (
     <div className="w-full mx-auto">
-      <div className="h-[95vh] overflow-y-scroll py-5 space-y-[max(1vw,10px)] hideScrollBar">
+      <div className="h-[95vh] overflow-y-scroll pb-5 space-y-[max(1vw,10px)] hideScrollBar">
         <Banner />
         <Categories />
         <EventsMenu />

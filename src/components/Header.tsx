@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import Profile from "./svg/Profile";
 import Notification from "./svg/Notification";
 import User from "./User";
@@ -25,14 +25,14 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="flex items-end justify-end p-[.5rem] flex-col gap-5">
+    <div className="flex items-end justify-end p-[.5rem] flex-col pb-4">
       <div className="flex items-center justify-center gap-2 lg:gap-5 py-2">
         <div className="w-[2rem] lg:h-[3rem] h-[1.5rem]">
           <Notification />
         </div>
         <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
           <p className="text-white px-5 py-1 bg-[#323232] font-light lg:text-xl rounded-md">
-            {credits?.toFixed(3)} $
+            {Math.round(credits)} $
           </p>
         </div>
         <div className="w-[2rem] lg:h-[3rem] h-[1.5rem] cursor-pointer group relative">

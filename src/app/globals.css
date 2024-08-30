@@ -97,7 +97,7 @@ input[type="number"] {
 }
 
 .group:hover .svg-path {
-  fill: url(#gradient1);
+  fill: rgba(255, 5, 5, 0.542);
 }
 
 .bet-slip {

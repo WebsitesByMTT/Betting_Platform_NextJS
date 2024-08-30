@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
@@ -54,6 +53,7 @@ const Sidebar = () => {
   //event for a specific sports category
   const fetchCategoryEvents = (category: any) => {
     router.push("/");
+    setToggle(false)
     dispatch(setSelectedCategory(category || "All"));
     if (socket) {
       socket.emit("data", {
@@ -78,7 +78,7 @@ const Sidebar = () => {
   return (
     <div>
       <button
-        className={`absolute left-5 top-5 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${
+        className={`absolute left-4 top-5 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${
           toggle ? "hidden" : "block"
         }`}
         onClick={handeltoggle}
@@ -88,7 +88,7 @@ const Sidebar = () => {
       <div
         className={`transition-all ${
           toggle ? "left-0 " : "left-[-200%]"
-        } text-white z-[500] h-[calc(100vh-40px)] bg-[#1E1C22] rounded-3xl my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[30%] md:w-[25%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+        } text-white z-[500] h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[60%] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
           className={`absolute left-3 top-2 lg:hidden cursor-pointer text-white text-opacity-60 ${
@@ -103,11 +103,11 @@ const Sidebar = () => {
             <Logo />
           </Link>
         </div>
-        <div className="py-[0.5vw] space-y-[0.5vw] h-[82vh] overflow-y-scroll hideScrollBar">
+        <div className="py-[0.5vw] space-y-[0.5vw]  h-[90vh] overflow-y-scroll hideScrollBar">
           {sidebar?.map((item, ind) => (
             <div key={ind}>
-              <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px]">
-                <div className="uppercase bg-gradient-to-b from-[#36353C] to-[#1C1A21] px-[1vw] rounded-full py-[0.6rem] flex gap-2 items-center text-xl">
+              <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px] mx-1 md:mx-0">
+                <div className="uppercase bg-gradient-to-b from-[#36353C] to-[#1C1A21] px-[1vw] rounded-full py-[0.6rem] flex gap-2 items-center text-lg md:text-xl">
                   {item.icon}
                   <span className="font-medium">{item.title}</span>
                 </div>
@@ -119,14 +119,14 @@ const Sidebar = () => {
                     <button
                       onClick={() => fetchCategoryEvents(subitem)}
                       key={subind}
-                      className={`transition-all duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
-                        currentCategory === subitem ? "bg-gradient-to-b" : ""
+                      className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
+                        currentCategory === subitem ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"  : ""
                       }`}
                     >
                       <div className="relative h-[20px] w-[20px] my-auto">
                         {IconComponent}
                       </div>
-                      <p className="whitespace-nowrap text-left col-span-3">
+                      <p className="whitespace-nowrap text-left text-sm md:text-base col-span-3">
                         {subitem}
                       </p>
                     </button>

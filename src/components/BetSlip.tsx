@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CrossIcon from "./svg/CrossIcon";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { svgMap } from "./svg/SvgMap";
 
 const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,7 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
+  const IconComponent = svgMap[currentCategory.toLowerCase()];
 
   useEffect(() => {
     setAmount(betinfo.amount);
@@ -48,13 +50,14 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       <div className="px-3 py-2 w-[85%]">
         <div className="flex gap-2 text-sm font-medium text-[#ffffff]">
           <div className="relative w-[15px]">
-            <Image
-              src={`/assets/image/sidebar/${currentCategory
+            {/* <Image
+              src={`/assets/image/sidebar/${betinfo.sport_title
                 .toLowerCase()
                 .replace(/\s+/g, "-")}.svg`}
               fill
               alt={currentCategory}
-            />
+            /> */}
+            {IconComponent}
           </div>
           <p className="text-md font-normal">
             {betinfo.bet_on == "home_team"

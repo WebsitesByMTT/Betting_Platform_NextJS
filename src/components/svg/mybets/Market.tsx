@@ -31,9 +31,9 @@ const Market = () => {
           width="24.2"
           height="24.2"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -67,9 +67,9 @@ const Market = () => {
           y2="0.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D6A250" />
-          <stop offset="0.502921" stop-color="#FFE500" />
-          <stop offset="1" stop-color="#ECB800" />
+          <stop stopColor="#D6A250" />
+          <stop offset="0.502921" stopColor="#FFE500" />
+          <stop offset="1" stopColor="#ECB800" />
         </linearGradient>
       </defs>
     </svg>

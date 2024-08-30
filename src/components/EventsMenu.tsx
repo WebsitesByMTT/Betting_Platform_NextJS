@@ -44,11 +44,11 @@ const EventsMenu = () => {
   return (
     <div className="w-full flex gap-5 flex-col md:px-4">
       {currentCategory && (
-        <div className="border-[1px] border-[#2e3134] px-3 py-2 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex items-center gap-2">
+        <div className="border-[1px] border-[#2e3134] px-1 space-x-1 md:space-x-0 md:px-3 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex items-center gap-2">
           <div className="relative h-auto w-[30px] md:w-[40px] p-2">
             {IconComponent}
           </div>
-          <p className="text-white text-sm md:text-lg font-light uppercase">
+          <p className="text-white text-sm md:text-lg font-light pr-2 uppercase">
             {currentCategory}
           </p>
         </div>

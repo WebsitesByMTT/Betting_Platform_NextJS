@@ -14,10 +14,12 @@ import {
   calculateTotalBetAmount,
   calculateTotalOdds,
   deleteAllBets,
+  setMyBets,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "@/utils/utils";
+import { GetPlayerBets } from "@/utils/actions";
 
 const QuickBet = () => {
   const [open, setOpen] = useState(false);
@@ -34,10 +36,10 @@ const QuickBet = () => {
 
   const betAmount = [20, 50, 100, 500];
   const betType = ["single", "combo"];
-
+  const screenWidth = window.matchMedia("(max-width: 700px)"); 
   useEffect(() => {
     setAllBets(bets);
-    if (bets.length <= 0) {
+    if (bets.length <= 0 || screenWidth.matches) {
       setOpen(false);
     } else {
       setOpen(true);
@@ -60,18 +62,23 @@ const QuickBet = () => {
   }, [bets]);
 
   const handleSubmit = async () => {
+    if (comboBetAmount <= 0) {
+      return toast.error("Betting Amount can't be zero");
+    }
     let playerId: string = "";
     const token = await getCookie();
     if (token) {
       const decodedToken = jwtDecode<any>(token);
       playerId = decodedToken?.userId;
     }
+    //format bets before sending
     const finalbets: any = {
       player: playerId,
       data: allBets,
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
+
     if (socket) {
       socket.emit(
         "bet",
@@ -86,6 +93,7 @@ const QuickBet = () => {
     }
   };
 
+  //calculate all amounts when tabs switch between combo and single
   useEffect(() => {
     dispatch(
       calculatePotentialWin({
@@ -108,10 +116,12 @@ const QuickBet = () => {
     dispatch(updateAllBetsAmount({ amount: amount }));
   };
 
+  //delete all bets
   const handleDelete = () => {
     dispatch(deleteAllBets());
   };
 
+  //scroll to bottom when new bet is added to show latest bet
   useEffect(() => {
     if (betsContainerRef.current) {
       betsContainerRef.current.scrollTop =
@@ -123,7 +133,7 @@ const QuickBet = () => {
     <div
       className={`transition-all text-white  ${
         open ? "bottom-0" : "-bottom-[1rem]"
-      }  fixed  z-[100] md:right-10 right-auto w-[360px] max-h-[80vh]`}
+      }  fixed  z-[100] md:right-10 right-auto w-[96%] md:w-[360px] max-h-[80vh]`}
     >
       <div
         onClick={() => {

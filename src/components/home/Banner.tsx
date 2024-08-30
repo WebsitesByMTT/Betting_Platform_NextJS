@@ -36,6 +36,7 @@ const Banner: React.FC = () => {
                       quality={100}
                       className="w-full"
                       alt="banner"
+                      priority
                     />
                   </div>
                 </CarouselItem>

@@ -4,7 +4,7 @@ const CrossIcon = () => {
   return (
     <>
       <svg
-        className="svg-icon w-full h-full"
+        className="svg-icon"
         width="32"
         height="33"
         viewBox="0 0 32 33"

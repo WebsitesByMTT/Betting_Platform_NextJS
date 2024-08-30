@@ -11,12 +11,15 @@ import Odds from "./svg/mybets/Odds";
 import Amount from "./svg/mybets/Amount";
 import Status from "./svg/mybets/Status";
 import Action from "./svg/mybets/Action";
+import { useAppDispatch } from "@/lib/store/hooks";
+import { setMyBets } from "@/lib/store/features/bet/betSlice";
 
 const MyBets = () => {
-  const [myBets, setMyBets] = useState<any[]>([]);
+  const [myBets, setmyBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [betID, setBetID] = useState();
+  const dispatch = useAppDispatch();
   const [selectedOption, setSelectedOption] = useState<string>("all");
   const options = ["all", "pending", "won", "lost", "redeem", "combo"];
   const headers = [
@@ -31,12 +34,11 @@ const MyBets = () => {
 
   const fetchBet = async () => {
     const response = await GetPlayerBets(selectedOption);
-    console.log(response);
     if (response?.error) {
       return toast.error(response.error || "Error fetching Bets");
     }
-    console.log(response);
-    setMyBets(response?.responseData);
+    setmyBets(response?.responseData);
+    dispatch(setMyBets(response?.responseData));
   };
 
   useEffect(() => {

@@ -59,7 +59,6 @@ export const betSlice = createSlice({
       for (const bet of state.allbets) {
         totalAmount += bet.amount;
       }
-      console.log("here");
       state.totalBetAmount = totalAmount;
     },
     calculateTotalOdds: (state) => {
@@ -79,7 +78,6 @@ export const betSlice = createSlice({
       action: PayloadAction<{ betType: String; comboBetAmount: number }>
     ) => {
       const { betType, comboBetAmount } = action.payload;
-      console.log(betType, comboBetAmount);
       switch (betType) {
         case "single":
           let totalPotentialWin = 0;

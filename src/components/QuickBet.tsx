@@ -14,10 +14,12 @@ import {
   calculateTotalBetAmount,
   calculateTotalOdds,
   deleteAllBets,
+  setMyBets,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "@/utils/utils";
+import { GetPlayerBets } from "@/utils/actions";
 
 const QuickBet = () => {
   const [open, setOpen] = useState(false);
@@ -60,18 +62,23 @@ const QuickBet = () => {
   }, [bets]);
 
   const handleSubmit = async () => {
+    if (comboBetAmount <= 0) {
+      return toast.error("Betting Amount can't be zero");
+    }
     let playerId: string = "";
     const token = await getCookie();
     if (token) {
       const decodedToken = jwtDecode<any>(token);
       playerId = decodedToken?.userId;
     }
+    //format bets before sending
     const finalbets: any = {
       player: playerId,
       data: allBets,
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
+
     if (socket) {
       socket.emit(
         "bet",
@@ -79,6 +86,8 @@ const QuickBet = () => {
         (response: any) => {
           toast.success(response.message);
           dispatch(deleteAllBets());
+          console.log("FROM QUICK BETS", response);
+          dispatch(setMyBets(response?.bet));
         }
       );
     } else {
@@ -86,6 +95,7 @@ const QuickBet = () => {
     }
   };
 
+  //calculate all amounts when tabs switch between combo and single
   useEffect(() => {
     dispatch(
       calculatePotentialWin({
@@ -108,10 +118,12 @@ const QuickBet = () => {
     dispatch(updateAllBetsAmount({ amount: amount }));
   };
 
+  //delete all bets
   const handleDelete = () => {
     dispatch(deleteAllBets());
   };
 
+  //scroll to bottom when new bet is added to show latest bet
   useEffect(() => {
     if (betsContainerRef.current) {
       betsContainerRef.current.scrollTop =

@@ -11,15 +11,19 @@ const BetCard: React.FC<any> = ({ betsData }) => {
   const dispatch = useAppDispatch();
   const allbets = useAppSelector((state) => state.bet.allbets);
   const myBets = useAppSelector((state) => state.bet.myBets);
-  console.log(myBets);
+  const currentCategory = useAppSelector(
+    (state) => state?.sports?.selectedCategory
+  );
+  const [disabledBets, setDisabledBets] = useState({
+    home_team: false,
+    away_team: false,
+  });
 
   useEffect(() => {
     setLeagues(betsData);
   }, [betsData]);
-  const currentCategory = useAppSelector(
-    (state) => state?.sports?.selectedCategory
-  );
 
+  //add bet to allbets in redux
   const handleBet = async (betOn: string, betsData: any) => {
     const betDetails: BetDetails = {
       id: betOn + betsData.id + betsData.markets[0]?.key,
@@ -48,16 +52,40 @@ const BetCard: React.FC<any> = ({ betsData }) => {
     dispatch(addAllBets(betDetails));
   };
 
+  //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
     return allbets.some((bet) => bet.id === betId);
   };
 
+  //disable placing bets for bets which are already placed
   const isBetDisabled = (betOn: string, event_id: string) => {
-    return myBets[2]?.data?.some((bet: any) => {
-      console.log(bet);
-      bet.event_id === event_id && bet.bet_on === betOn;
-    });
+    for (const myBet of myBets) {
+      if (Array.isArray(myBet?.data)) {
+        const isDisabled = myBet.data.some((bet: any) => {
+          return (
+            bet.event_id === event_id &&
+            bet.bet_on === betOn &&
+            bet.status === "pending"
+          );
+        });
+
+        if (isDisabled) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
+
+  useEffect(() => {
+    const homeTeamDisabled = isBetDisabled("home_team", betsData.id);
+    const awayTeamDisabled = isBetDisabled("away_team", betsData.id);
+
+    setDisabledBets({
+      home_team: homeTeamDisabled,
+      away_team: awayTeamDisabled,
+    });
+  }, [myBets, betsData]);
 
   return (
     <div className="bg-[#17151A] shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12 md:col-span-6 xl:col-span-3">
@@ -122,7 +150,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           onClick={() => {
             handleBet("home_team", betsData);
           }}
-          disabled={isBetDisabled("home_team", betsData.event_id)}
+          disabled={disabledBets.home_team}
         >
           <p className="text-[#dfdfdf76]">1</p>
           <p className="text-white">
@@ -143,7 +171,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           onClick={() => {
             handleBet("away_team", betsData);
           }}
-          disabled={isBetDisabled("away_team", betsData.event_id)}
+          disabled={disabledBets.away_team}
         >
           <p className="text-[#dfdfdf76]">2</p>
           <p className="text-white">

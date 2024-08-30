@@ -13,7 +13,7 @@ const Line = () => {
       <path
         d="M0 1H1535"
         stroke="url(#paint0_linear_400_2193)"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <defs>
         <linearGradient
@@ -24,9 +24,9 @@ const Line = () => {
           y2="1.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#8C8998" stop-opacity="0" />
-          <stop offset="0.5" stop-color="#2E2D32" />
-          <stop offset="1" stop-color="#8C8998" stop-opacity="0" />
+          <stop stopColor="#8C8998" stopOpacity="0" />
+          <stop offset="0.5" stopColor="#2E2D32" />
+          <stop offset="1" stopColor="#8C8998" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>

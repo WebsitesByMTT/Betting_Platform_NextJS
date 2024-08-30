@@ -23,8 +23,8 @@ const Baseball = () => {
           y2="25.9999"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#737373" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#737373" />
         </linearGradient>
       </defs>
     </svg>

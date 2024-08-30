@@ -1,16 +1,16 @@
 "use client";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppSelector } from "@/lib/store/hooks";
 import { Leagues } from "@/utils/types";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import LiveGame from "./svg/LiveGame";
 import UpcomingGame from "./svg/UpcomingGame";
 import BetCard from "./BetCard";
 import SkeletonCard from "./SkeletonCard";
-import { Loader } from "lucide-react";
+import Today from "./svg/Today";
 
 const BetContainer = () => {
   const [liveEventLeagues, setLiveEventLeagues] = useState<Leagues[]>([]);
+  const [todayEventLeagues, setTodayEventLeagues] = useState<Leagues[]>([]);
   const [upcomingEventLeagues, setUpcomingEventLeagues] = useState<Leagues[]>(
     []
   );
@@ -19,6 +19,7 @@ const BetContainer = () => {
 
   useEffect(() => {
     setLiveEventLeagues(leagueData?.live_games);
+    setTodayEventLeagues(leagueData?.todays_upcoming_games);
     setUpcomingEventLeagues(leagueData?.future_upcoming_games);
   }, [leagueData]);
 
@@ -37,12 +38,38 @@ const BetContainer = () => {
               <BetCard key={index} betsData={data} />
             ))
           ) : (
-            <p className="w-full text-center col-span-12 text-white my-5 text-sm">
+            <p className="w-full text-center col-span-12 text-white py-2 text-sm">
               Nothing to show here
             </p>
           )
         ) : (
           <>
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        )}
+      </div>
+      <div className="cursor-pointer flex space-x-2 items-center bg-[#1E1C22] w-full rounded-lg p-2 md:p-4 shadow-inner">
+        <div className="flex gap-3 items-center">
+          <Today />
+          <div className="text-md md:text-lg text-white font-light">Today</div>
+        </div>
+      </div>
+      <div className="pt-3 grid grid-cols-12 items-start gap-3">
+        {!loading ? (
+          todayEventLeagues && todayEventLeagues?.length > 0 ? (
+            todayEventLeagues?.map((data, index) => (
+              <BetCard key={index} betsData={data} />
+            ))
+          ) : (
+            <p className="w-full text-center col-span-12 text-white py-2 text-sm">
+              Nothing to show here
+            </p>
+          )
+        ) : (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
             <SkeletonCard />
             <SkeletonCard />
           </>
@@ -63,7 +90,7 @@ const BetContainer = () => {
               <BetCard key={index} betsData={data} />
             ))
           ) : (
-            <p className="w-full text-center col-span-12 text-white my-5 text-sm">
+            <p className="w-full text-center col-span-12 text-white py-2 text-sm">
               Nothing to show here
             </p>
           )

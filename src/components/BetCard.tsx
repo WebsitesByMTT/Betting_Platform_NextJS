@@ -5,6 +5,7 @@ import Favourite from "./svg/Favourite";
 import World from "./svg/World";
 import { BetDetails } from "@/utils/types";
 import { addAllBets } from "@/lib/store/features/bet/betSlice";
+import { svgMap } from "./svg/SvgMap";
 
 const BetCard: React.FC<any> = ({ betsData }) => {
   const [leagues, setLeagues] = useState(betsData);
@@ -14,6 +15,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
   const currentCategory = useAppSelector(
     (state) => state?.sports?.selectedCategory
   );
+  const IconComponent = svgMap[currentCategory.toLowerCase()];
   const [disabledBets, setDisabledBets] = useState({
     home_team: false,
     away_team: false,
@@ -92,15 +94,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-center space-x-[.5px] overflow-hidden">
           <div className=" whitespace-nowrap flex items-center gap-2 justify-center text-white text-opacity-60 text-[.7rem] md:text-[.9rem]">
-            <div className="relative h-[20px] w-[15px]">
-              <Image
-                src={`/assets/image/sidebar/${currentCategory
-                  .toLowerCase()
-                  .replace(/\s+/g, "-")}.svg`}
-                fill
-                alt={currentCategory}
-              />
-            </div>
+            <div className="relative h-[20px] w-[15px]">{IconComponent}</div>
             <p className="whitespace-nowrap">{leagues?.sport_title}</p>
           </div>
         </div>
@@ -142,7 +136,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
       </div>
       <div className="flex gap-2 w-full">
         <button
-          className={`flex-1 py-2 rounded-lg text-sm transition-colors border-[1px] flex justify-between px-2 ${
+          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 ${
             isBetInAllBets("home_team" + betsData.id + betsData.markets[0]?.key)
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"

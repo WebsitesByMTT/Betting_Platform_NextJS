@@ -86,8 +86,6 @@ const QuickBet = () => {
         (response: any) => {
           toast.success(response.message);
           dispatch(deleteAllBets());
-          console.log("FROM QUICK BETS", response);
-          dispatch(setMyBets(response?.bet));
         }
       );
     } else {

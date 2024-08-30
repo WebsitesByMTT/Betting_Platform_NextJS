@@ -1,5 +1,6 @@
 "use client";
 
+import { setMyBets } from "@/lib/store/features/bet/betSlice";
 import {
   setCategories,
   setEvents,
@@ -59,6 +60,8 @@ export const SocketProvider: React.FC<{
           case "CREDITS":
             dispatch(setUserCredits(data?.credits));
             break;
+          case "MYBETS":
+            dispatch(setMyBets(data?.bets));
           default:
             break;
         }

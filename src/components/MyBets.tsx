@@ -71,6 +71,7 @@ const MyBets = () => {
     if (response?.error) {
       return toast.error(response.error);
     }
+    console.log("MYBETS", response);
     toast.success(response?.responseData?.message);
     fetchBet();
   };
@@ -78,6 +79,7 @@ const MyBets = () => {
   return (
     <div className="z-[100] text-white h-full">
       <div className="w-full overflow-auto flex gap-x-3  md:gap-5 py-3">
+
         {options.map((item, index) => (
           <button
             onClick={() => setSelectedOption(item)}
@@ -99,6 +101,7 @@ const MyBets = () => {
       </div>
       <div className="h-[calc(100%-13vh)] hideScrollBar border-[1px] border-[#484848] rounded-2xl overflow-y-scroll">
         <table className="w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
+
           <thead>
             <tr className="text-xl">
               {headers.map((item, index) => (

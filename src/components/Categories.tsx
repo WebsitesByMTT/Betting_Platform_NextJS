@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
@@ -51,14 +50,6 @@ const Categories = () => {
                     fetchEvents(item);
                   }}
                 >
-                  {/* <Image
-                  src={`/assets/image/sidebar/${item
-                    .toLocaleUpperCase()
-                    .replace(/\s+/g, "")}.svg`}
-                  alt="categories"
-                  className="md:p-2 p-1"
-                  fill
-                /> */}
                   <div>{IconComponent}</div>
                 </button>
               </div>

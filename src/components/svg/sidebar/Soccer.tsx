@@ -24,9 +24,9 @@ const Soccer = () => {
           width="26"
           height="28.3262"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -60,8 +60,8 @@ const Soccer = () => {
           y2="26"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D9D9D9" />
-          <stop offset="1" stop-color="#737373" />
+          <stop stopColor="#D9D9D9" />
+          <stop offset="1" stopColor="#737373" />
         </linearGradient>
       </defs>
     </svg>

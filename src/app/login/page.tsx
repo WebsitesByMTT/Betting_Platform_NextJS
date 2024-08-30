@@ -27,17 +27,16 @@ const Login = () => {
   };
 
   const fetchCaptcha = async () => {
-    try {
-      const captcha = await GetCaptcha();
-      if (captcha) {
-        setCaptchaSrc(captcha.responseData?.captcha);
-        setData((prevState) => ({
-          ...prevState,
-          captchaToken: captcha.responseData?.token,
-        }));
-      }
-    } catch (error: any) {
-      console.log(error);
+    const captcha = await GetCaptcha();
+    if (captcha?.error) {
+      return toast.error(captcha.error);
+    }
+    if (captcha?.responseData) {
+      setCaptchaSrc(captcha.responseData?.captcha);
+      setData((prevState) => ({
+        ...prevState,
+        captchaToken: captcha.responseData?.token,
+      }));
     }
   };
 

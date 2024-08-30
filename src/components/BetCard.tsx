@@ -157,7 +157,7 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           </p>
         </button>
         <button
-          className={`flex-1 py-2 rounded-lg text-sm transition-colors border-[1px] flex justify-between px-2 ${
+          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 ${
             isBetInAllBets("away_team" + betsData.id + betsData.markets[0]?.key)
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent "

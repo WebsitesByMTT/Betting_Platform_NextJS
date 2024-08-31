@@ -10,6 +10,7 @@ import {
 import { setUserCredits } from "@/lib/store/features/user/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { config } from "@/utils/config";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, createContext, useContext } from "react";
 import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
@@ -34,6 +35,7 @@ export const SocketProvider: React.FC<{
 }> = ({ token, children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     if (token) {
@@ -61,6 +63,9 @@ export const SocketProvider: React.FC<{
           case "CREDITS":
             dispatch(setUserCredits(data?.credits));
             break;
+          case "INACTIVE":
+            dispatch(setUserCredits(data?.credits));
+            break;
           case "MYBETS":
             dispatch(setMyBets(data?.bets));
           default:
@@ -73,6 +78,14 @@ export const SocketProvider: React.FC<{
           case "BET":
             toast.success(data.data);
             break;
+          
+          case "STATUS":
+            if (!data.payload) {
+              toast.error("You are blocked by admin");
+              router.push("/logout");
+            }
+            break;
+            
           default:
             break;
         }

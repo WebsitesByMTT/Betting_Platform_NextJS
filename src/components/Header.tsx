@@ -15,9 +15,16 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const credits = useAppSelector((state) => state.user.credits);
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();
+
+      if (user?.error) {
+        router.push("/logout");
+        return toast.error(user.error);
+      }
+
       if (user?.role !== "player") {
         router.push("/logout");
       }

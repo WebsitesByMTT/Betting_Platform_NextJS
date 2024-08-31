@@ -60,6 +60,9 @@ export const SocketProvider: React.FC<{
           case "CREDITS":
             dispatch(setUserCredits(data?.credits));
             break;
+          case "INACTIVE":
+            dispatch(setUserCredits(data?.credits));
+            break;
           case "MYBETS":
             dispatch(setMyBets(data?.bets));
           default:

@@ -15,6 +15,10 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const credits = useAppSelector((state) => state.user.credits);
+  if (credits===null) {
+    router.push("/logout");
+    toast.error('you are blocked !')
+  }
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();

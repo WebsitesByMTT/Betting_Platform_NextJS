@@ -67,7 +67,7 @@ export const getUser = async () => {
 
     if (!response.ok) {
       const error = await response.json();
-      console.error(error.message);
+      return { error: error.message }
     }
 
     const data = await response.json();

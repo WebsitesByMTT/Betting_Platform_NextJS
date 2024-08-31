@@ -19,7 +19,11 @@ const Header = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();
-      console.log("USER : ", user);
+
+      if (user?.error) {
+        router.push("/logout");
+        return toast.error(user.error);
+      }
 
       if (user?.role !== "player") {
         router.push("/logout");

@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Favourite from "./svg/Favourite";
 import World from "./svg/World";
@@ -101,12 +100,14 @@ const BetCard: React.FC<any> = ({ betsData }) => {
         <Favourite />
       </div>
       <p className="text-[#67ffff] text-sm">
-        {leagues.commence_time.split("T")[0]}
+        {leagues.commence_time.toLocaleString()}
       </p>
       <div className="flex flex-col py-1.5 justify-between">
         <button className="grid grid-cols-5 space-x-2">
-          <div className="flex col-span-4 gap-2 items-center whitespace-nowrap -mx-2">
-            <World />
+          <div className="flex col-span-4 gap-2 items-center whitespace-nowrap -mx-2 overflow-hidden">
+            <div>
+              <World />
+            </div>
             <p className="text-white text-[.8rem] md:text-[.9rem]">
               {betsData.home_team}
             </p>
@@ -118,8 +119,10 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           </p>
         </button>
         <button className="grid grid-cols-5 space-x-2">
-          <div className="flex col-span-4 items-center gap-2 whitespace-nowrap -mx-2">
-            <World />
+          <div className="flex col-span-4 items-center gap-2 whitespace-nowrap -mx-2 overflow-hidden">
+            <div>
+              <World />
+            </div>
             <div className="text-white text-[.8rem] md:text-[.9rem]">
               {betsData.away_team}
             </div>

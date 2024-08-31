@@ -45,6 +45,7 @@ export const SocketProvider: React.FC<{
       socketInstance.on("connect", () => {
         console.log("Connected with socket id:", socketInstance.id);
       });
+      
       socketInstance.on("data", (data: any) => {
         switch (data.type) {
           case "CATEGORIES":
@@ -66,6 +67,17 @@ export const SocketProvider: React.FC<{
             break;
         }
       });
+
+      socketInstance.on("message", (data: any) => {
+        switch (data.type) {
+          case "BET":
+            toast.success(data.data);
+            break;
+          default:
+            break;
+        }
+      });
+
       socketInstance.on("error", (error) => {
         toast.remove();
         toast.error(`Error from server: ${error.message}`);

@@ -10,6 +10,7 @@ import {
 import { setUserCredits } from "@/lib/store/features/user/userSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { config } from "@/utils/config";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, createContext, useContext } from "react";
 import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
@@ -34,6 +35,7 @@ export const SocketProvider: React.FC<{
 }> = ({ token, children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     if (token) {
@@ -45,6 +47,7 @@ export const SocketProvider: React.FC<{
       socketInstance.on("connect", () => {
         console.log("Connected with socket id:", socketInstance.id);
       });
+
       socketInstance.on("data", (data: any) => {
         switch (data.type) {
           case "CATEGORIES":
@@ -60,12 +63,29 @@ export const SocketProvider: React.FC<{
           case "CREDITS":
             dispatch(setUserCredits(data?.credits));
             break;
+          case "INACTIVE":
+            dispatch(setUserCredits(data?.credits));
+            break;
           case "MYBETS":
             dispatch(setMyBets(data?.bets));
           default:
             break;
         }
       });
+
+      socketInstance.on("message", (data: any) => {
+        switch (data.type) {
+          case "STATUS":
+            if (!data.payload) {
+              toast.error("You are blocked by admin");
+              router.push("/logout");
+            }
+            break;
+          default:
+            break;
+        }
+      });
+
       socketInstance.on("error", (error) => {
         toast.remove();
         toast.error(`Error from server: ${error.message}`);

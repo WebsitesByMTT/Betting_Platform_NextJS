@@ -1,38 +1,29 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import sessionStorage from "redux-persist/es/storage/session";
 import betReducers from "./features/bet/betSlice";
 import sportsReducer from "./features/sports/sportsSlice";
 import userReducer from "./features/user/userSlice";
 
-const persistConfig = {
-  key: "root",
-  storage: sessionStorage,
-};
-
+// Combine reducers
 const rootReducer = combineReducers({
   bet: betReducers,
   sports: sportsReducer,
   user: userReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
+// Create the store
 export const makeStore = () => {
   const store = configureStore({
-    reducer: persistedReducer,
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
-        serializableCheck: {
-          ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
-        },
-      }).concat(),
+        serializableCheck: false, // Disable serializable check if needed
+      }),
   });
 
-  const persistor = persistStore(store);
-  return { store, persistor };
+  return store;
 };
 
-export type AppStore = ReturnType<typeof makeStore>["store"];
+// Type definitions
+export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];

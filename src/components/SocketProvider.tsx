@@ -47,7 +47,7 @@ export const SocketProvider: React.FC<{
       socketInstance.on("connect", () => {
         console.log("Connected with socket id:", socketInstance.id);
       });
-
+      
       socketInstance.on("data", (data: any) => {
         switch (data.type) {
           case "CATEGORIES":
@@ -75,12 +75,17 @@ export const SocketProvider: React.FC<{
 
       socketInstance.on("message", (data: any) => {
         switch (data.type) {
+          case "BET":
+            toast.success(data.data);
+            break;
+          
           case "STATUS":
             if (!data.payload) {
               toast.error("You are blocked by admin");
               router.push("/logout");
             }
             break;
+            
           default:
             break;
         }

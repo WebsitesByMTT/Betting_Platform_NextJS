@@ -7,7 +7,6 @@ import {
   setSelectedEvent,
 } from "@/lib/store/features/sports/sportsSlice";
 import { Event } from "@/utils/types";
-import Image from "next/image";
 import World from "./svg/World";
 import { svgMap } from "./svg/SvgMap";
 

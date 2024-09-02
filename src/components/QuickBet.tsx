@@ -20,12 +20,14 @@ import {
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "@/utils/utils";
 import { GetPlayerBets } from "@/utils/actions";
+import Error from "./svg/Error";
 
 const QuickBet = () => {
   const [open, setOpen] = useState(false);
   const [allBets, setAllBets] = useState<BetDetails[]>([]);
   const [currentBetType, setCurrentBetType] = useState<String>("single");
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [comboBetAmount, setCombobetAmount] = useState<any>(100);
   const potentialWin = useAppSelector((state) => state.bet.potentialWin);
   const totalBetAmount = useAppSelector((state) => state.bet.totalBetAmount);
@@ -53,6 +55,14 @@ const QuickBet = () => {
     };
   }, []);
 
+  const hasDuplicateEventIds = () => {
+    if (currentBetType !== "combo") return false;
+
+    const eventIds = bets.map((bet) => bet.event_id);
+    const uniqueEventIds = new Set(eventIds);
+    return eventIds.length !== uniqueEventIds.size;
+  };
+
   useEffect(() => {
     setAllBets(bets);
     if (bets.length <= 0 || isMobile) {
@@ -65,7 +75,7 @@ const QuickBet = () => {
     if (bets.length <= 1) {
       setCurrentBetType("single");
     }
-
+    setDisabled(hasDuplicateEventIds());
     //calculate all the values whenevr bet changes
     dispatch(calculateTotalOdds());
     dispatch(calculateTotalBetAmount());
@@ -105,6 +115,7 @@ const QuickBet = () => {
 
   //calculate all amounts when tabs switch between combo and single
   useEffect(() => {
+    setDisabled(hasDuplicateEventIds());
     dispatch(
       calculatePotentialWin({
         betType: currentBetType,
@@ -159,7 +170,11 @@ const QuickBet = () => {
               {allBets?.length > 0 && (
                 <div className="bg-[#fff] rounded-full px-[6px]">
                   <p className="text-[#D71B21] font-semibold text-sm">
-                    {allBets?.length}
+                    {disabled ? (
+                      <span className="px-[2.5px]">!</span>
+                    ) : (
+                      <span>{allBets?.length}</span>
+                    )}
                   </p>
                 </div>
               )}
@@ -207,14 +222,31 @@ const QuickBet = () => {
                 </button>
               ))}
             </div>
+            {disabled && (
+              <div className="flex gap-2 px-2">
+                <div>
+                  <Error />
+                </div>
+                <p className="text-sm text-red-500">Error</p>
+              </div>
+            )}
             <div
               ref={betsContainerRef}
-              className="w-full flex flex-col gap-2 max-h-[calc(40vh-90px)] overflow-y-scroll"
+              className={`w-full flex flex-col ${
+                disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
+              } ${
+                currentBetType === "combo" ? "gap-0" : "gap-2"
+              }  max-h-[calc(40vh-90px)] overflow-y-scroll`}
             >
               {allBets?.map((item, index) => (
                 <BetSlip key={index} betinfo={item} betType={currentBetType} />
               ))}
             </div>
+            {disabled && (
+              <p className="text-[12px] text-red-500 italic text-right">
+                You can’t place bet on this combo
+              </p>
+            )}
             {currentBetType === "combo" && (
               <input
                 value={comboBetAmount}
@@ -263,11 +295,12 @@ const QuickBet = () => {
             <div className="flex gap-3">
               <button
                 onClick={handleDelete}
-                className="w-fit px-4 py-1 text-[#fff] uppercase border-[#3A3A3A] border-2 font-semibold rounded-md bg-gradient-to-b from-[#0000004D] to-[#5F63684D] text-lg "
+                className="w-fit px-4 py-1 text-[#fff]  uppercase border-[#3A3A3A] border-2 font-semibold rounded-md bg-gradient-to-b from-[#0000004D] to-[#5F63684D] text-lg "
               >
                 <DeleteIcon />
               </button>
               <button
+                disabled={disabled}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >

@@ -244,7 +244,7 @@ const QuickBet = () => {
             </div>
             {disabled && (
               <p className="text-[12px] text-red-500 italic text-right">
-                You can’t place bet on this combo
+                You can&apos;t place bet on this combo
               </p>
             )}
             {currentBetType === "combo" && (

@@ -144,12 +144,12 @@ const BetCard: React.FC<any> = ({ betsData }) => {
           </p>
         </button>
       </div>
-      <div>
+      <div className="flex justify-between">
         <p className="text-white text-sm">{betsData?.markets[0]?.key}</p>
       </div>
-      <div className="flex gap-2 w-full">
+      <div className="flex gap-2 w-full betPlaced relative">
         <button
-          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex relative group justify-between px-2 ${
+          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex group justify-between px-2 ${
             isBetInAllBets("home_team" + betsData.id + betsData.markets[0]?.key)
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"
@@ -169,13 +169,13 @@ const BetCard: React.FC<any> = ({ betsData }) => {
             }
           </p>
           {disabledBets.home_team && (
-            <p className="bg-[#232121] absolute top-[120%] invisible px-4 py-1 rounded-md tooltip text-sm left-0 z-10 text-red-500 italic border-[1px] border-red-500 shadow-inner opacity-0 group-hover:visible group-hover:opacity-100">
-              You&apos;ve already placed bet on this
+            <p className="text-[12px] text-red-500 betPlacedText italic text-right invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute -top-[70%] right-0 w-full">
+              This bet is already placed
             </p>
           )}
         </button>
         <button
-          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 relative group ${
+          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 group ${
             isBetInAllBets("away_team" + betsData.id + betsData.markets[0]?.key)
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"
@@ -195,8 +195,8 @@ const BetCard: React.FC<any> = ({ betsData }) => {
             }
           </p>
           {disabledBets.away_team && (
-            <p className="bg-[#232121] absolute top-[120%] invisible px-4 py-1 rounded-md tooltip text-sm left-0 z-10 text-red-500 italic border-[1px] border-red-500 w-full shadow-inner opacity-0 group-hover:visible group-hover:opacity-100">
-              You&apos;ve already placed bet on this
+            <p className="text-[12px] text-red-500 betPlacedText italic text-right invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute -top-[70%] right-0 w-full">
+              This bet is already placed
             </p>
           )}
         </button>

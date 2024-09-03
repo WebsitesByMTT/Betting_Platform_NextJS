@@ -2,37 +2,34 @@
 import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
-import {useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import Logo from "./svg/Logo";
-import { usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Hamburger from "./svg/sidebar/Hamburger";
 import CrossIcon from "./svg/CrossIcon";
 import { svgMap } from "./svg/SvgMap";
 import { SportItem } from "@/utils/types";
-
-
+import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
-  const [sports, setSports] = useState<SportItem[]>([]);
+  const sportsCategories = useAppSelector((state) => state?.sports.categories);
   const { socket } = useSocket();
-  const pathname = usePathname()
-  const url = decodeURIComponent(pathname)
-
+  const pathname = usePathname();
+  const url = decodeURIComponent(pathname);
+  const dispatch = useAppDispatch();
   function extractBetweenSlashes(url: string): string | null {
-    const parts = url.split('/');
+    const parts = url.split("/");
     if (parts.length < 2) return null;
     return parts[1];
   }
   const matchurl = extractBetweenSlashes(url);
-  //sports categories for sidebar from redux
-  const sportsCategories = useAppSelector((state) => state?.sports.categories);
-
-  //rendering sidebar categories
   useEffect(() => {
-    setSports(sportsCategories);
-  }, [sportsCategories]);
+    if (matchurl) {
+      dispatch(setSelectedCategory(matchurl));
+    }
+  }, [matchurl]);
 
   //phone screen toggle
   const handeltoggle = () => {
@@ -60,26 +57,29 @@ const Sidebar = () => {
       id: 1,
       title: "sports",
       icon: <Sports />,
-      subTitle: sports,
+      subTitle: sportsCategories,
     },
   ];
 
   return (
     <div>
       <button
-        className={`absolute left-4 top-5 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${toggle ? "hidden" : "block"
-          }`}
+        className={`absolute left-4 top-5 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${
+          toggle ? "hidden" : "block"
+        }`}
         onClick={handeltoggle}
       >
         <Hamburger />
       </button>
       <div
-        className={`transition-all ${toggle ? "left-0 " : "left-[-200%]"
-          } text-white z-[500] h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[60%] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+        className={`transition-all ${
+          toggle ? "left-0 " : "left-[-200%]"
+        } text-white z-[500] h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[60%] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
-          className={`absolute left-3 top-2 lg:hidden cursor-pointer text-white text-opacity-60 ${toggle ? "block" : "hidden"
-            }`}
+          className={`absolute left-3 top-2 lg:hidden cursor-pointer text-white text-opacity-60 ${
+            toggle ? "block" : "hidden"
+          }`}
           onClick={handeltoggle}
         >
           <CrossIcon />
@@ -99,15 +99,17 @@ const Sidebar = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-3 text-lg font-light px-[.8vw] py-2">
-                <button>All</button>
                 {item?.subTitle?.map((subitem, subind) => {
                   const IconComponent = svgMap[subitem?.group?.toLowerCase()];
                   return (
                     <Link
                       href={`/${subitem?.group}/${subitem?.items[0].key}`}
                       key={subind}
-                      className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${subitem?.group === matchurl ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]" : ""
-                        }`}
+                      className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
+                        subitem?.group === matchurl
+                          ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"
+                          : ""
+                      }`}
                     >
                       <div className="relative h-[20px] w-[20px] my-auto">
                         {IconComponent}
@@ -126,8 +128,9 @@ const Sidebar = () => {
       {/* Blur Screen */}
       <div
         onClick={handeltoggle}
-        className={`${toggle ? "block" : "hidden"
-          } lg:hidden cursor-pointer transition w-full h-full backdrop-blur-sm z-30 fixed top-0 left-0`}
+        className={`${
+          toggle ? "block" : "hidden"
+        } lg:hidden cursor-pointer transition w-full h-full backdrop-blur-sm z-30 fixed top-0 left-0`}
       ></div>
     </div>
   );

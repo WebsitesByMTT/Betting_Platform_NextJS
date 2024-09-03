@@ -65,7 +65,7 @@ const Login = () => {
       if (decodedToken?.role === "player") {
         toast.success("Login successfull!!");
         Cookies.set("token", token);
-        router.push("/");
+        router.push("/All/americanfootball_cfl");
       } else {
         alert("Access denied!");
       }

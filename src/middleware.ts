@@ -7,7 +7,9 @@ export default function middleware(request: NextRequest) {
   const token = request.cookies.get("token");
 
   if (isPublicPath && token) {
-    const response = NextResponse.redirect(new URL("/", request.url));
+    const response = NextResponse.redirect(
+      new URL("/All/americanfootball_cfl", request.url)
+    );
     return response;
   }
 

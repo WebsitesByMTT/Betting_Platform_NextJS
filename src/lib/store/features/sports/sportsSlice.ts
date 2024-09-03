@@ -41,6 +41,7 @@ const sportsSlice = createSlice({
       state.selectedLeague = action.payload;
     },
     setSelectedCategory(state, action: PayloadAction<string>) {
+      console.log("g");
       state.selectedCategory = action.payload;
     },
     setLoading(state, action: PayloadAction<boolean>) {

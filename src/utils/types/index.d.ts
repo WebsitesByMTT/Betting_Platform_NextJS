@@ -66,3 +66,11 @@ interface Mybet {
   possibleWinningAmount: number;
   retryCount: number;
 }
+
+interface SportItem {
+  group: string;
+  items: Array<{
+    title: string;
+    key: string;
+  }>;
+}

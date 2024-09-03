@@ -1,8 +1,9 @@
+import { SportItem } from "@/utils/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SportsState {
   loading: boolean;
-  categories: string[];
+  categories: SportItem[];
   events: [];
   leagues: any;
   selectedEvent: string;
@@ -24,7 +25,7 @@ const sportsSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {
-    setCategories: (state, action: PayloadAction<string[]>) => {
+    setCategories: (state, action: PayloadAction<SportItem[]>) => {
       state.categories = action.payload;
     },
     setEvents: (state, action: PayloadAction<[]>) => {

@@ -1,5 +1,4 @@
 "use client";
-
 import { setMyBets } from "@/lib/store/features/bet/betSlice";
 import {
   setCategories,
@@ -54,7 +53,7 @@ export const SocketProvider: React.FC<{
             dispatch(setCategories(data.data));
             break;
           case "CATEGORY_SPORTS":
-            dispatch(setEvents(data.data));
+            dispatch(setEvents(data?.data));
             break;
           case "ODDS":
             dispatch(setLoading(false));

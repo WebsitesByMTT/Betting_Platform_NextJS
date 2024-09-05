@@ -24,7 +24,6 @@ const Page = ({ params }: any) => {
   const loading = useAppSelector((state) => state.sports.loading);
   const allbets = useAppSelector((state) => state.bet.allbets);
   const myBets = useAppSelector((state) => state.bet.myBets);
-  console.log(leagues_Info, 'leagues_Info');
 
   // State to track open/closed accordions
   const [openIndices, setOpenIndices] = useState<boolean[]>([]);
@@ -89,31 +88,31 @@ const Page = ({ params }: any) => {
     }
   };
 
-const handleBet = async (event: React.MouseEvent, betOn: string, betsData: any, outcome: any) => {
-  event.stopPropagation();
-  console.log(betsData,"outcome")
-  const betDetails: BetDetails = {
-    id: betOn + leagues_Info?.id + betsData?.key,
-    away_team: {
-      name: leagues_Info?.away_team,
-      odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.away_team))?.price,
-    },
-    home_team: {
-      name: leagues_Info?.home_team,
-      odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.home_team))?.price,
-    },
-    bet_on: betOn,
-    market: betsData?.key,
-    oddsFormat: "decimal",
-    sport_key: leagues_Info?.sport_key,
-    sport_title: leagues_Info?.sport_title,
-    event_id: leagues_Info?.id,
-    commence_time: leagues_Info?.commence_time,
-    selected: leagues_Info?.selected,
-    amount: 50,
+  const handleBet = async (event: React.MouseEvent, betOn: string, betsData: any, outcome: any) => {
+    event.stopPropagation();
+    console.log(betsData, "outcome")
+    const betDetails: BetDetails = {
+      id: betOn + leagues_Info?.id + betsData?.key,
+      away_team: {
+        name: leagues_Info?.away_team,
+        odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.away_team))?.price,
+      },
+      home_team: {
+        name: leagues_Info?.home_team,
+        odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.home_team))?.price,
+      },
+      bet_on: betOn,
+      market: betsData?.key,
+      oddsFormat: "decimal",
+      sport_key: leagues_Info?.sport_key,
+      sport_title: leagues_Info?.sport_title,
+      event_id: leagues_Info?.id,
+      commence_time: leagues_Info?.commence_time,
+      selected: leagues_Info?.selected,
+      amount: 50,
+    };
+    dispatch(addAllBets(betDetails));
   };
-  dispatch(addAllBets(betDetails));
-};
 
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
@@ -208,7 +207,9 @@ const handleBet = async (event: React.MouseEvent, betOn: string, betsData: any, 
                           ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                           : "bg-[#040404] border-transparent"}`}
                           disabled={isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key)}>
-                          <div className='text-sm text-white text-opacity-30 font-light'>{outcome.name}</div>
+                          <div className='text-sm text-white text-opacity-30 font-light flex items-center gap-x-2'>{outcome.name}<span className={`${outcome?.point < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                            {outcome?.point}
+                          </span></div>
                           <div className='text-xs text-white py-1 px-1.5 rounded-md bg-[#343434]'>{outcome.price}</div>
                           {isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key) && <p className="text-[12px] text-red-500 betPlacedText italic text-right invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute top-[20%] right-[10%] w-full">
                             This bet is already placed

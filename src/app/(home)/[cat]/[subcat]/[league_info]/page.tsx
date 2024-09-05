@@ -89,34 +89,31 @@ const Page = ({ params }: any) => {
     }
   };
 
-  const handleBet = async (event: React.MouseEvent, betOn: string, betsData: any, outcome: any) => {
-    event.stopPropagation();
-    const betDetails: BetDetails = {
-      id: betOn + leagues_Info?.id + betsData?.key,
-      away_team: {
-        name: leagues_Info?.away_team,
-        odds: leagues_Info?.markets
-          .flatMap((market: any) => market?.outcomes)
-          .find((outcome: any) => outcome.name === leagues_Info.away_team)?.price,
-      },
-      home_team: {
-        name: leagues_Info.home_team,
-        odds: leagues_Info?.markets
-          .flatMap((market: any) => market.outcomes)
-          .find((outcome: any) => outcome.name === leagues_Info.home_team)?.price,
-      },
-      bet_on: betOn,
-      market: betsData?.key,
-      oddsFormat: "decimal",
-      sport_key: leagues_Info?.sport_key,
-      sport_title: leagues_Info?.sport_title,
-      event_id: leagues_Info?.id,
-      commence_time: leagues_Info?.commence_time,
-      selected: leagues_Info?.selected,
-      amount: 50,
-    };
-    dispatch(addAllBets(betDetails));
+const handleBet = async (event: React.MouseEvent, betOn: string, betsData: any, outcome: any) => {
+  event.stopPropagation();
+  console.log(betsData,"outcome")
+  const betDetails: BetDetails = {
+    id: betOn + leagues_Info?.id + betsData?.key,
+    away_team: {
+      name: leagues_Info?.away_team,
+      odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.away_team))?.price,
+    },
+    home_team: {
+      name: leagues_Info?.home_team,
+      odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.home_team))?.price,
+    },
+    bet_on: betOn,
+    market: betsData?.key,
+    oddsFormat: "decimal",
+    sport_key: leagues_Info?.sport_key,
+    sport_title: leagues_Info?.sport_title,
+    event_id: leagues_Info?.id,
+    commence_time: leagues_Info?.commence_time,
+    selected: leagues_Info?.selected,
+    amount: 50,
   };
+  dispatch(addAllBets(betDetails));
+};
 
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {

@@ -68,8 +68,8 @@ interface Mybet {
 }
 
 interface SportItem {
-  group: string;
-  items: Array<{
+  category: string;
+  events: Array<{
     title: string;
     key: string;
   }>;

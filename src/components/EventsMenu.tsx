@@ -32,7 +32,7 @@ const EventsMenu = ({ cat }: any) => {
   useEffect(() => {
     if (category && sportsCategories) {
       setEvents(
-        sportsCategories.find((item) => item.group === category)?.items || []
+        sportsCategories.find((item) => item.category === category)?.events || []
       );
     }
   }, [category, sportsCategories]);

@@ -9,6 +9,7 @@ interface SportsState {
   selectedEvent: string;
   selectedLeague: string;
   selectedCategory: string;
+  leaguesInfo: {}
 }
 
 const initialState: SportsState = {
@@ -19,6 +20,7 @@ const initialState: SportsState = {
   selectedEvent: "",
   selectedLeague: "",
   selectedCategory: "All",
+  leaguesInfo: {}
 };
 
 const sportsSlice = createSlice({
@@ -41,12 +43,14 @@ const sportsSlice = createSlice({
       state.selectedLeague = action.payload;
     },
     setSelectedCategory(state, action: PayloadAction<string>) {
-      console.log("g");
       state.selectedCategory = action.payload;
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    setLeaguesInfo: (state, action: PayloadAction<{}>) => {
+      state.leaguesInfo = action.payload;
+    }
   },
 });
 
@@ -58,6 +62,7 @@ export const {
   setSelectedEvent,
   setSelectedLeague,
   setLoading,
+  setLeaguesInfo
 } = sportsSlice.actions;
 
 export default sportsSlice.reducer;

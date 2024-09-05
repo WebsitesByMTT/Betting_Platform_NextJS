@@ -100,13 +100,13 @@ const Sidebar = () => {
               </div>
               <div className="flex flex-col gap-3 text-lg font-light px-[.8vw] py-2">
                 {item?.subTitle?.map((subitem, subind) => {
-                  const IconComponent = svgMap[subitem?.group?.toLowerCase()];
+                  const IconComponent = svgMap[subitem?.category?.toLowerCase()];
                   return (
                     <Link
-                      href={`/${subitem?.group}/${subitem?.items[0].key}`}
+                      href={`/${subitem?.category}/${subitem?.events[0].key}`}
                       key={subind}
                       className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
-                        subitem?.group === matchurl
+                        subitem?.category === matchurl
                           ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"
                           : ""
                       }`}
@@ -115,7 +115,7 @@ const Sidebar = () => {
                         {IconComponent}
                       </div>
                       <p className="whitespace-nowrap text-left text-sm md:text-base col-span-3">
-                        {subitem.group}
+                        {subitem.category}
                       </p>
                     </Link>
                   );

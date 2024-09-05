@@ -17,7 +17,7 @@ export default function Home({ params }: any) {
         <Categories />
         <EventsMenu cat={params} />
         <QuickBet />
-        <BetContainer />
+        <BetContainer cat={params} />
         <Footer />
       </div>
     </div>

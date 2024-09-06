@@ -116,7 +116,9 @@ const Page = ({ params }: any) => {
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
     
-    console.log(allbets,"all bets")
+    if (betId==='Over'||betId==='Under') {
+     return allbets.some((bet) => bet.bet_on === betId);
+    }
     return allbets.some((bet) => bet.id === betId);
   };
 

@@ -115,6 +115,8 @@ const Page = ({ params }: any) => {
 
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
+    
+    console.log(allbets,"all bets")
     return allbets.some((bet) => bet.id === betId);
   };
 
@@ -200,7 +202,7 @@ const Page = ({ params }: any) => {
                       item?.outcomes?.map((outcome: any, outcomeIndex: number) => (
                         <button onClick={(event) => {
                           handleBet(event, item.key==='totals'?outcome.name:(outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), item, outcome);
-                        }} key={outcomeIndex} className={`flex-1 py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 group ${isBetInAllBets((outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
+                        }} key={outcomeIndex} className={`flex-1 py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 group ${isBetInAllBets(item.key==='totals'?(outcome?.name):(outcome?.name === leagues_Info?.home_team? "home_team" : "away_team") + leagues_Info?.id + item.key)
                           ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                           : "bg-[#040404] border-transparent"}`}
                           disabled={isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key)}>

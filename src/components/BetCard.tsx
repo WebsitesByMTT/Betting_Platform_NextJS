@@ -26,8 +26,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     setLeagues(betsData);
   }, [betsData]);
 
-  const now = new Date();
-    const commenceTime = new Date(now.getTime() + 1 * 60 * 1000); 
   //add bet to allbets in redux
   const handleBet = async (event: React.MouseEvent,betOn: string, betsData: any) => {
     event.stopPropagation();
@@ -51,7 +49,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       sport_key: betsData.sport_key,
       sport_title: betsData.sport_title,
       event_id: betsData.id,
-      commence_time: commenceTime?.toString(),
+      commence_time: betsData.commence_time,
       selected: betsData.selected,
       amount: 50,
     };

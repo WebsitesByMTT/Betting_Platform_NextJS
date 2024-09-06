@@ -1,7 +1,7 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import React, { useEffect, useRef, useState } from "react";
-import { Bet, BetDetails } from "@/utils/types";
+import { BetDetails } from "@/utils/types";
 import { useSocket } from "./SocketProvider";
 import toast from "react-hot-toast";
 import Quickbet from "./svg/Quickbet";
@@ -14,12 +14,10 @@ import {
   calculateTotalBetAmount,
   calculateTotalOdds,
   deleteAllBets,
-  setMyBets,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "@/utils/utils";
-import { GetPlayerBets } from "@/utils/actions";
 import Error from "./svg/Error";
 
 const QuickBet = () => {
@@ -57,10 +55,11 @@ const QuickBet = () => {
 
   const hasDuplicateEventIds = () => {
     if (currentBetType !== "combo") return false;
-
-    const eventIds = bets.map((bet) => bet.event_id);
-    const uniqueEventIds = new Set(eventIds);
-    return eventIds.length !== uniqueEventIds.size;
+  
+    const combinedKeys = bets.map((bet) => `${bet.event_id}-${bet.market}`);
+    const uniqueCombinedKeys = new Set(combinedKeys);
+  
+    return combinedKeys.length !== uniqueCombinedKeys.size;
   };
 
   useEffect(() => {
@@ -104,7 +103,6 @@ const QuickBet = () => {
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
-
     if (socket) {
       socket.emit("bet", { action: "PLACE", payload: finalbets });
     } else {
@@ -244,7 +242,7 @@ const QuickBet = () => {
             </div>
             {disabled && (
               <p className="text-[12px] text-red-500 italic text-right">
-                You can’t place bet on this combo
+                You can&apos;t place bet on this combo
               </p>
             )}
             {currentBetType === "combo" && (

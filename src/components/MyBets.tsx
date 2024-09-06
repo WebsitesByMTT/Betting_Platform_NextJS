@@ -69,9 +69,9 @@ const MyBets = () => {
     const response = await redeemPlayerBet(betId);
     setLoading(false);
     if (response?.error) {
+      fetchBet();
       return toast.error(response.error);
     }
-    console.log("MYBETS", response);
     toast.success(response?.responseData?.message);
     fetchBet();
   };
@@ -241,7 +241,7 @@ const MyBets = () => {
                       </td>
                       <td
                         className={`text-sm ${
-                          data.status === "redeem"
+                          data.status ==="redeem"
                             ? "text-gray-500"
                             : "text-[#FF6A00]"
                         } md:text-lg capitalize `}
@@ -250,9 +250,9 @@ const MyBets = () => {
                       </td>
                       <td>
                         <button
-                          disabled={data.status === "redeem"}
+                          disabled={data.status === "redeem"||data.status ==="failed"}
                           className={` px-4 py-1 rounded-lg text-sm md:text-lg ${
-                            data.status === "redeem"
+                            data.status === "redeem"||data.status ==="failed"
                               ? "text-gray-500"
                               : "text-[#00C8FF] bg-white bg-opacity-10"
                           }`}

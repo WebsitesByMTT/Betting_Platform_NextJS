@@ -1,23 +1,11 @@
-import EventsMenu from "@/components/EventsMenu";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Banner from "@/components/home/Banner";
-import BetContainer from "@/components/BetContainer";
-import Categories from "@/components/Categories";
-import QuickBet from "@/components/QuickBet";
-import MyBets from "@/components/MyBets";
+import React from 'react'
 
-export default function Home() {
+const page = () => {
   return (
-    <div className="w-full mx-auto">
-      <div className="h-[95vh] overflow-y-scroll pb-5 space-y-[max(1vw,10px)] hideScrollBar">
-        <Banner />
-        <Categories />
-        <EventsMenu />
-        <QuickBet />
-        <BetContainer />
-        <Footer />
-      </div>
+    <div>
+      Home Page default All
     </div>
-  );
+  )
 }
+
+export default page

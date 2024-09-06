@@ -85,8 +85,8 @@ const Page = ({ params }: any) => {
   };
 
   const handleBet = async (event: React.MouseEvent, betOn: string, betsData: any, outcome: any) => {
-    const betson = betOn.toLowerCase();
     event.stopPropagation();
+    const betson = betOn.toLowerCase();
     const betDetails: BetDetails = {
       id: betOn + leagues_Info?.id + betsData?.key,
       away_team: {
@@ -115,8 +115,7 @@ const Page = ({ params }: any) => {
 
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
-    
-    if (betId==='Over'||betId==='Under') {
+    if (betId==="Over" || betId==="Under"){
      return allbets.some((bet) => bet.bet_on === betId);
     }
     return allbets.some((bet) => bet.id === betId);
@@ -146,7 +145,7 @@ const Page = ({ params }: any) => {
   return (
     <>
       <Categories />
-      <div className='w-[80%] mx-auto'>
+      <div className='w-full md:w-[80%] mx-auto'>
         <div className='py-5'>
           {category && (
             <div className="border-[1px] border-[#2e3134] px-1 space-x-1 md:space-x-0 md:px-3 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex items-center gap-2">

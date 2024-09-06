@@ -69,8 +69,7 @@ const Page = ({ params }: any) => {
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const suffix = hours === 0 ? '12' : hours > 12 ? hours - 12 : hours;
     let formattedTime = `${suffix}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-    // Check if current time is less than commence time
-
+    
     const currentTime = new Date();
     if (currentTime > date) {
       return "Live";

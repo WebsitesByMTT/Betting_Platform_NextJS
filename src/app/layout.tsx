@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`${poppins.className} bg-[#1a1a1d]`}>
         {children}
         <Toaster
-          position="top-right"
+          position="top-center"
           toastOptions={{
             duration: 1000,
             style: {

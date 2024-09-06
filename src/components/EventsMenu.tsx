@@ -49,7 +49,7 @@ const EventsMenu = ({ cat }: any) => {
           </p>
         </div>
       )}
-      <div className="flex gap-4 overflow-x-scroll hideScrollBar">
+      <div className="flex gap-4 overflow-x-scroll hideScrollBa">
         {events?.map((item, index) => (
           <Link
             href={`/${cat.cat}/${item.key}`}

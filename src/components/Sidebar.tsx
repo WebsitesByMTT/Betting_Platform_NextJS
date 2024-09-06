@@ -3,31 +3,33 @@ import React, { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 import Logo from "./svg/Logo";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Hamburger from "./svg/sidebar/Hamburger";
 import CrossIcon from "./svg/CrossIcon";
 import { svgMap } from "./svg/SvgMap";
+import { SportItem } from "@/utils/types";
+import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 
 const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
-  const [sports, setSports] = useState<string[]>();
-  const { socket } = useSocket();
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  //sports categories for sidebar from redux
   const sportsCategories = useAppSelector((state) => state?.sports.categories);
-  const currentCategory = useAppSelector(
-    (state) => state?.sports?.selectedCategory
-  );
-
-  //rendering sidebar categories
+  const { socket } = useSocket();
+  const pathname = usePathname();
+  const url = decodeURIComponent(pathname);
+  const dispatch = useAppDispatch();
+  function extractBetweenSlashes(url: string): string | null {
+    const parts = url.split("/");
+    if (parts.length < 2) return null;
+    return parts[1];
+  }
+  const matchurl = extractBetweenSlashes(url);
   useEffect(() => {
-    setSports(sportsCategories);
-  }, [sportsCategories]);
+    if (matchurl) {
+      dispatch(setSelectedCategory(matchurl));
+    }
+  }, [matchurl]);
 
   //phone screen toggle
   const handeltoggle = () => {
@@ -46,24 +48,8 @@ const Sidebar = () => {
   useEffect(() => {
     if (socket) {
       fetchSports();
-      fetchCategoryEvents(currentCategory);
     }
   }, [socket]);
-
-  //event for a specific sports category
-  const fetchCategoryEvents = (category: any) => {
-    router.push("/");
-    setToggle(false)
-    dispatch(setSelectedCategory(category || "All"));
-    if (socket) {
-      socket.emit("data", {
-        action: "CATEGORY_SPORTS",
-        payload: category,
-      });
-    } else {
-      console.warn("Socket is not connected");
-    }
-  };
 
   //sidebar list
   const sidebar = [
@@ -71,7 +57,7 @@ const Sidebar = () => {
       id: 1,
       title: "sports",
       icon: <Sports />,
-      subTitle: sports,
+      subTitle: sportsCategories,
     },
   ];
 
@@ -114,22 +100,24 @@ const Sidebar = () => {
               </div>
               <div className="flex flex-col gap-3 text-lg font-light px-[.8vw] py-2">
                 {item?.subTitle?.map((subitem, subind) => {
-                  const IconComponent = svgMap[subitem.toLowerCase()];
+                  const IconComponent = svgMap[subitem?.category?.toLowerCase()];
                   return (
-                    <button
-                      onClick={() => fetchCategoryEvents(subitem)}
+                    <Link
+                      href={`/${subitem?.category}/${subitem?.events[0].key}`}
                       key={subind}
                       className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
-                        currentCategory === subitem ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"  : ""
+                        subitem?.category === matchurl
+                          ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"
+                          : ""
                       }`}
                     >
                       <div className="relative h-[20px] w-[20px] my-auto">
                         {IconComponent}
                       </div>
                       <p className="whitespace-nowrap text-left text-sm md:text-base col-span-3">
-                        {subitem}
+                        {subitem.category}
                       </p>
-                    </button>
+                    </Link>
                   );
                 })}
               </div>

@@ -1,10 +1,10 @@
 "use client";
-
 import { setMyBets } from "@/lib/store/features/bet/betSlice";
 import {
   setCategories,
   setEvents,
   setLeagues,
+  setLeaguesInfo,
   setLoading,
 } from "@/lib/store/features/sports/sportsSlice";
 import { setUserCredits } from "@/lib/store/features/user/userSlice";
@@ -47,14 +47,14 @@ export const SocketProvider: React.FC<{
       socketInstance.on("connect", () => {
         console.log("Connected with socket id:", socketInstance.id);
       });
-      
+
       socketInstance.on("data", (data: any) => {
         switch (data.type) {
           case "CATEGORIES":
             dispatch(setCategories(data.data));
             break;
           case "CATEGORY_SPORTS":
-            dispatch(setEvents(data.data));
+            dispatch(setEvents(data?.data));
             break;
           case "ODDS":
             dispatch(setLoading(false));
@@ -68,6 +68,11 @@ export const SocketProvider: React.FC<{
             break;
           case "MYBETS":
             dispatch(setMyBets(data?.bets));
+            break;
+          case "GET event odds":
+            dispatch(setLoading(false));
+            dispatch(setLeaguesInfo(data?.data));
+            break;
           default:
             break;
         }
@@ -78,14 +83,14 @@ export const SocketProvider: React.FC<{
           case "BET":
             toast.success(data.data);
             break;
-          
+
           case "STATUS":
             if (!data.payload) {
               toast.error("You are blocked by admin");
               router.push("/logout");
             }
             break;
-            
+
           default:
             break;
         }

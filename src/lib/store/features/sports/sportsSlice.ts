@@ -1,13 +1,15 @@
+import { SportItem } from "@/utils/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SportsState {
   loading: boolean;
-  categories: string[];
+  categories: SportItem[];
   events: [];
   leagues: any;
   selectedEvent: string;
   selectedLeague: string;
   selectedCategory: string;
+  leaguesInfo: {}
 }
 
 const initialState: SportsState = {
@@ -18,13 +20,14 @@ const initialState: SportsState = {
   selectedEvent: "",
   selectedLeague: "",
   selectedCategory: "All",
+  leaguesInfo: {}
 };
 
 const sportsSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {
-    setCategories: (state, action: PayloadAction<string[]>) => {
+    setCategories: (state, action: PayloadAction<SportItem[]>) => {
       state.categories = action.payload;
     },
     setEvents: (state, action: PayloadAction<[]>) => {
@@ -45,6 +48,9 @@ const sportsSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    setLeaguesInfo: (state, action: PayloadAction<{}>) => {
+      state.leaguesInfo = action.payload;
+    }
   },
 });
 
@@ -56,6 +62,7 @@ export const {
   setSelectedEvent,
   setSelectedLeague,
   setLoading,
+  setLeaguesInfo
 } = sportsSlice.actions;
 
 export default sportsSlice.reducer;

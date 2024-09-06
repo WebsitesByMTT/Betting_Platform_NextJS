@@ -8,7 +8,7 @@ import BetCard from "./BetCard";
 import SkeletonCard from "./SkeletonCard";
 import Today from "./svg/Today";
 
-const BetContainer = () => {
+const BetContainer = ({cat}:any) => {
   const [liveEventLeagues, setLiveEventLeagues] = useState<Leagues[]>([]);
   const [todayEventLeagues, setTodayEventLeagues] = useState<Leagues[]>([]);
   const [upcomingEventLeagues, setUpcomingEventLeagues] = useState<Leagues[]>(
@@ -35,7 +35,7 @@ const BetContainer = () => {
         {!loading ? (
           liveEventLeagues && liveEventLeagues?.length > 0 ? (
             liveEventLeagues?.map((data, index) => (
-              <BetCard key={index} betsData={data} />
+              <BetCard cat={cat} key={index} betsData={data} />
             ))
           ) : (
             <p className="w-full text-center col-span-12 text-white py-2 text-sm">
@@ -59,7 +59,7 @@ const BetContainer = () => {
         {!loading ? (
           todayEventLeagues && todayEventLeagues?.length > 0 ? (
             todayEventLeagues?.map((data, index) => (
-              <BetCard key={index} betsData={data} />
+              <BetCard cat={cat} key={index} betsData={data} />
             ))
           ) : (
             <p className="w-full text-center col-span-12 text-white py-2 text-sm">
@@ -87,7 +87,7 @@ const BetContainer = () => {
         {!loading ? (
           upcomingEventLeagues && upcomingEventLeagues?.length > 0 ? (
             upcomingEventLeagues?.map((data, index) => (
-              <BetCard key={index} betsData={data} />
+              <BetCard cat={cat} key={index} betsData={data} />
             ))
           ) : (
             <p className="w-full text-center col-span-12 text-white py-2 text-sm">

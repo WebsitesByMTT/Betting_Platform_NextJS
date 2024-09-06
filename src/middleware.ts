@@ -6,8 +6,10 @@ export default function middleware(request: NextRequest) {
   const isPublicPath = path === "/login";
   const token = request.cookies.get("token");
 
-  if (isPublicPath && token) {
-    const response = NextResponse.redirect(new URL("/", request.url));
+  if ((isPublicPath || path === "/") && token) {
+    const response = NextResponse.redirect(
+      new URL("/All/americanfootball_cfl", request.url)
+    );
     return response;
   }
 
@@ -21,3 +23,4 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: "/((?!api|static|.*\\..*|_next).*)",
 };
+

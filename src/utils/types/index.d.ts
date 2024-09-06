@@ -5,10 +5,12 @@ interface BetDetails {
   away_team: {
     name: string;
     odds: string;
+    points?: number;
   };
   home_team: {
     name: string;
     odds: string;
+    points?: number;
   };
   bet_on: string;
   market: string;

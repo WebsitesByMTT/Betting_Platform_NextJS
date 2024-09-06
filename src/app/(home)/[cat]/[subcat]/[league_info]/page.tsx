@@ -6,7 +6,6 @@ import Favourite from '@/components/svg/Favourite';
 import LiveGame from '@/components/svg/LiveGame';
 import Pin from '@/components/svg/Pin';
 import { svgMap } from '@/components/svg/SvgMap';
-import World from '@/components/svg/World';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { useSocket } from '@/components/SocketProvider';
 import { setLoading } from '@/lib/store/features/sports/sportsSlice';
@@ -24,7 +23,6 @@ const Page = ({ params }: any) => {
   const loading = useAppSelector((state) => state.sports.loading);
   const allbets = useAppSelector((state) => state.bet.allbets);
   const myBets = useAppSelector((state) => state.bet.myBets);
-
   // State to track open/closed accordions
   const [openIndices, setOpenIndices] = useState<boolean[]>([]);
 
@@ -70,10 +68,9 @@ const Page = ({ params }: any) => {
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     const suffix = hours === 0 ? '12' : hours > 12 ? hours - 12 : hours;
-
     let formattedTime = `${suffix}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-
     // Check if current time is less than commence time
+
     const currentTime = new Date();
     if (currentTime > date) {
       return "Live";
@@ -89,19 +86,21 @@ const Page = ({ params }: any) => {
   };
 
   const handleBet = async (event: React.MouseEvent, betOn: string, betsData: any, outcome: any) => {
+    const betson = betOn.toLowerCase();
     event.stopPropagation();
-    console.log(betsData, "outcome")
     const betDetails: BetDetails = {
       id: betOn + leagues_Info?.id + betsData?.key,
       away_team: {
         name: leagues_Info?.away_team,
-        odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.away_team))?.price,
+        odds: betsData?.outcomes?.find((item: any) => (item.name === (betsData?.key === 'totals' ? betOn : leagues_Info?.away_team)))?.price,
+        points: betsData?.outcomes?.find((item:any) => (item.name === (betsData?.key==='totals'?betOn:leagues_Info?.away_team)))?.point,
       },
       home_team: {
         name: leagues_Info?.home_team,
-        odds: betsData?.outcomes?.find((item: any) => (item.name === leagues_Info?.home_team))?.price,
+        odds: betsData?.outcomes?.find((item: any) => (item.name === (betsData?.key === 'totals' ? betOn : leagues_Info?.home_team)))?.price,
+        points: betsData?.outcomes?.find((item:any) => (item.name === (betsData?.key==='totals'?betOn:leagues_Info?.home_team)))?.point,
       },
-      bet_on: betOn,
+      bet_on: betsData?.key==='totals'?outcome?.name:betson,
       market: betsData?.key,
       oddsFormat: "decimal",
       sport_key: leagues_Info?.sport_key,
@@ -109,8 +108,9 @@ const Page = ({ params }: any) => {
       event_id: leagues_Info?.id,
       commence_time: leagues_Info?.commence_time,
       selected: leagues_Info?.selected,
-      amount: 50,
+      amount:50,
     };
+    console.log(betDetails)
     dispatch(addAllBets(betDetails));
   };
 
@@ -139,7 +139,7 @@ const Page = ({ params }: any) => {
     return false;
   };
 
-
+     
   return (
     <>
       <Categories />
@@ -167,15 +167,15 @@ const Page = ({ params }: any) => {
             </div>}
             <Favourite />
           </div>
-          <div className='flex w-[80%] mx-auto items-center justify-between pt-10'>
-            <div>
-              <div className='flex justify-end'><span className='bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] px-2.5 border-[.2px] border-opacity-5 border-white py-2.5 rounded-full'>{IconComponent}</span></div>
-              <div className='text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.away_team}</div>
-            </div>
-            <span className='text-white text-2xl'>-</span>
+          <div className='flex w-[80%] mx-auto items-center justify-between pt-10'>            
             <div>
               <div className='flex justify-start'><span className='bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] px-2.5 border-[.2px] border-opacity-5 border-white py-2.5 text-xs rounded-full'>{IconComponent}</span></div>
               <div className='text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.home_team}</div>
+            </div>
+            <span className='text-white text-2xl'>-</span>
+            <div>
+              <div className='flex justify-end'><span className='bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] px-2.5 border-[.2px] border-opacity-5 border-white py-2.5 rounded-full'>{IconComponent}</span></div>
+              <div className='text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.away_team}</div>
             </div>
           </div>
         </div>
@@ -194,15 +194,13 @@ const Page = ({ params }: any) => {
             <div
               className={`accordion-content transition-max-height duration-200 ease-in-out overflow-hidden ${openIndices[index] ? 'max-h-screen' : 'max-h-0'}`}
             >
-
-
               <div className='border-[.2px] space-y-3 mt-[3px] rounded-xl border-white border-opacity-5 p-1.5 bg-gradient-to-tr from-[#0D0C15] to-[#1C1A21]'>
                 <div className='flex items-center gap-x-2 md:gap-x-10'>
                   {
                     loading ? <><div className="bg-[#dfdfdf43] h-[35px] w-full rounded-md animate-pulse"></div><div className="bg-[#dfdfdf43] h-[35px] w-full rounded-md animate-pulse"></div></> :
                       item?.outcomes?.map((outcome: any, outcomeIndex: number) => (
                         <button onClick={(event) => {
-                          handleBet(event, outcome.name === leagues_Info?.home_team ? "home_team" : "away_team", item, outcome);
+                          handleBet(event, item.key==='totals'?outcome.name:(outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), item, outcome);
                         }} key={outcomeIndex} className={`flex-1 py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 group ${isBetInAllBets((outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
                           ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                           : "bg-[#040404] border-transparent"}`}
@@ -223,7 +221,6 @@ const Page = ({ params }: any) => {
           </div>
         ))}
       </div>
-
       <QuickBet />
     </>
   );

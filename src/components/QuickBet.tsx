@@ -54,7 +54,6 @@ const QuickBet = () => {
   }, []);
 
   const hasDuplicateEventIds = () => {
-    if (currentBetType !== "combo") return false;
   
     const combinedKeys = bets.map((bet) => `${bet.event_id}-${bet.market}`);
     const uniqueCombinedKeys = new Set(combinedKeys);

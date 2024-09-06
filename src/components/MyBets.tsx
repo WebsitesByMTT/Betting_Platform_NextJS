@@ -250,9 +250,9 @@ const MyBets = () => {
                       </td>
                       <td>
                         <button
-                          disabled={data.status === "redeem"||data.status ==="failed"}
+                          disabled={data.status !== "pending"}
                           className={` px-4 py-1 rounded-lg text-sm md:text-lg ${
-                            data.status === "redeem"||data.status ==="failed"
+                            data.status !== "pending"
                               ? "text-gray-500"
                               : "text-[#00C8FF] bg-white bg-opacity-10"
                           }`}
@@ -430,9 +430,9 @@ const MyBets = () => {
                       </td>
                       <td className="py-3">
                         <button
-                          disabled={item.status === "redeem"}
+                          disabled={item.status !== "pending"}
                           className={` px-4 py-1 rounded-lg text-sm md:text-lg ${
-                            item.status === "redeem"
+                            item.status !== "pending"
                               ? "text-gray-500"
                               : "text-[#00C8FF] bg-white  bg-opacity-10"
                           }`}

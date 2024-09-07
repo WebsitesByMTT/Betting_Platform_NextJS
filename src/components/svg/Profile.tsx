@@ -5,7 +5,6 @@ const Profile = () => {
     <svg
       viewBox="0 0 44 45"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect

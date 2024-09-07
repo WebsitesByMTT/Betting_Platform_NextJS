@@ -7,7 +7,6 @@ const Cricket = () => {
       height="27"
       viewBox="0 0 26 27"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_i_285_887)">

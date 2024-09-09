@@ -31,10 +31,10 @@ const MyBets = () => {
   const options = ["all", "pending", "won", "lost", "redeem", "combo"];
   const headers = [
     { icon: <Sport />, text: "sport" },
-    { icon: <Bet />, text: "bet" },
-    { icon: <Market />, text: "market" },
+    { icon: <Bet />, text: "Stake" },
+    { icon: <Market />, text: "Category" },
     { icon: <Odds />, text: "odds" },
-    { icon: <Amount />, text: "amount won" },
+    { icon: <Amount />, text: "Possible Winning" },
     { icon: <Status />, text: "status" },
     { icon: <Action />, text: "action" },
   ];

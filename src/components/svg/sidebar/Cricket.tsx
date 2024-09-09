@@ -3,8 +3,8 @@ import React from "react";
 const Cricket = () => {
   return (
     <svg
-      width="26"
-      height="27"
+      width="24"
+      height="24"
       viewBox="0 0 26 27"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

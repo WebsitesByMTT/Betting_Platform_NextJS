@@ -3,8 +3,8 @@ import React from "react";
 const Boxing = () => {
   return (
     <svg
-      width="25"
-      height="27"
+      width="20"
+      height="20"
       viewBox="0 0 25 27"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

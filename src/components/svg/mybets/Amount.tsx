@@ -6,7 +6,6 @@ const Amount = () => {
       width="27"
       height="28"
       viewBox="0 0 27 28"
-      className="h-full w-full"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

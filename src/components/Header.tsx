@@ -54,7 +54,7 @@ const Header = () => {
             </p>
           </div>
           <div className="relative">
-            <button className="w-[2rem] lg:h-[3rem] h-[2rem] pt-[2px] cursor-pointer  " onClick={() => setToggle(!toggle)}><Profile /></button>
+            <button className="w-[1.7rem] lg:h-[3rem] h-[1.7rem] pt-[6px] cursor-pointer  " onClick={() => setToggle(!toggle)}><Profile /></button>
             <div className={`absolute ${toggle ? 'scale-100' : 'scale-0'} transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}>
               <div onClick={()=>setToggle(!toggle)} className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col gap-3 text-center text-sm">
                 <User />

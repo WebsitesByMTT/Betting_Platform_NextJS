@@ -15,6 +15,8 @@ import { useAppDispatch } from "@/lib/store/hooks";
 import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
 import { useSocket } from "./SocketProvider";
 import { getCurrentUser } from "@/utils/utils";
+import { useRouter } from "next/navigation";
+import Back from "./svg/Back";
 interface User {
   userId: string;
   // Add other properties as needed
@@ -25,6 +27,7 @@ const MyBets = () => {
   const [open, setOpen] = useState(false);
   const [betID, setBetID] = useState();
   const [userId, setUserId] = useState<any>();
+  const router=useRouter()
   const dispatch = useAppDispatch();
   const {socket} = useSocket();
   const [selectedOption, setSelectedOption] = useState<string>("all");
@@ -104,6 +107,7 @@ const MyBets = () => {
 
   return (
     <div className="z-[100] text-white h-full">
+      <button onClick={()=>router.back()}><Back /></button>
       <div className="w-full overflow-auto flex gap-x-3  md:gap-5 py-3">
         {options.map((item, index) => (
           <button

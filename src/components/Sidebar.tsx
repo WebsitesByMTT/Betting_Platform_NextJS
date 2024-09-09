@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use client"
+import { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -9,7 +9,6 @@ import Link from "next/link";
 import Hamburger from "./svg/sidebar/Hamburger";
 import CrossIcon from "./svg/CrossIcon";
 import { svgMap } from "./svg/SvgMap";
-import { SportItem } from "@/utils/types";
 import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 
 const Sidebar = () => {
@@ -34,6 +33,7 @@ const Sidebar = () => {
   //phone screen toggle
   const handeltoggle = () => {
     setToggle(!toggle);
+    document.body.classList.toggle("no-scroll", !toggle);
   };
 
   //event for all the categories for sidebar from socket
@@ -86,7 +86,7 @@ const Sidebar = () => {
             <Logo />
           </Link>
         </div>
-        <div className="py-[0.5vw] space-y-[0.5vw]  h-[calc(100vh-130px)] lg:h-[calc(100vh-160px)]  overflow-y-scroll hideScrollBar webkit-overflow-scrolling-touch" >
+        <div className="py-[0.5vw] space-y-[0.5vw] h-[calc(100vh-170px)] lg:h-[calc(100vh-160px)] overflow-y-scroll hideScrollBar">
           {sidebar?.map((item, ind) => (
             <div key={ind}>
               <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px] mx-1">
@@ -99,13 +99,13 @@ const Sidebar = () => {
                 {item?.subTitle?.map((subitem, subind) => {
                   const IconComponent = svgMap[subitem?.category?.toLowerCase()];
                   return (
-                    <div onClick={()=>setToggle(!toggle)}>
+                    <div onClick={() => setToggle(!toggle)}>
                       <Link
                         href={`/${subitem?.category}/${subitem?.events[0].key}`}
                         key={subind}
-                        className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${subitem?.category === matchurl
-                            ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"
-                            : ""
+                        className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${subitem?.category === matchurl
+                          ? "bg-gradient-to-b border-[.5px] border-[#4A4940] from-[#201E2700] to-[#30302D]"
+                          : ""
                           }`}
                       >
                         <div className="relative h-[20px] w-[20px] my-auto">
@@ -116,7 +116,6 @@ const Sidebar = () => {
                         </p>
                       </Link>
                     </div>
-
                   );
                 })}
               </div>
@@ -125,11 +124,10 @@ const Sidebar = () => {
         </div>
       </div>
       {/* Blur Screen */}
-      <div
+      {toggle && <div
         onClick={handeltoggle}
-        className={`${toggle ? "block" : "hidden"
-          } lg:hidden cursor-pointer transition w-full h-full backdrop-blur-sm z-30 fixed top-0 left-0`}
-      ></div>
+        className="lg:hidden cursor-pointer transition w-screen h-screen backdrop-blur-sm z-30 fixed top-0 left-0"
+      ></div>}
     </div>
   );
 };

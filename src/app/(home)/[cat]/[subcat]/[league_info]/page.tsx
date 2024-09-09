@@ -145,7 +145,7 @@ const Page = ({ params }: any) => {
   return (
     <>
       <Categories />
-      <div className='w-full md:w-[80%] h-[calc(100vh-200px)] overflow-y-scroll webkit-overflow-scrolling-touch mx-auto'>
+      <div className='w-full md:w-[80%] pb-14 mx-auto'>
         <div className='py-5'>
           {category && (
             <div className="border-[1px] border-[#2e3134] px-1 space-x-1 md:space-x-0 md:px-3 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex items-center gap-2">
@@ -169,7 +169,7 @@ const Page = ({ params }: any) => {
             </div>}
             <Favourite />
           </div>
-          <div className='flex w-[80%] mx-auto items-center justify-between pt-10'>
+          <div className='flex lg:w-[80%] mx-auto items-center justify-between pt-10'>
             <div>
               <div className='flex justify-start'><span className='bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] px-2.5 border-[.2px] border-opacity-5 border-white py-2.5 text-xs rounded-full'>{IconComponent}</span></div>
               <div className='text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.home_team}</div>
@@ -203,21 +203,45 @@ const Page = ({ params }: any) => {
                       item?.outcomes?.map((outcome: any, outcomeIndex: number) => (
                         <button onClick={(event) => {
                           handleBet(event, item.key === 'totals' ? outcome.name : (outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), item, outcome);
-                        }} key={outcomeIndex} className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] block md:flex justify-between px-2 group ${isBetInAllBets(item.key === 'totals' ? (outcome?.name) : (outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
+                        }} key={outcomeIndex} className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${outcome?.point?'block':'flex space-x-.5'} justify-between px-1 group ${isBetInAllBets(item.key === 'totals' ? (outcome?.name) : (outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
                           ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                           : "bg-[#040404] border-transparent"}`}
                           disabled={isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key)}>
-                          <div className='text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2'>{outcome.name}<span className={`${outcome?.point < 0 ? 'text-red-500' : 'text-green-500'} md:block hidden`}>
-                            {outcome?.point}
-                          </span>
+                          <div className='text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2'>{outcome.name}
                           </div>
-                          <div className='flex md:items-center justify-between pt-2 md:hidden text-red-400'>
+                          <div className={`flex md:items-center justify-between pt-2 ${outcome?.point?'flex':'hidden'}  text-red-400`}>
                             <span className={`${outcome?.point < 0 ? 'text-red-500' : 'text-green-500'}`}>
                               {outcome?.point}
                             </span>
-                            <div className='text-xs text-white py-1 px-1.5 rounded-md bg-[#343434] '>{outcome.price}</div>
+                            <div className='text-xs text-white py-1 px-1.5 rounded-md bg-[#343434]'>{outcome.price}</div>
                           </div>
-                          <div className='text-xs text-white py-1 px-1.5 md:block hidden rounded-md bg-[#343434] '>{outcome.price}</div>
+                          <div className={`text-xs text-white py-1 ${outcome?.point?'hidden':'block'} px-1.5  rounded-md bg-[#343434]`}>{outcome.price}</div>
+                          {isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key) && <p className="text-[12px] text-red-500 betPlacedText italic text-center invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute bg-black rounded-xl top-[20%] left-[5%] right-[5%] w-full">
+                            This bet is already placed
+                          </p>}
+                        </button>
+                      ))
+                  }
+                </div>
+                <div className='flex md:items-center gap-x-2 md:gap-x-10'>
+                  {
+                    loading ? <><div className="bg-[#dfdfdf43] w-full rounded-md animate-pulse"></div><div className="bg-[#dfdfdf43]  w-full rounded-md animate-pulse"></div></> :
+                      item?.outcomes?.map((outcome: any, outcomeIndex: number) => (
+                        <button onClick={(event) => {
+                          handleBet(event, item.key === 'totals' ? outcome.name : (outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), item, outcome);
+                        }} key={outcomeIndex} className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${outcome?.point?'block':'flex space-x-.5'} justify-between px-1 group ${isBetInAllBets(item.key === 'totals' ? (outcome?.name) : (outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
+                          ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
+                          : "bg-[#040404] border-transparent"}`}
+                          disabled={isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key)}>
+                          <div className='text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2'>{outcome.name}
+                          </div>
+                          <div className={`flex md:items-center justify-between pt-2 ${outcome?.point?'flex':'hidden'}  text-red-400`}>
+                            <span className={`${outcome?.point < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                              {outcome?.point}
+                            </span>
+                            <div className='text-xs text-white py-1 px-1.5 rounded-md bg-[#343434]'>{outcome.price}</div>
+                          </div>
+                          <div className={`text-xs text-white py-1 ${outcome?.point?'hidden':'block'} px-1.5  rounded-md bg-[#343434]`}>{outcome.price}</div>
                           {isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key) && <p className="text-[12px] text-red-500 betPlacedText italic text-center invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute bg-black rounded-xl top-[20%] left-[5%] right-[5%] w-full">
                             This bet is already placed
                           </p>}

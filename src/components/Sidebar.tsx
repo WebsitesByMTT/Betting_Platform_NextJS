@@ -99,7 +99,7 @@ const Sidebar = () => {
                 {item?.subTitle?.map((subitem, subind) => {
                   const IconComponent = svgMap[subitem?.category?.toLowerCase()];
                   return (
-                    <div onClick={() => setToggle(!toggle)}>
+                    <div  key={subind} onClick={() => setToggle(!toggle)}>
                       <Link
                         href={`/${subitem?.category}/${subitem?.events[0].key}`}
                         key={subind}

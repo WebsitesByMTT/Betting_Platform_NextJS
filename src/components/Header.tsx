@@ -43,7 +43,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex items-end justify-end z-50 bg-black sticky top-0 p-[.5rem] flex-col pb-4">
+      <div className="flex items-end justify-end z-50 bg-[#0C0B14] sticky top-0 p-[.5rem] flex-col pb-4">
         <div className="flex items-center justify-center z-50 gap-2 lg:gap-5 py-2">
           <button onClick={()=>toast.success('Feature Under Development!')} className="w-[2rem] cursor-pointer lg:h-[3rem] h-[1.5rem]">
             <Notification />

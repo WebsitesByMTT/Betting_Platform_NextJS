@@ -21,13 +21,13 @@ const MyBets = () => {
   const [betID, setBetID] = useState();
   const dispatch = useAppDispatch();
   const [selectedOption, setSelectedOption] = useState<string>("all");
-  const options = ["all", "pending", "won", "lost", "redeem", "combo"];
+  const options = ["all", "pending", "won", "lost", "redeem", "combo", "failed"];
   const headers = [
     { icon: <Sport />, text: "sport" },
-    { icon: <Bet />, text: "bet" },
-    { icon: <Market />, text: "market" },
+    { icon: <Bet />, text: "Stake" },
+    { icon: <Market />, text: "Category" },
     { icon: <Odds />, text: "odds" },
-    { icon: <Amount />, text: "amount won" },
+    { icon: <Amount />, text: "Possible Winning" },
     { icon: <Status />, text: "status" },
     { icon: <Action />, text: "action" },
   ];
@@ -37,6 +37,7 @@ const MyBets = () => {
     if (response?.error) {
       return toast.error(response.error || "Error fetching Bets");
     }
+    console.log(response?.responseData);
     setmyBets(response?.responseData);
     dispatch(setMyBets(response?.responseData));
   };
@@ -107,8 +108,8 @@ const MyBets = () => {
                   key={index}
                   className="font-extralight uppercase py-5 border-b-[1px] border-b-[#484848]"
                 >
-                  <div className="flex w-full items-center justify-center gap-2">
-                    <span>{item.icon}</span>
+                  <div className="flex w-full px-3 xl:px-0 xl:items-center xl:justify-center xl:gap-2">
+                    <span className="hidden xl:block">{item.icon}</span>
                     <span className="text-sm md:text-base">{item.text}</span>
                   </div>
                 </th>
@@ -241,7 +242,7 @@ const MyBets = () => {
                       </td>
                       <td
                         className={`text-sm ${
-                          data.status ==="redeem"
+                          data.status === "redeem"
                             ? "text-gray-500"
                             : "text-[#FF6A00]"
                         } md:text-lg capitalize `}
@@ -267,7 +268,8 @@ const MyBets = () => {
                     </tr>
                   ))
                 ) : (
-                  <>
+                    <>
+                    <div className="bg-black px-5 py-1 rounded-tl-2xl border-[#f3aa3589] border-x-[1px] border-b-[1px] rounded-tr-2xl  inline-block mt-2">Combo</div>
                     {item.data.map((data: any, dataIndex: any) => (
                       <tr
                         key={`${item._id}-${dataIndex}-combo`}

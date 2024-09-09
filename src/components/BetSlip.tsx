@@ -47,7 +47,7 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
         <CrossIcon />
       </button>
       <div className="px-3 py-2 w-[85%]">
-        <div className="flex gap-2 text-sm font-medium text-[#ffffff]">
+        <div className="flex space-x-4 md:gap-2 text-sm font-medium text-[#ffffff]">
           <div className="relative w-[15px]">
             {IconComponent}
           </div>

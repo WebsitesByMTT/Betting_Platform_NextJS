@@ -24,13 +24,13 @@ const QuickBet = () => {
   const [open, setOpen] = useState(false);
   const [allBets, setAllBets] = useState<BetDetails[]>([]);
   const [currentBetType, setCurrentBetType] = useState<String>("single");
-  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [comboBetAmount, setCombobetAmount] = useState<any>(100);
   const potentialWin = useAppSelector((state) => state.bet.potentialWin);
   const totalBetAmount = useAppSelector((state) => state.bet.totalBetAmount);
   const totalBetOdds = useAppSelector((state) => state.bet.totalOdds);
   const bets = useAppSelector((state) => state.bet.allbets);
+  const myBets = useAppSelector((state) => state.bet.myBets);
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
   const betsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -38,31 +38,17 @@ const QuickBet = () => {
   const betAmount = [20, 50, 100, 500];
   const betType = ["single", "combo"];
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 700px)");
-
-    const handleResize = () => {
-      setIsMobile(mediaQuery.matches);
-    };
-
-    handleResize();
-
-    mediaQuery.addEventListener("change", handleResize);
-    return () => {
-      mediaQuery.removeEventListener("change", handleResize);
-    };
-  }, []);
-
   const hasDuplicateEventIds = () => {
-    const combinedKeys = bets.map((bet) => `${bet.event_id}-${bet.market}`);
-    const uniqueCombinedKeys = new Set(combinedKeys);
+    const betPairs = bets.map((bet) => `${bet.event_id}-${bet.market}`);
+    const betPairsSet = new Set(betPairs);
 
-    return combinedKeys.length !== uniqueCombinedKeys.size;
+    return betPairs.length !== betPairsSet.size;
   };
 
   useEffect(() => {
     setAllBets(bets);
-    if (bets.length <= 0 || isMobile) {
+    console.log(bets, "bets");
+    if (bets.length <= 0) {
       setOpen(false);
     } else {
       setOpen(true);
@@ -240,7 +226,9 @@ const QuickBet = () => {
             </div>
             {disabled && (
               <p className="text-[12px] text-red-500 italic text-right">
-                You can&apos;t place bet on this combo
+                {currentBetType === "single"
+                  ? "Can't place this bet"
+                  : "Can't place bet on this combo"}
               </p>
             )}
             {currentBetType === "combo" && (
@@ -306,14 +294,6 @@ const QuickBet = () => {
           </>
         )}
       </div>
-      <div
-        onClick={() => {
-          setOpen(!open);
-        }}
-        className={`${
-          open ? "block" : "hidden"
-        } cursor-pointer md:hidden transition w-full h-full z-[-5] fixed top-0 left-0`}
-      ></div>
     </div>
   );
 };

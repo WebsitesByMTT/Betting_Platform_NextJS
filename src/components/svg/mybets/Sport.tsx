@@ -7,7 +7,6 @@ const Sport = () => {
       height="28"
       viewBox="0 0 28 28"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect

@@ -74,7 +74,7 @@ const Sidebar = () => {
       <div
         className={`transition-all ${
           toggle ? "left-0 " : "left-[-200%]"
-        } text-white z-[500] h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[60%] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+        } text-white z-[500] h-screen lg:h-[calc(100vh-40px)]  bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2 overflow-hidden border-[#2E2D32] fixed lg:top-0 lg:sticky w-[60%] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
           className={`absolute left-3 top-2 lg:hidden cursor-pointer text-white text-opacity-60 ${
@@ -89,10 +89,10 @@ const Sidebar = () => {
             <Logo />
           </Link>
         </div>
-        <div className="py-[0.5vw] space-y-[0.5vw]  h-[90vh] overflow-y-scroll hideScrollBar">
+        <div className="py-[0.5vw] space-y-[0.5vw]  h-[calc(100vh-130px)] lg:h-[calc(100vh-160px)]  overflow-y-scroll hideScrollBar webkit-overflow-scrolling-touch">
           {sidebar?.map((item, ind) => (
             <div key={ind}>
-              <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px] mx-1 md:mx-0">
+              <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px] mx-1">
                 <div className="uppercase bg-gradient-to-b from-[#36353C] to-[#1C1A21] px-[1vw] rounded-full py-[0.6rem] flex gap-2 items-center text-lg md:text-xl">
                   {item.icon}
                   <span className="font-medium">{item.title}</span>
@@ -100,24 +100,27 @@ const Sidebar = () => {
               </div>
               <div className="flex flex-col gap-3 text-lg font-light px-[.8vw] py-2">
                 {item?.subTitle?.map((subitem, subind) => {
-                  const IconComponent = svgMap[subitem?.category?.toLowerCase()];
+                  const IconComponent =
+                    svgMap[subitem?.category?.toLowerCase()];
                   return (
-                    <Link
-                      href={`/${subitem?.category}/${subitem?.events[0].key}`}
-                      key={subind}
-                      className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
-                        subitem?.category === matchurl
-                          ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"
-                          : ""
-                      }`}
-                    >
-                      <div className="relative h-[20px] w-[20px] my-auto">
-                        {IconComponent}
-                      </div>
-                      <p className="whitespace-nowrap text-left text-sm md:text-base col-span-3">
-                        {subitem.category}
-                      </p>
-                    </Link>
+                    <div key={subind} onClick={() => setToggle(!toggle)}>
+                      <Link
+                        href={`/${subitem?.category}/${subitem?.events[0].key}`}
+                        key={subind}
+                        className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
+                          subitem?.category === matchurl
+                            ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"
+                            : ""
+                        }`}
+                      >
+                        <div className="relative h-[20px] w-[20px] my-auto">
+                          {IconComponent}
+                        </div>
+                        <p className="whitespace-nowrap text-left text-sm md:text-base col-span-3">
+                          {subitem.category}
+                        </p>
+                      </Link>
+                    </div>
                   );
                 })}
               </div>

@@ -67,7 +67,7 @@ export const getUser = async () => {
 
     if (!response.ok) {
       const error = await response.json();
-      return { error: error.message }
+      return { error: error.message };
     }
 
     const data = await response.json();
@@ -98,6 +98,29 @@ export const GetPlayerBets = async (status?: string) => {
     }
     const responseData = await response.json();
     return { responseData };
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
+export const GetRedeemInfo = async (betId: string) => {
+  console.log("BETID", betId);
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/bets/redeem/${betId}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
     console.log("error:", error);
   }

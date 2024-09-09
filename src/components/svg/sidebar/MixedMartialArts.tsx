@@ -3,11 +3,10 @@ import React from "react";
 const MixedMartialArts = () => {
   return (
     <svg
-      width="31"
-      height="27"
+      width="24"
+      height="26"
       viewBox="0 0 31 27"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_i_285_906)">

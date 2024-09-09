@@ -3,8 +3,8 @@ import React from "react";
 const RugbyLeague = () => {
   return (
     <svg
-      width="21"
-      height="20"
+      width="19"
+      height="19"
       viewBox="0 0 21 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

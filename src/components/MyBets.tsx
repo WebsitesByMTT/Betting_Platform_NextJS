@@ -12,23 +12,16 @@ import Amount from "./svg/mybets/Amount";
 import Status from "./svg/mybets/Status";
 import Action from "./svg/mybets/Action";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
-import { useSocket } from "./SocketProvider";
-import { getCurrentUser } from "@/utils/utils";
-interface User {
-  userId: string;
-  // Add other properties as needed
-}
+import { setMyBets } from "@/lib/store/features/bet/betSlice";
+
 const MyBets = () => {
   const [myBets, setmyBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [betID, setBetID] = useState();
-  const [userId, setUserId] = useState<any>();
   const dispatch = useAppDispatch();
-  const {socket} = useSocket();
   const [selectedOption, setSelectedOption] = useState<string>("all");
-  const options = ["all", "pending", "won", "lost", "redeem", "combo"];
+  const options = ["all", "pending", "won", "lost", "redeem", "combo", "failed"];
   const headers = [
     { icon: <Sport />, text: "sport" },
     { icon: <Bet />, text: "Stake" },
@@ -44,6 +37,7 @@ const MyBets = () => {
     if (response?.error) {
       return toast.error(response.error || "Error fetching Bets");
     }
+    console.log(response?.responseData);
     setmyBets(response?.responseData);
     dispatch(setMyBets(response?.responseData));
   };
@@ -81,26 +75,7 @@ const MyBets = () => {
     }
     toast.success(response?.responseData?.message);
     fetchBet();
-    dispatch(setRedeemAmount(0))
   };
-
-  const handelGetUser = async () => {
-    const user = await getCurrentUser()as User | null;;
-    if (user) {
-      setUserId(user?.userId);
-    }
-}
-
-  //Receving bet amount
-  useEffect(() => {
-    handelGetUser()
-    if (socket&&userId&&betID) {
-      socket.emit("data", {
-        action: "REDEEM_AMOUNT",
-        payload: { userId:userId,betID:betID },
-      });
-    }
-  }, [open]);
 
   return (
     <div className="z-[100] text-white h-full">
@@ -267,7 +242,7 @@ const MyBets = () => {
                       </td>
                       <td
                         className={`text-sm ${
-                          data.status ==="redeem"
+                          data.status === "redeem"
                             ? "text-gray-500"
                             : "text-[#FF6A00]"
                         } md:text-lg capitalize `}

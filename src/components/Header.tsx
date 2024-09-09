@@ -48,10 +48,10 @@ const Header = () => {
         </div>
         <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
           <p className="text-white px-5 py-1 bg-[#323232] font-light lg:text-xl rounded-md">
-            {Math.round(credits)} $
+            {credits.toFixed(3)} $
           </p>
         </div>
-        <div className="w-[2rem] lg:h-[3rem] h-[1.5rem] cursor-pointer group relative">
+        <div className="w-[2rem] lg:h-[3rem] h-[1.5rem] cursor-pointer group relative flex item-center">
           <Profile />
           <div className="absolute top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md">
             <div className="hidden group-hover:flex  text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col gap-3 text-center text-sm">

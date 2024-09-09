@@ -25,7 +25,7 @@ const Modal: React.FC<any> = ({ text, buttonText, handler, id, setOpen }) => {
       <div className="bg-[#1E1E1E] relative rounded-md w-[80%] md:w-[60%] xl:w-[35%] py-6 flex flex-col gap-10 items-center my-auto h-fit text-white">
         <p className="text-lg text-center w-[90%]">{text}</p>
         <p className="w-[80%] text-center">
-          {redeemInfo?.message}: <span className="font-bold">{redeemInfo?.amount.toFixed(3)}</span>
+          {redeemInfo?.message}: <span className="font-bold">{redeemInfo?.amount?.toFixed(3)}</span>
         </p>
         <button
           className="text-md px-4 py-2 border-x-[2px] border-[#D8890A] rounded-md  bg-[#323232]"

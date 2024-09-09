@@ -108,8 +108,8 @@ const MyBets = () => {
                   key={index}
                   className="font-extralight uppercase py-5 border-b-[1px] border-b-[#484848]"
                 >
-                  <div className="flex w-full items-center justify-center gap-2">
-                    <span>{item.icon}</span>
+                  <div className="flex w-full px-3 xl:px-0 xl:items-center xl:justify-center xl:gap-2">
+                    <span className="hidden xl:block">{item.icon}</span>
                     <span className="text-sm md:text-base">{item.text}</span>
                   </div>
                 </th>
@@ -268,7 +268,8 @@ const MyBets = () => {
                     </tr>
                   ))
                 ) : (
-                  <>
+                    <>
+                    <div className="bg-black px-5 py-1 rounded-tl-2xl border-[#f3aa3589] border-x-[1px] border-b-[1px] rounded-tr-2xl  inline-block mt-2">Combo</div>
                     {item.data.map((data: any, dataIndex: any) => (
                       <tr
                         key={`${item._id}-${dataIndex}-combo`}

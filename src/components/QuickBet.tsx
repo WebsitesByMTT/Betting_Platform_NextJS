@@ -42,16 +42,7 @@ const QuickBet = () => {
     const betPairs = bets.map((bet) => `${bet.event_id}-${bet.market}`);
     const betPairsSet = new Set(betPairs);
 
-    const myBetPairs = myBets.flatMap((myBet: any) =>
-      myBet.data.map((bet: any) => `${bet.event_id}-${bet.market}`)
-    );
-    const myBetPairsSet = new Set(myBetPairs);
-
-    const hasDuplicateInMyBets = betPairs.some((pair) =>
-      myBetPairsSet.has(pair)
-    );
-
-    return betPairs.length !== betPairsSet.size || hasDuplicateInMyBets;
+    return betPairs.length !== betPairsSet.size;
   };
 
   useEffect(() => {
@@ -303,14 +294,6 @@ const QuickBet = () => {
           </>
         )}
       </div>
-      <div
-        onClick={() => {
-          setOpen(!open);
-        }}
-        className={`${
-          open ? "block" : "hidden"
-        } cursor-pointer md:hidden transition w-full h-full z-[-5] fixed top-0 left-0`}
-      ></div>
     </div>
   );
 };

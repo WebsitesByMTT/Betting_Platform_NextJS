@@ -294,14 +294,6 @@ const QuickBet = () => {
           </>
         )}
       </div>
-      <div
-        onClick={() => {
-          setOpen(!open);
-        }}
-        className={`${
-          open ? "block" : "hidden"
-        } cursor-pointer md:hidden transition w-full h-full z-[-5] fixed top-0 left-0`}
-      ></div>
     </div>
   );
 };

@@ -101,8 +101,8 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     <div onClick={handelLeagueInfo} className="bg-[#17151A]  shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12 md:col-span-6 xl:col-span-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-center space-x-[.5px] overflow-hidden">
-          <div className=" whitespace-nowrap flex items-center space-x-5 justify-center text-white text-opacity-60 text-[.7rem] md:text-[.9rem]">
-            <div className="relative h-[20px] w-[15px]">{IconComponent}</div>
+          <div className=" whitespace-nowrap flex items-center space-x-2 justify-center text-white text-opacity-60 text-[.7rem] md:text-[.9rem]">
+            <div className="relative">{IconComponent}</div>
             <p className="whitespace-nowrap">{leagues?.sport_title}</p>
           </div>
         </div>

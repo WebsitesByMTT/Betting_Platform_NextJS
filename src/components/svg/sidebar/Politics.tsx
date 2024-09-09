@@ -3,11 +3,10 @@ import React from "react";
 const Politics = () => {
   return (
     <svg
-      width="36"
-      height="34"
+      width="30"
+      height="26"
       viewBox="0 0 36 34"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_i_281_1257)">

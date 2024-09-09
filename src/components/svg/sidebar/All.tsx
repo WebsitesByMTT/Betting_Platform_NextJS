@@ -3,11 +3,10 @@ import React from "react";
 const All = () => {
   return (
     <svg
-      width="28"
-      height="28"
+      width="25"
+      height="25"
       viewBox="0 0 28 28"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_i_285_922)">

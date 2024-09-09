@@ -24,7 +24,6 @@ const QuickBet = () => {
   const [open, setOpen] = useState(false);
   const [allBets, setAllBets] = useState<BetDetails[]>([]);
   const [currentBetType, setCurrentBetType] = useState<String>("single");
-  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [comboBetAmount, setCombobetAmount] = useState<any>(100);
   const potentialWin = useAppSelector((state) => state.bet.potentialWin);
@@ -38,21 +37,7 @@ const QuickBet = () => {
   const betAmount = [20, 50, 100, 500];
   const betType = ["single", "combo"];
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 700px)");
-
-    const handleResize = () => {
-      setIsMobile(mediaQuery.matches);
-    };
-
-    handleResize();
-
-    mediaQuery.addEventListener("change", handleResize);
-    return () => {
-      mediaQuery.removeEventListener("change", handleResize);
-    };
-  }, []);
-
+ 
   const hasDuplicateEventIds = () => {
     const combinedKeys = bets.map((bet) => `${bet.event_id}-${bet.market}`);
     const uniqueCombinedKeys = new Set(combinedKeys);
@@ -62,7 +47,8 @@ const QuickBet = () => {
 
   useEffect(() => {
     setAllBets(bets);
-    if (bets.length <= 0 || isMobile) {
+    console.log(bets,"bets")
+    if (bets.length <= 0) {
       setOpen(false);
     } else {
       setOpen(true);

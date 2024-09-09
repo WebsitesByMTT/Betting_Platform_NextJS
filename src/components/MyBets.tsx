@@ -12,22 +12,29 @@ import Amount from "./svg/mybets/Amount";
 import Status from "./svg/mybets/Status";
 import Action from "./svg/mybets/Action";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { setMyBets } from "@/lib/store/features/bet/betSlice";
-
+import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
+import { useSocket } from "./SocketProvider";
+import { getCurrentUser } from "@/utils/utils";
+interface User {
+  userId: string;
+  // Add other properties as needed
+}
 const MyBets = () => {
   const [myBets, setmyBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [betID, setBetID] = useState();
+  const [userId, setUserId] = useState<any>();
   const dispatch = useAppDispatch();
+  const {socket} = useSocket();
   const [selectedOption, setSelectedOption] = useState<string>("all");
   const options = ["all", "pending", "won", "lost", "redeem", "combo"];
   const headers = [
     { icon: <Sport />, text: "sport" },
-    { icon: <Bet />, text: "bet" },
-    { icon: <Market />, text: "market" },
+    { icon: <Bet />, text: "Stake" },
+    { icon: <Market />, text: "Category" },
     { icon: <Odds />, text: "odds" },
-    { icon: <Amount />, text: "amount won" },
+    { icon: <Amount />, text: "Possible Winning" },
     { icon: <Status />, text: "status" },
     { icon: <Action />, text: "action" },
   ];
@@ -74,7 +81,26 @@ const MyBets = () => {
     }
     toast.success(response?.responseData?.message);
     fetchBet();
+    dispatch(setRedeemAmount(0))
   };
+
+  const handelGetUser = async () => {
+    const user = await getCurrentUser()as User | null;;
+    if (user) {
+      setUserId(user?.userId);
+    }
+}
+
+  //Receving bet amount
+  useEffect(() => {
+    handelGetUser()
+    if (socket&&userId&&betID) {
+      socket.emit("data", {
+        action: "REDEEM_AMOUNT",
+        payload: { userId:userId,betID:betID },
+      });
+    }
+  }, [open]);
 
   return (
     <div className="z-[100] text-white h-full">

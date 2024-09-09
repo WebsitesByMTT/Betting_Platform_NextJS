@@ -3,11 +3,10 @@ import React from "react";
 const Lacrosse = () => {
   return (
     <svg
-      width="29"
-      height="30"
+      width="26"
+      height="28"
       viewBox="0 0 29 30"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_i_281_1316)">

@@ -7,7 +7,6 @@ const Politics = () => {
       height="34"
       viewBox="0 0 36 34"
       fill="none"
-      className="h-full w-full"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_i_281_1257)">

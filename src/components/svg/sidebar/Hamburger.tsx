@@ -12,7 +12,6 @@ const Hamburger = () => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-full w-full"
     >
       <line x1="21" x2="3" y1="6" y2="6" />
       <line x1="15" x2="3" y1="12" y2="12" />

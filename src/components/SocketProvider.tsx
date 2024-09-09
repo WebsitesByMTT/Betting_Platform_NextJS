@@ -1,5 +1,5 @@
 "use client";
-import { setMyBets } from "@/lib/store/features/bet/betSlice";
+import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
 import {
   setCategories,
   setEvents,
@@ -72,6 +72,9 @@ export const SocketProvider: React.FC<{
           case "GET event odds":
             dispatch(setLoading(false));
             dispatch(setLeaguesInfo(data?.data));
+            break;
+          case "REDEEM_AMOUNT":
+            dispatch(setRedeemAmount(data?.data))
             break;
           default:
             break;

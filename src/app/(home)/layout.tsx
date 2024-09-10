@@ -18,7 +18,7 @@ export default async function RootLayout({
   return (
     <StoreProvider>
       <SocketProvider token={token as string}>
-        <div className="w-screen flex bg-[#0C0B14] h-screen overflow-hidden px-[1vw]">
+        <div className="w-screen flex h-auto bg-[#0C0B14] px-[1vw]">
           <div className="lg:w-[300px]">
             <Sidebar />
           </div>

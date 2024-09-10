@@ -14,14 +14,25 @@ import Action from "./svg/mybets/Action";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { setMyBets } from "@/lib/store/features/bet/betSlice";
 
+import Back from "./svg/Back";
+import { useRouter } from "next/navigation";
 const MyBets = () => {
   const [myBets, setmyBets] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [betID, setBetID] = useState();
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const [selectedOption, setSelectedOption] = useState<string>("all");
-  const options = ["all", "pending", "won", "lost", "redeem", "combo", "failed"];
+  const options = [
+    "all",
+    "pending",
+    "won",
+    "lost",
+    "redeem",
+    "combo",
+    "failed",
+  ];
   const headers = [
     { icon: <Sport />, text: "sport" },
     { icon: <Bet />, text: "Stake" },
@@ -79,6 +90,9 @@ const MyBets = () => {
 
   return (
     <div className="z-[100] text-white h-full">
+      <button onClick={() => router.back()}>
+        <Back />
+      </button>
       <div className="w-full overflow-auto flex gap-x-3  md:gap-5 py-3">
         {options.map((item, index) => (
           <button
@@ -268,8 +282,10 @@ const MyBets = () => {
                     </tr>
                   ))
                 ) : (
-                    <>
-                    <div className="bg-black px-5 py-1 rounded-tl-2xl border-[#f3aa3589] border-x-[1px] border-b-[1px] rounded-tr-2xl  inline-block mt-2">Combo</div>
+                  <>
+                    <div className="bg-black px-5 py-1 rounded-tl-2xl border-[#f3aa3589] border-x-[1px] border-b-[1px] rounded-tr-2xl  inline-block mt-2">
+                      Combo
+                    </div>
                     {item.data.map((data: any, dataIndex: any) => (
                       <tr
                         key={`${item._id}-${dataIndex}-combo`}

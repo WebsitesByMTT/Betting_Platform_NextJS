@@ -43,7 +43,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex items-end justify-end  p-[.5rem] flex-col pb-4">
+      <div className="flex items-end justify-end z-50 bg-black sticky top-0 p-[.5rem] flex-col pb-4">
         <div className="flex items-center justify-center z-50 gap-2 lg:gap-5 py-2">
           <button
             onClick={() => toast.success("Feature Under Development!")}
@@ -57,21 +57,9 @@ const Header = () => {
             </p>
           </div>
           <div className="relative">
-            <button
-              className="w-[2rem] lg:h-[3rem] h-[2rem] pt-[2px] cursor-pointer  "
-              onClick={() => setToggle(!toggle)}
-            >
-              <Profile />
-            </button>
-            <div
-              className={`absolute ${
-                toggle ? "scale-100" : "scale-0"
-              } transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}
-            >
-              <div
-                onClick={() => setToggle(!toggle)}
-                className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col gap-3 text-center text-sm"
-              >
+            <button className="w-[1.7rem] lg:h-[3rem] h-[1.7rem] pt-[6px] cursor-pointer  " onClick={() => setToggle(!toggle)}><Profile /></button>
+            <div className={`absolute ${toggle ? 'scale-100' : 'scale-0'} transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}>
+              <div onClick={()=>setToggle(!toggle)} className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col gap-3 text-center text-sm">
                 <User />
               </div>
             </div>

@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use client"
+import { useEffect, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import Sports from "./svg/sidebar/Sports";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -9,7 +9,6 @@ import Link from "next/link";
 import Hamburger from "./svg/sidebar/Hamburger";
 import CrossIcon from "./svg/CrossIcon";
 import { svgMap } from "./svg/SvgMap";
-import { SportItem } from "@/utils/types";
 import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
 
 const Sidebar = () => {
@@ -34,6 +33,7 @@ const Sidebar = () => {
   //phone screen toggle
   const handeltoggle = () => {
     setToggle(!toggle);
+    document.body.classList.toggle("no-scroll", !toggle);
   };
 
   //event for all the categories for sidebar from socket
@@ -62,11 +62,10 @@ const Sidebar = () => {
   ];
 
   return (
-    <div>
+    <div className="sticky top-[20px] z-[499]">
       <button
-        className={`absolute left-4 top-5 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${
-          toggle ? "hidden" : "block"
-        }`}
+        className={`absolute left-4 top-0 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${toggle ? "hidden" : "block"
+          }`}
         onClick={handeltoggle}
       >
         <Hamburger />
@@ -129,12 +128,10 @@ const Sidebar = () => {
         </div>
       </div>
       {/* Blur Screen */}
-      <div
+      {toggle && <div
         onClick={handeltoggle}
-        className={`${
-          toggle ? "block" : "hidden"
-        } lg:hidden cursor-pointer transition w-full h-full backdrop-blur-sm z-30 fixed top-0 left-0`}
-      ></div>
+        className="lg:hidden cursor-pointer transition w-screen h-screen backdrop-blur-sm z-30 fixed top-0 left-0"
+      ></div>}
     </div>
   );
 };

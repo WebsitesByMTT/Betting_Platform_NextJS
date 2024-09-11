@@ -75,17 +75,15 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-[#1a1a1d] !w-screen !h-screen flex items-center justify-center">
-      <div className="relative bg-clip-padding backdrop-filter backdrop-blur-[5px] bg-opacity-10 flex z-[1] items-center justify-center w-full md:w-[70%] h-[45vh] sm:h-[60vh] lg:w-[25%] sm:min-w-[400px] min-w-[300px] rounded-[1.8vw] p-5">
-        <div className="w-full h-full">
+      <div className="bg-clip-padding bg-[#1a1a1d] h-screen  backdrop-filter backdrop-blur-[5px] bg-opacity-10 flex z-[1] items-center justify-center w-full  rounded-[1.8vw] p-5">
           <form
             onSubmit={handleSubmit}
-            className="absolute top-auto left-0 z-[2] w-full h-[80%] m-auto p-5 flex flex-col items-center justify-evenly gap-4"
+            className="absolute md:w-[60%] lg:w-[50%] xl:w-[35%] top-[50%] left-[50%] z-[2] translate-x-[-50%] translate-y-[-50%] w-full h-[80%] m-auto p-2 flex flex-col items-center justify-evenly"
           >
             <h1 className="text-center tracking-wider uppercase font-semibold lg:text-4xl text-2xl bg-gradient-to-br from-[#d6a250] via-[#ffe500] to-[#e6b800] bg-clip-text text-transparent drop-shadow-xl">
               Betting Paradise
             </h1>
-            <div className="w-[90%] space-y-10 mx-auto text-white">
+            <div className="w-[90%] space-y-7 mx-auto text-white">
               <div>
                 <label
                   htmlFor="username"
@@ -176,8 +174,6 @@ const Login = () => {
             </div>
           </form>
         </div>
-      </div>
-    </div>
   );
 };
 

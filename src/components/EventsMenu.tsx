@@ -1,11 +1,12 @@
 "use client";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSocket } from "./SocketProvider";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setLoading } from "@/lib/store/features/sports/sportsSlice";
-import World from "./svg/World";
 import { svgMap } from "./svg/SvgMap";
+import World from "./svg/World";
 import Link from "next/link";
+import NextPrev from "./svg/NextPrev";
 
 const EventsMenu = ({ cat }: any) => {
   const category = cat?.cat && decodeURIComponent(cat.cat);
@@ -16,6 +17,7 @@ const EventsMenu = ({ cat }: any) => {
     (state) => state.sports.selectedCategory
   );
   const sportsCategories = useAppSelector((state) => state.sports.categories);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (socket) {
@@ -32,10 +34,23 @@ const EventsMenu = ({ cat }: any) => {
   useEffect(() => {
     if (category && sportsCategories) {
       setEvents(
-        sportsCategories.find((item) => item.category === category)?.events || []
+        sportsCategories.find((item) => item.category === category)?.events ||
+          []
       );
     }
   }, [category, sportsCategories]);
+
+  const scrollNext = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 500, behavior: "smooth" });
+    }
+  };
+
+  const scrollPrev = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -500, behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="w-full flex gap-5 flex-col md:px-4">
@@ -49,28 +64,45 @@ const EventsMenu = ({ cat }: any) => {
           </p>
         </div>
       )}
-      <div className="flex gap-4 overflow-x-scroll hideScrollBa">
-        {events?.map((item, index) => (
-          <Link
-            href={`/${cat.cat}/${item.key}`}
-            className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-x-[#D6A250] border-x-[1px] border-t-[1px]"
-            key={index}
-          >
-            {cat.subcat === item.key && (
-              <div className="h-full px-1 rounded-tl-lg rounded-bl-lg bg-gradient-to-b from-[#ECB800] to-[#58565D00]"></div>
-            )}
-            <div className="flex items-center">
-              <World />
-              <p
-                className={`text-[12px] md:text-sm font-light whitespace-nowrap py-1 ${
-                  cat.subcat === item.key ? "pr-3" : "px-2"
-                }`}
-              >
-                {item.title}
-              </p>
-            </div>
-          </Link>
-        ))}
+      <div className="flex items-center">
+        <button
+          onClick={scrollPrev}
+          className="text-white hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full mr-2"
+        >
+          <NextPrev />
+        </button>
+        <div
+          className="flex gap-4 overflow-x-scroll hideScrollBar"
+          ref={scrollRef}
+        >
+          {events?.map((item, index) => (
+            <Link
+              href={`/${cat.cat}/${item.key}`}
+              className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-x-[#D6A250] border-x-[1px] border-t-[1px]"
+              key={index}
+            >
+              {cat.subcat === item.key && (
+                <div className="h-full px-1 rounded-tl-lg rounded-bl-lg bg-gradient-to-b from-[#ECB800] to-[#58565D00]"></div>
+              )}
+              <div className="flex items-center">
+                <World />
+                <p
+                  className={`text-[12px] md:text-sm font-light whitespace-nowrap py-1 ${
+                    cat.subcat === item.key ? "pr-3" : "px-2"
+                  }`}
+                >
+                  {item.title}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <button
+          onClick={scrollNext}
+          className="text-white rotate-180 hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full ml-2"
+        >
+          <NextPrev />
+        </button>
       </div>
     </div>
   );

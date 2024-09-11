@@ -39,7 +39,7 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       }`}
     >
       <button
-        className="bg-[#2f2f2f] button group rounded-tl-md rounded-bl-md w-[15%] whitespace-nowrap px-3 hover:bg-gradient-to-b from-[#d71b212b] to-[#7800047a] transition-all"
+        className="bg-[#2f2f2f] button group rounded-tl-md rounded-bl-md w-[15%] max-w-[2rem] whitespace-nowrap px-[0.4vw] lg:max-w-[3rem]  hover:bg-gradient-to-b from-[#d71b212b] to-[#7800047a] transition-all"
         onClick={() => {
           handleRemove(betinfo.id);
         }}

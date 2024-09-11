@@ -4,8 +4,8 @@ const LiveGame = () => {
   return (
     <div>
       <svg
-        width="30"
-        height="21"
+        width="25"
+        height="18"
         viewBox="0 0 30 21"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

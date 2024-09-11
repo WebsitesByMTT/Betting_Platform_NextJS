@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -34,7 +34,8 @@ const EventsMenu = ({ cat }: any) => {
   useEffect(() => {
     if (category && sportsCategories) {
       setEvents(
-        sportsCategories.find((item) => item.category === category)?.events || []
+        sportsCategories.find((item) => item.category === category)?.events ||
+          []
       );
     }
   }, [category, sportsCategories]);
@@ -64,8 +65,16 @@ const EventsMenu = ({ cat }: any) => {
         </div>
       )}
       <div className="flex items-center">
-        <button onClick={scrollPrev} className="text-white hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full mr-2"><NextPrev /></button>
-        <div className="flex gap-4 overflow-x-scroll hideScrollBa" ref={scrollRef}>
+        <button
+          onClick={scrollPrev}
+          className="text-white hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full mr-2"
+        >
+          <NextPrev />
+        </button>
+        <div
+          className="flex gap-4 overflow-x-scroll hideScrollBar"
+          ref={scrollRef}
+        >
           {events?.map((item, index) => (
             <Link
               href={`/${cat.cat}/${item.key}`}
@@ -88,7 +97,12 @@ const EventsMenu = ({ cat }: any) => {
             </Link>
           ))}
         </div>
-        <button onClick={scrollNext}  className="text-white rotate-180 hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full ml-2"><NextPrev /></button>
+        <button
+          onClick={scrollNext}
+          className="text-white rotate-180 hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full ml-2"
+        >
+          <NextPrev />
+        </button>
       </div>
     </div>
   );

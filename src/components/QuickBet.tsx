@@ -30,6 +30,7 @@ const QuickBet = () => {
   const totalBetAmount = useAppSelector((state) => state.bet.totalBetAmount);
   const totalBetOdds = useAppSelector((state) => state.bet.totalOdds);
   const bets = useAppSelector((state) => state.bet.allbets);
+  const myBets = useAppSelector((state) => state.bet.myBets);
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
   const betsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -37,19 +38,16 @@ const QuickBet = () => {
   const betAmount = [20, 50, 100, 500];
   const betType = ["single", "combo"];
 
- 
   const hasDuplicateEventIds = () => {
-    if (currentBetType !== "combo") return false;
-  
-    const combinedKeys = bets.map((bet) => `${bet.event_id}-${bet.market}`);
-    const uniqueCombinedKeys = new Set(combinedKeys);
-  
-    return combinedKeys.length !== uniqueCombinedKeys.size;
+    const betPairs = bets.map((bet) => `${bet.event_id}-${bet.market}`);
+    const betPairsSet = new Set(betPairs);
+
+    return betPairs.length !== betPairsSet.size;
   };
 
   useEffect(() => {
     setAllBets(bets);
-    console.log(bets,"bets")
+    console.log(bets, "bets");
     if (bets.length <= 0) {
       setOpen(false);
     } else {
@@ -228,7 +226,9 @@ const QuickBet = () => {
             </div>
             {disabled && (
               <p className="text-[12px] text-red-500 italic text-right">
-                You can&apos;t place bet on this combo
+                {currentBetType === "single"
+                  ? "Can't place this bet"
+                  : "Can't place bet on this combo"}
               </p>
             )}
             {currentBetType === "combo" && (

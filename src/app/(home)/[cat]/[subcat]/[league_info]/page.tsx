@@ -158,26 +158,26 @@ const Page = ({ params }: any) => {
             </div>
           )}
         </div>
-        <div className='border-[1px] rounded-2xl mb-8 border-white border-opacity-10 p-3 bg-gradient-to-tr from-[#0D0C15] to-[#1C1A21]'>
-          <div className='flex justify-between items-center'>
+        <div className='border-[1px] rounded-2xl mb-3 md:mb-8 border-white border-opacity-10 p-3 bg-gradient-to-tr from-[#0D0C15] to-[#1C1A21]'>
+          <div className='flex justify-between text-xs md:text-sm items-center'>
             {formatCommenceTime(leagues_Info.commence_time) && <div className='flex items-center space-x-3'>
               {formatCommenceTime(leagues_Info.commence_time) !== 'Live' && < LiveGame />}
               <div className='flex items-center gap-x-1'>
                 {formatCommenceTime(leagues_Info.commence_time) === 'Live' && <span className='inline-block h-4 animate-pulse w-4 rounded-full bg-red-500 '></span>}
-                <div className='text-sm tracking-wide text-[#67FFFF] flex items-center'>{leagues_Info?.commence_time ? formatCommenceTime(leagues_Info.commence_time) : ''}</div>
+                <div className='tracking-wide text-[#67FFFF] flex items-center'>{leagues_Info?.commence_time ? formatCommenceTime(leagues_Info.commence_time) : ''}</div>
               </div>
             </div>}
             <Favourite />
           </div>
-          <div className='flex lg:w-[80%] mx-auto items-center justify-between pt-10'>
+          <div className='flex lg:w-[80%] mx-auto items-center justify-between pt-5 md:pt-10'>
             <div>
               <div className='flex justify-start'><span className='bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] px-2.5 border-[.2px] border-opacity-5 border-white py-2.5 text-xs rounded-full'>{IconComponent}</span></div>
-              <div className='text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.home_team}</div>
+              <div className='text-xs md:text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.home_team}</div>
             </div>
             <span className='text-white text-2xl'>-</span>
             <div>
               <div className='flex justify-end'><span className='bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] px-2.5 border-[.2px] border-opacity-5 border-white py-2.5 rounded-full'>{IconComponent}</span></div>
-              <div className='text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.away_team}</div>
+              <div className='text-xs md:text-sm tracking-wide text-white pt-1.5 font-light'>{loading ? 'loading...' : leagues_Info?.away_team}</div>
             </div>
           </div>
         </div>
@@ -188,7 +188,7 @@ const Page = ({ params }: any) => {
               onClick={() => toggleAccordion(index)}
             >
               <div className='flex items-center space-x-3'>
-                <div className='text-white text-base tracking-wide capitalize'>{item.key}</div>
+                <div className='text-white text-sm md:text-base tracking-wide capitalize'>{item.key}</div>
                 <div className={openIndices[index] ? 'rotate-180 transition-all ease-in-out' : 'rotate-0 ease-in-out transition-all'}><CircleDropdown /></div>
               </div>
               <Pin />
@@ -203,39 +203,13 @@ const Page = ({ params }: any) => {
                       item?.outcomes?.map((outcome: any, outcomeIndex: number) => (
                         <button onClick={(event) => {
                           handleBet(event, item.key === 'totals' ? outcome.name : (outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), item, outcome);
-                        }} key={outcomeIndex} className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${outcome?.point?'block':'flex space-x-.5'} justify-between px-1 group ${isBetInAllBets(item.key === 'totals' ? (outcome?.name) : (outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
+                        }} key={outcomeIndex} className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${outcome?.point?'block':'flex space-x-.5'} items-center justify-between px-1 group ${isBetInAllBets(item.key === 'totals' ? (outcome?.name) : (outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
                           ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                           : "bg-[#040404] border-transparent"}`}
                           disabled={isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key)}>
-                          <div className='text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2'>{outcome.name}
+                          <div className='text-xs md:text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2'>{outcome.name}
                           </div>
-                          <div className={`flex md:items-center justify-between pt-2 ${outcome?.point?'flex':'hidden'}  text-red-400`}>
-                            <span className={`${outcome?.point < 0 ? 'text-red-500' : 'text-green-500'}`}>
-                              {outcome?.point}
-                            </span>
-                            <div className='text-xs text-white py-1 px-1.5 rounded-md bg-[#343434]'>{outcome.price}</div>
-                          </div>
-                          <div className={`text-xs text-white py-1 ${outcome?.point?'hidden':'block'} px-1.5  rounded-md bg-[#343434]`}>{outcome.price}</div>
-                          {isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key) && <p className="text-[12px] text-red-500 betPlacedText italic text-center invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute bg-black rounded-xl top-[20%] left-[5%] right-[5%] w-full">
-                            This bet is already placed
-                          </p>}
-                        </button>
-                      ))
-                  }
-                </div>
-                <div className='flex md:items-center gap-x-2 md:gap-x-10'>
-                  {
-                    loading ? <><div className="bg-[#dfdfdf43] w-full rounded-md animate-pulse"></div><div className="bg-[#dfdfdf43]  w-full rounded-md animate-pulse"></div></> :
-                      item?.outcomes?.map((outcome: any, outcomeIndex: number) => (
-                        <button onClick={(event) => {
-                          handleBet(event, item.key === 'totals' ? outcome.name : (outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), item, outcome);
-                        }} key={outcomeIndex} className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${outcome?.point?'block':'flex space-x-.5'} justify-between px-1 group ${isBetInAllBets(item.key === 'totals' ? (outcome?.name) : (outcome?.name === leagues_Info?.home_team ? "home_team" : "away_team") + leagues_Info?.id + item.key)
-                          ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
-                          : "bg-[#040404] border-transparent"}`}
-                          disabled={isBetDisabled((outcome.name === leagues_Info?.home_team ? "home_team" : "away_team"), leagues_Info?.id, item?.key)}>
-                          <div className='text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2'>{outcome.name}
-                          </div>
-                          <div className={`flex md:items-center justify-between pt-2 ${outcome?.point?'flex':'hidden'}  text-red-400`}>
+                          <div className={`flex items-center text-xs justify-between pt-2 ${outcome?.point?'flex':'hidden'}  text-red-400`}>
                             <span className={`${outcome?.point < 0 ? 'text-red-500' : 'text-green-500'}`}>
                               {outcome?.point}
                             </span>

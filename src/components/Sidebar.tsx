@@ -64,7 +64,7 @@ const Sidebar = () => {
   return (
     <div className="sticky top-[20px] z-[499]">
       <button
-        className={`absolute left-4 top-0 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${toggle ? "hidden" : "block"
+        className={`absolute left-3 top-0 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${toggle ? "hidden" : "block"
           }`}
         onClick={handeltoggle}
       >

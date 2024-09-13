@@ -2,12 +2,15 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import betReducers from "./features/bet/betSlice";
 import sportsReducer from "./features/sports/sportsSlice";
 import userReducer from "./features/user/userSlice";
+import notificationReducer from "./features/notification/notificationSlice";
+
 
 // Combine reducers
 const rootReducer = combineReducers({
   bet: betReducers,
   sports: sportsReducer,
   user: userReducer,
+  notification:notificationReducer
 });
 
 // Create the store

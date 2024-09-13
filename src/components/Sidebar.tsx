@@ -64,7 +64,7 @@ const Sidebar = () => {
   return (
     <div className="sticky top-[20px] z-[499]">
       <button
-        className={`absolute left-3 top-0 lg:hidden cursor-pointer text-white z-[500] h-[1.5rem] ${toggle ? "hidden" : "block"
+        className={`absolute left-3 top-0 lg:hidden cursor-pointer text-white  h-[1.5rem] ${toggle ? "hidden" : "block"
           }`}
         onClick={handeltoggle}
       >
@@ -73,7 +73,7 @@ const Sidebar = () => {
       <div
         className={`transition-all fixed lg:sticky top-0 w-[60%] ${
           toggle ? "left-0 " : "left-[-200%]"
-        } text-white z-[500] h-screen lg:h-[calc(100vh-40px)]  bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2 overflow-hidden border-[#2E2D32] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+        } text-white z-[500] h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2  border-[#2E2D32] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
           className={`absolute left-3 top-auto w-[30px] h-[5rem] lg:hidden cursor-pointer text-white text-opacity-60 ${
@@ -88,7 +88,7 @@ const Sidebar = () => {
             <Logo />
           </Link>
         </div>
-        <div className="py-[0.5vw] space-y-[0.5vw]  h-[calc(100vh-130px)] lg:h-[calc(100vh-160px)]  overflow-y-scroll hideScrollBar webkit-overflow-scrolling-touch">
+        <div className="py-[0.5vw] space-y-[0.5vw]  h-[calc(100vh-130px)] lg:h-[calc(100vh-160px)] scrollbar overflow-y-auto">
           {sidebar?.map((item, ind) => (
             <div key={ind}>
               <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px] mx-1">

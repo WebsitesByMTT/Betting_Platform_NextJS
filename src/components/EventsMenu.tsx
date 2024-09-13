@@ -34,7 +34,8 @@ const EventsMenu = ({ cat }: any) => {
   useEffect(() => {
     if (category && sportsCategories) {
       setEvents(
-        sportsCategories.find((item) => item.category === category)?.events || []
+        sportsCategories.find((item) => item.category === category)?.events ||
+          []
       );
     }
   }, [category, sportsCategories]);
@@ -96,10 +97,16 @@ const EventsMenu = ({ cat }: any) => {
             </Link>
           ))}
         </div>
-        <button onClick={scrollNext}  className="text-white rotate-180 hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full ml-2"><NextPrev /></button>
+        <button
+          onClick={scrollNext}
+          className="text-white rotate-180 hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full ml-2"
+        >
+          <NextPrev />
+        </button>
       </div>
     </div>
   );
 };
 
 export default EventsMenu;
+

@@ -5,7 +5,7 @@ import BetContainer from "@/components/BetContainer";
 import Categories from "@/components/Categories";
 import QuickBet from "@/components/QuickBet";
 import Footer from "@/components/Footer";
-import Searchbar from "@/components/SearchBar";
+import Searchbar from "@/components/Searchbar";
 
 
 export default function Home({ params }: any) {

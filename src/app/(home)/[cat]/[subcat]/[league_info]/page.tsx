@@ -182,7 +182,7 @@ const Page = ({ params }: any) => {
           </div>
         </div>
         {leagues_Info?.markets?.map((item: any, index: number) => (
-          <div key={index} className='accordion-item'>
+          item.key==="h2h"&&<div key={index} className='accordion-item'>
             <div
               className='bg-gradient-to-tr cursor-pointer mt-5 rounded-full from-[#0D0C15] to-[#1C1A21] py-2.5 px-5 border-[.2px] border-white border-opacity-[0.02] flex items-center justify-between'
               onClick={() => toggleAccordion(index)}

@@ -47,7 +47,6 @@ const QuickBet = () => {
 
   useEffect(() => {
     setAllBets(bets);
-    console.log(bets, "bets");
     if (bets.length <= 0) {
       setOpen(false);
     } else {

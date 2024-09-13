@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useRef, useState } from "react";
 import { useSocket } from "./SocketProvider";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -40,6 +40,17 @@ const EventsMenu = ({ cat }: any) => {
     }
   }, [category, sportsCategories]);
 
+  useEffect(() => {
+    if (scrollRef.current && cat.subcat) {
+      const activeIndex = events.findIndex((item) => item.key === cat?.subcat);
+      if (activeIndex !== -1) {
+        const activeElement = scrollRef.current.children[activeIndex] as HTMLElement;
+        const offset = activeElement.offsetLeft - scrollRef.current.clientWidth / 2 + activeElement.clientWidth / 2;
+        scrollRef.current.scrollTo({ left: offset, behavior: "smooth" });
+      }
+    }
+  }, [cat.subcat,events]);
+
   const scrollNext = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: 500, behavior: "smooth" });
@@ -65,30 +76,19 @@ const EventsMenu = ({ cat }: any) => {
         </div>
       )}
       <div className="flex items-center">
-        <button
-          onClick={scrollPrev}
-          className="text-white hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full mr-2"
-        >
-          <NextPrev />
-        </button>
-        <div
-          className="flex gap-4 overflow-x-scroll hideScrollBar"
-          ref={scrollRef}
-        >
+        <button onClick={scrollPrev} className="text-white hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full mr-2"><NextPrev /></button>
+        <div className="flex gap-4 overflow-x-scroll hideScrollBar" ref={scrollRef}>
           {events?.map((item, index) => (
             <Link
               href={`/${cat.cat}/${item.key}`}
-              className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f] border-t-[#D6A250] border-x-[#D6A250] border-x-[1px] border-t-[1px]"
+              className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f]  "
               key={index}
             >
-              {cat.subcat === item.key && (
-                <div className="h-full px-1 rounded-tl-lg rounded-bl-lg bg-gradient-to-b from-[#ECB800] to-[#58565D00]"></div>
-              )}
-              <div className="flex items-center">
+              <div className={`flex ${ cat.subcat === item.key ?'bg-gradient-to-b from-[#D71B21] to-[#780005]':''} py-1.5 rounded-lg items-center`}>
                 <World />
                 <p
-                  className={`text-[12px] md:text-sm font-light whitespace-nowrap py-1 ${
-                    cat.subcat === item.key ? "pr-3" : "px-2"
+                  className={`text-[12px] md:text-sm font-light px-2 whitespace-nowrap ${
+                    cat.subcat === item.key ? "" : ""
                   }`}
                 >
                   {item.title}
@@ -107,4 +107,6 @@ const EventsMenu = ({ cat }: any) => {
     </div>
   );
 };
+
 export default EventsMenu;
+

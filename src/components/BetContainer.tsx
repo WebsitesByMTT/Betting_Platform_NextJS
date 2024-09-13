@@ -16,7 +16,6 @@ const BetContainer = ({cat}:any) => {
   );
   const loading = useAppSelector((state) => state.sports.loading);
   const leagueData = useAppSelector((state) => state?.sports?.leagues);
-
   useEffect(() => {
     setLiveEventLeagues(leagueData?.live_games);
     setTodayEventLeagues(leagueData?.todays_upcoming_games);

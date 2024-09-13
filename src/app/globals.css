@@ -7,6 +7,8 @@
   scrollbar-width: none !important;
 }
 
+
+
 .parant:hover .my-svg-icon {
   fill: url(#paint0_linear_1_808);
 }
@@ -27,9 +29,6 @@
   fill: url(#paint0_linear_41_897);
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
 
 .fade-text {
   position: relative;
@@ -131,4 +130,32 @@ input[type="number"] {
 
 .no-scroll {
   overflow: hidden;
+}
+
+.scrollbar::-webkit-scrollbar{
+  background-color: #fff;
+  width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #1E1C22;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #D6A250 20%, #FFE500 50%, #ECB800);
+  border-radius: 5rem;
+}
+
+
+
+@media (max-width:1024px) {
+   .scrollbar::-webkit-scrollbar{
+    display: none;
+   }
+}
+
+@media (max-width:768px) {
+  .mobileleft{
+    left: 50%;
+  }
 }

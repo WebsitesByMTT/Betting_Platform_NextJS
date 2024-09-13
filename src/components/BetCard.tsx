@@ -124,10 +124,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       <div className="flex flex-col py-1.5 justify-between">
         <button className="grid grid-cols-5 space-x-2">
           <div className="flex col-span-4 gap-2 items-center whitespace-nowrap -mx-2 overflow-hidden">
-            <div>
-              <World />
-            </div>
-            <p className="text-white text-[.8rem] md:text-[.9rem]">
+            <p className="text-white text-[.8rem] pl-2 md:text-[.9rem]">
               {betsData.home_team}
             </p>
           </div>
@@ -139,10 +136,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         </button>
         <button className="grid grid-cols-5 space-x-2">
           <div className="flex col-span-4 items-center gap-2 whitespace-nowrap -mx-2 overflow-hidden">
-            <div>
-              <World />
-            </div>
-            <div className="text-white text-[.8rem] md:text-[.9rem]">
+            <div className="text-white text-[.8rem] pl-2 md:text-[.9rem]">
               {betsData.away_team}
             </div>
           </div>

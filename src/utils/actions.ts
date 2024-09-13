@@ -104,7 +104,6 @@ export const GetPlayerBets = async (status?: string) => {
 };
 
 export const GetRedeemInfo = async (betId: string) => {
-  console.log("BETID", betId);
   const token = await getCookie();
   try {
     const response = await fetch(`${config.server}/api/bets/redeem/${betId}`, {
@@ -148,5 +147,27 @@ export const redeemPlayerBet = async (betId: string) => {
     console.log("error:", error);
   } finally {
     revalidatePath("/mybets");
+  }
+};
+
+export const GetNotifications = async () => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/notifications`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.log("error:", error);
   }
 };

@@ -44,23 +44,28 @@ const Header = () => {
     fetchCurrentUser();
   }, []);
 
+  const handelNotify = () => {
+    dispatch(setOpenNotification(!isOpen));
+  };
+
   return (
     <>
       <div className="flex items-end justify-end z-50 bg-[#0C0B14] sticky top-0 p-[.5rem] flex-col pb-4">
         <div className="flex items-center justify-center z-50 gap-5 lg:gap-5 py-2">
           <div className="md:relative">
             <button
-              onClick={()=>dispatch(setOpenNotification(true))}
+              onClick={handelNotify}
               className="w-[2rem] relative cursor-pointer lg:h-[3rem] h-[1.5rem]"
             >
               <Notification />
               <span className="bg-[#D71B21] text-white w-[1rem] h-[1rem] md:w-[1.5rem] md:h-[1.5rem] pt-[1px] md:pt-[2px] rounded-full text-[.6rem] md:text-[.8rem] top-0 absolute">{notification?.filter((item:any)=>item?.viewed===false)?.length}</span>
             </button>
-            {isOpen&&<div className={`absolute top-[80%]  transition-all md:right-0 mobileleft z-[504] translate-x-[-50%] md:transform-none translate-y-[0%] md:top-[100%]`}><Notification_bell /></div>}
-          </div>
+            <Notification_bell isOpen={isOpen} />
+            {isOpen&&<div onClick={handelNotify} className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-30"></div>}
+          </div> 
           <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
             <p className="text-white px-5 py-1 bg-[#323232] font-light lg:text-xl rounded-md">
-              {credits?.toFixed(3)} $
+              {credits?.toFixed(1)} $
             </p>
           </div>
           <div className="relative">

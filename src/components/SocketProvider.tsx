@@ -1,5 +1,6 @@
 "use client";
 import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
+import {setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
 import {
   setCategories,
   setEvents,
@@ -18,7 +19,6 @@ import { io, Socket } from "socket.io-client";
 interface SocketContextType {
   socket: Socket | null;
 }
-
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export const useSocket = (): SocketContextType => {
@@ -76,6 +76,11 @@ export const SocketProvider: React.FC<{
           case "REDEEM_AMOUNT":
             dispatch(setRedeemAmount(data?.data))
             break;
+          case "SEARCH EVENT":
+            dispatch(setLoading(false));
+            dispatch(setLeagues(data?.data));
+            break;
+          case "BLOCKED":
           default:
             break;
         }
@@ -98,6 +103,21 @@ export const SocketProvider: React.FC<{
             break;
         }
       });
+
+      socketInstance.on("alert", (data: any) => {
+        const message = data?.message;
+
+        switch (message.type) {
+          case "NOTIFICATION":
+            toast.success(message.payload.data.message);
+            dispatch(setSocketNotification(message?.payload))
+            break;
+          default:
+            break;
+        }
+      });
+
+
 
       socketInstance.on("error", (error) => {
         toast.remove();

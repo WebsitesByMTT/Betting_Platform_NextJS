@@ -4,13 +4,12 @@ import Alert from './svg/Alert'
 import { GetNotifications } from '@/utils/actions'
 import Message from './svg/Message'
 import { setNotification, setOpenNotification } from '@/lib/store/features/notification/notificationSlice'
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from '@/lib/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks'
 import CrossIcon from './svg/CrossIcon'
 import Info from './svg/Info'
 
 const Notification_bell = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const notification = useAppSelector((state) => state.notification.notification)
   const handelNotifications = async () => {
     try {

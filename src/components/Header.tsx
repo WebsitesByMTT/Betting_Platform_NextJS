@@ -19,7 +19,6 @@ const Header = () => {
   const router = useRouter();
   const credits = useAppSelector((state) => state.user.credits);
   const isOpen = useAppSelector((state) => state.notification.isNotiFication);
-  console.log(isOpen,"no")
   const notification = useAppSelector((state) => state.notification.notification)
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -57,7 +56,7 @@ const Header = () => {
               <Notification />
               <span className="bg-[#D71B21] text-white w-[1rem] h-[1rem] md:w-[1.5rem] md:h-[1.5rem] pt-[1px] md:pt-[2px] rounded-full text-[.6rem] md:text-[.8rem] top-0 absolute">{notification?.filter((item:any)=>item?.viewed===false)?.length}</span>
             </button>
-            <div className={`absolute top-[80%] ${isOpen?'scale-100':'scale-0'}  transition-all md:right-0 mobileleft z-[504] translate-x-[-50%] md:transform-none translate-y-[0%] md:top-[100%]`}><Notification_bell /></div>
+            {isOpen&&<div className={`absolute top-[80%]  transition-all md:right-0 mobileleft z-[504] translate-x-[-50%] md:transform-none translate-y-[0%] md:top-[100%]`}><Notification_bell /></div>}
           </div>
           <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
             <p className="text-white px-5 py-1 bg-[#323232] font-light lg:text-xl rounded-md">

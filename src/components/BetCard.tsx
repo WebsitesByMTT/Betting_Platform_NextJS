@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import Triangle from "./svg/Triangle";
 
 const BetCard: React.FC<any> = ({ betsData, cat }) => {
-  console.log(cat, "category")
   const [leagues, setLeagues] = useState(betsData);
   const dispatch = useAppDispatch();
   const allbets = useAppSelector((state) => state.bet.allbets);
@@ -23,8 +22,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     home_team: false,
     away_team: false,
   });
-
-  console.log(previousBetsData, "sadkagsd")
 
   useEffect(() => {
     setLeagues(betsData);

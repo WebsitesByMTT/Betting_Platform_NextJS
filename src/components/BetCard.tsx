@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,useState } from "react";
 import Favourite from "./svg/Favourite";
 import { BetDetails } from "@/utils/types";
 import { addAllBets } from "@/lib/store/features/bet/betSlice";

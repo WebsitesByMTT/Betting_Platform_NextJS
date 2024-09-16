@@ -158,7 +158,7 @@ const MyBets = () => {
                               : "bg-[#303030] text-[#A1A1A1] border-[#414141] "
                               }  rounded-lg w-fit`}
                           >
-                            PLaced On : <span className={`${data.status === "redeem" ? 'text-gray-600' : ''} text-white text-opacity-50 font-semibold`}>{formatDateTime(data?.createdAt)}</span>
+                            PLaced On : <span className={`${data.status === "redeem" ? 'text-gray-600' : 'text-white'}  text-opacity-50 font-semibold`}>{formatDateTime(data?.createdAt)}</span>
                           </span>
                           <span className="text-[9px]  md:text-[13px] text-left">
                             <span
@@ -307,7 +307,7 @@ const MyBets = () => {
                                 : "bg-[#303030] text-[#A1A1A1] border-[#414141] "
                                 }  rounded-lg w-fit`}
                             >
-                              PLaced On : <span className="text-white text-opacity-50 font-semibold">{formatDateTime(data?.createdAt)}</span>
+                              PLaced On : <span className={`${data.status === "redeem" ? 'text-gray-600' : 'text-white'}  text-opacity-50 font-semibold`}>{formatDateTime(data?.createdAt)}</span>
                             </span>
                             <span className="text-[10px] md:text-[13px] text-left">
                               <span

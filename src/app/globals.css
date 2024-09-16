@@ -2,12 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .hideScrollBar {
   scrollbar-width: none !important;
 }
-
-
 
 .parant:hover .my-svg-icon {
   fill: url(#paint0_linear_1_808);
@@ -28,7 +25,6 @@
 .parant:hover .my-arrow-svg {
   fill: url(#paint0_linear_41_897);
 }
-
 
 .fade-text {
   position: relative;
@@ -132,30 +128,28 @@ input[type="number"] {
   overflow: hidden;
 }
 
-.scrollbar::-webkit-scrollbar{
+.scrollbar::-webkit-scrollbar {
   background-color: #fff;
   width: 6px;
 }
 
 .scrollbar::-webkit-scrollbar-track {
-  background: #1E1C22;
+  background: #1e1c22;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #D6A250 20%, #FFE500 50%, #ECB800);
+  background: linear-gradient(to bottom, #d6a250 20%, #ffe500 50%, #ecb800);
   border-radius: 5rem;
 }
 
-
-
-@media (max-width:1024px) {
-   .scrollbar::-webkit-scrollbar{
+@media (max-width: 1024px) {
+  .scrollbar::-webkit-scrollbar {
     display: none;
-   }
+  }
 }
 
-@media (max-width:768px) {
-  .mobileleft{
+@media (max-width: 768px) {
+  .mobileleft {
     left: 50%;
   }
 }

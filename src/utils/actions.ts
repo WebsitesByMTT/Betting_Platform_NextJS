@@ -150,17 +150,20 @@ export const redeemPlayerBet = async (betId: string) => {
   }
 };
 
-export const GetNotifications = async () => {
+export const getNotifications = async (viewedStatus: boolean) => {
   const token = await getCookie();
   try {
-    const response = await fetch(`${config.server}/api/notifications`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: `userToken=${token}`,
-      },
-    });
+    const response = await fetch(
+      `${config.server}/api/notifications?viewedStatus=${viewedStatus}`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
       return { error: error.message };
@@ -194,5 +197,28 @@ export const getCategoryBanners = async (category: string) => {
     return responseData;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const markBetAsViewed = async (notificationId: string) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(
+      `${config.server}/api/notifications?notificationId=${notificationId}`,
+      {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `userToken=${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+  } catch (error) {
+    console.log("error:", error);
   }
 };

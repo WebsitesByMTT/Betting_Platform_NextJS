@@ -33,8 +33,6 @@ interface Bet extends BetDetails {
 interface FormData {
   username: string;
   password: string;
-  captcha: string;
-  captchaToken: string;
 }
 
 interface DecodedToken {

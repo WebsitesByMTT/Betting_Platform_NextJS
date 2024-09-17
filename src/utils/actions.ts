@@ -8,29 +8,10 @@ import { revalidatePath } from "next/cache";
 interface Player extends JwtPayload {
   userId: string;
 }
-export const GetCaptcha = async () => {
-  try {
-    const response = await fetch(`${config.server}/api/auth/captcha`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      const error = await response.json();
-      return { error: error.message };
-    }
-    const responseData = await response.json();
-    return { responseData };
-  } catch (error) {
-    console.log("error:", error);
-  }
-};
 
 export const login = async (data: FormData) => {
   try {
-    const response = await fetch(`${config.server}/api/auth/login`, {
+    const response = await fetch(`${config.server}/api/auth/login?origin=platform`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,8 +19,6 @@ export const login = async (data: FormData) => {
       body: JSON.stringify({
         username: data.username,
         password: data.password,
-        captchaToken: data.captchaToken,
-        captcha: data.captcha,
       }),
     });
     if (!response.ok) {

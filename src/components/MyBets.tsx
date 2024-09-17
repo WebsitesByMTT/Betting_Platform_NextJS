@@ -181,6 +181,14 @@ const MyBets = () => {
                           >
                             {data.sport_title}
                           </span>
+                          <span
+                            className={`text-[9px] md:text-[11px] p-1  border-[1px] ${data.status === "redeem"
+                              ? "bg-[#17161f] text-[#56555d] border-[#353342]"
+                              : "bg-[#303030] text-[#A1A1A1] border-[#414141] "
+                              }  rounded-lg w-fit`}
+                          >
+                            PLaced On : <span className={`${data.status === "redeem" ? 'text-gray-600' : 'text-white'}  text-opacity-50 font-semibold`}>{formatDateTime(data?.createdAt)}</span>
+                          </span>
                           <span className="text-[9px]  md:text-[13px] text-left">
                             <span
                               className={
@@ -302,7 +310,7 @@ const MyBets = () => {
                             setBetID(item._id);
                           }}
                         >
-                          Redeem Bet
+                          Redeem
                         </button>
                       </td>
                     </tr>
@@ -338,6 +346,14 @@ const MyBets = () => {
                               } font-medium text-left text-sm md:text-lg`}
                             >
                               {data.sport_title}
+                            </span>
+                            <span
+                              className={`text-[9px] md:text-[11px] p-1  border-[1px] ${data.status === "redeem"
+                                ? "bg-[#17161f] text-[#56555d] border-[#353342]"
+                                : "bg-[#303030] text-[#A1A1A1] border-[#414141] "
+                                }  rounded-lg w-fit`}
+                            >
+                              PLaced On : <span className={`${data.status === "redeem" ? 'text-gray-600' : 'text-white'}  text-opacity-50 font-semibold`}>{formatDateTime(data?.createdAt)}</span>
                             </span>
                             <span className="text-[10px] md:text-[13px] text-left">
                               <span
@@ -486,7 +502,7 @@ const MyBets = () => {
                             setBetID(item._id);
                           }}
                         >
-                          Redeem Bet
+                          Redeem
                         </button>
                       </td>
                     </tr>

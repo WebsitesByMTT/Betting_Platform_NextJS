@@ -20,13 +20,14 @@ const Header = () => {
   const router = useRouter();
   const credits = useAppSelector((state) => state.user.credits);
   const [open, setOpen] = useState(false);
+  const [userName, setUserName] = useState('');
   const notification = useAppSelector(
     (state) => state.notification.notification
   );
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();
-
+      setUserName(user?.username)
       if (user?.error) {
         router.push("/logout");
         return toast.error(user.error);
@@ -62,7 +63,7 @@ const Header = () => {
         <div className="flex items-center w-full justify-between">
           <button
             className={`lg:invisible cursor-pointer text-white`}
-          onClick={handeltoggle}
+            onClick={handeltoggle}
           >
             <Hamburger />
           </button>
@@ -96,12 +97,15 @@ const Header = () => {
               </p>
             </div>
             <div className="relative">
-              <button
-                className="w-[1.7rem] lg:h-[3rem] h-[1.7rem] pt-[3px] cursor-pointer  "
-                onClick={() => setToggle(!toggle)}
-              >
-                <Profile />
-              </button>
+              <div className="flex items-center space-x-1">
+                <button
+                  className="w-[1.7rem] lg:h-[3rem] h-[1.7rem] pt-[3px] cursor-pointer  "
+                  onClick={() => setToggle(!toggle)}
+                >
+                  <Profile />
+                </button>
+                <div className="text-white capitalize">{userName}</div>
+              </div>
               <div
                 className={`absolute ${toggle ? "scale-100" : "scale-0"
                   } transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}

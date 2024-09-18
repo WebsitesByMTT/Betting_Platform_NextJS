@@ -35,6 +35,8 @@ const QuickBet = () => {
   const dispatch = useAppDispatch();
   const betsContainerRef = useRef<HTMLDivElement | null>(null);
 
+  const eventOddsData: any = useAppSelector((state) => state.sports.leaguesInfo);
+
   const betAmount = [20, 50, 100, 500];
   const betType = ["single", "combo"];
 
@@ -67,7 +69,41 @@ const QuickBet = () => {
         comboBetAmount: comboBetAmount,
       })
     );
+
   }, [bets]);
+
+  //NOTE: requesting updated event(s) [in betslip] data every 30s
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (socket && allBets.length > 0) {
+        allBets.map((bet) => {
+          console.log(bet, 'bet');
+          socket?.emit("data", {
+            action: "GET event odds",
+            payload: {
+              sport: bet.sport_key,
+              eventId: bet.event_id,
+              regions: 'us',
+              has_outrights: false,
+            },
+          });
+        });
+      } else {
+        console.log('Socket is not connected');
+      }
+    }, 30000); // 30s interval
+
+    // Cleanup function to clear the interval when component unmounts or allBets/socket changes
+    return () => clearInterval(intervalId);
+  }, [allBets, socket]);
+  useEffect(() => {
+    console.log(eventOddsData, 'eventOddsData');
+    //eventOddsData.marketsp[0].outcomesp[0].price -> updated home team odds
+    //eventOddsData.marketsp[0].outcomesp[1].price -> updated away team odds
+    //NOTE: this is where updated event data will come in 
+    //handle updated data operation here 
+  }, [eventOddsData])
+
 
   const handleSubmit = async () => {
     if (comboBetAmount <= 0) {
@@ -133,9 +169,8 @@ const QuickBet = () => {
 
   return (
     <div
-      className={`transition-all text-white  ${
-        open ? "bottom-0" : "-bottom-[1rem]"
-      }  fixed  z-[100] md:right-10 right-auto w-[96%] md:w-[360px] max-h-[80vh]`}
+      className={`transition-all text-white  ${open ? "bottom-0" : "-bottom-[1rem]"
+        }  fixed  z-[100] md:right-10 right-auto w-[96%] md:w-[360px] max-h-[80vh]`}
     >
       <div
         onClick={() => {
@@ -165,11 +200,10 @@ const QuickBet = () => {
         </div>
       </div>
       <div
-        className={`bg-[#1b1a1a] ${
-          open
-            ? "space-y-2 transition-all duration-300 ease-in-out"
-            : "max-h-0  transition-all duration-300 ease-in-out"
-        } px-2  py-2 `}
+        className={`bg-[#1b1a1a] ${open
+          ? "space-y-2 transition-all duration-300 ease-in-out"
+          : "max-h-0  transition-all duration-300 ease-in-out"
+          } px-2  py-2 `}
       >
         {allBets?.length <= 0 ? (
           <>
@@ -193,11 +227,10 @@ const QuickBet = () => {
                   key={index}
                   disabled={bets.length < 2 && item === "combo"}
                   onClick={() => setCurrentBetType(item)}
-                  className={`flex-1 py-1 border-b-[2px] capitalize transition-all disabled:text-[#dfdfdf6f] ${
-                    item === currentBetType
-                      ? "border-b-[#Bf141a]"
-                      : "border-transparent"
-                  } `}
+                  className={`flex-1 py-1 border-b-[2px] capitalize transition-all disabled:text-[#dfdfdf6f] ${item === currentBetType
+                    ? "border-b-[#Bf141a]"
+                    : "border-transparent"
+                    } `}
                 >
                   {item}
                 </button>
@@ -213,11 +246,9 @@ const QuickBet = () => {
             )}
             <div
               ref={betsContainerRef}
-              className={`w-full flex flex-col ${
-                disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
-              } ${
-                currentBetType === "combo" ? "gap-0" : "gap-2"
-              }  max-h-[calc(40vh-90px)] overflow-y-scroll`}
+              className={`w-full flex flex-col ${disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
+                } ${currentBetType === "combo" ? "gap-0" : "gap-2"
+                }  max-h-[calc(40vh-90px)] overflow-y-scroll`}
             >
               {allBets?.map((item, index) => (
                 <BetSlip key={index} betinfo={item} betType={currentBetType} />
@@ -290,6 +321,7 @@ const QuickBet = () => {
                 Place Bet
               </button>
             </div>
+
           </>
         )}
       </div>

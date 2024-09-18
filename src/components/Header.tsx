@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { setMyBets } from "@/lib/store/features/bet/betSlice";
 import Notifications from "./Notifications";
+import Hamburger from "./svg/sidebar/Hamburger";
+import { setIsSideBar } from "@/lib/store/features/notification/notificationSlice";
 
 const Header = () => {
   const [toggle, setToggle] = useState(false);
@@ -49,59 +51,73 @@ const Header = () => {
     setOpen(false);
   };
 
+  const handeltoggle = () => {
+    dispatch(setIsSideBar(true))
+  }
+
   return (
     <>
-      <div className="flex items-end justify-end z-50 bg-[#0C0B14] sticky top-0 p-[.5rem] flex-col pb-4">
-        <div className="flex items-center justify-center z-50 gap-5 lg:gap-5 py-2">
-          <div className="md:relative">
-            <button
-              onClick={() => {
-                setOpen(!open);
-              }}
-              className="w-[2rem] relative cursor-pointer lg:h-[3rem] h-[1.5rem]"
-            >
-              <Notification />
-              <span className="bg-[#D71B21] text-white w-[1rem] h-[1rem] md:w-[1.5rem] md:h-[1.5rem] pt-[1px] md:pt-[2px] rounded-full text-[.6rem] md:text-[.8rem] top-0 absolute">
-                {
-                  notification?.filter((item: any) => item?.viewed === false)
-                    ?.length
-                }
-              </span>
-            </button>
-            <Notifications open={open} setOpen={setOpen} />
-            {open && (
-              <div
-                onClick={handelNotify}
-                className="fixed top-0 left-0 w-screen h-screen"
-              ></div>
-            )}
-          </div>
-          <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
-            <p className="text-white px-5 py-1 bg-[#323232] font-light lg:text-xl rounded-md">
-              {credits?.toFixed(1)} $
-            </p>
-          </div>
-          <div className="relative">
-            <button
-              className="w-[1.7rem] lg:h-[3rem] h-[1.7rem] pt-[3px] cursor-pointer  "
-              onClick={() => setToggle(!toggle)}
-            >
-              <Profile />
-            </button>
-            <div
-              className={`absolute ${
-                toggle ? "scale-100" : "scale-0"
-              } transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}
-            >
-              <div
-                onClick={() => setToggle(!toggle)}
-                className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col items-center gap-3 text-center text-sm"
+      <div className="w-full z-50 bg-[#0C0B14] sticky top-0 p-[.5rem]  pb-4">
+
+        <div className="flex items-center w-full justify-between">
+          <button
+            className={`lg:invisible cursor-pointer text-white`}
+          onClick={handeltoggle}
+          >
+            <Hamburger />
+          </button>
+          <div className="flex items-center justify-center z-50 gap-x-4 lg:gap-x-7 ">
+            <div className="md:relative pt-3">
+              <button
+                onClick={() => {
+                  setOpen(!open);
+                }}
+                className="w-[2rem] relative cursor-pointer lg:h-[3rem] h-[1.5rem]"
               >
-                <User />
+                <Notification />
+                <span className="bg-[#D71B21] text-white w-[1rem] h-[1rem] md:w-[1.5rem] md:h-[1.5rem] pt-[1px] md:pt-[2px] rounded-full text-[.6rem] md:text-[.8rem] top-0 absolute">
+                  {
+                    notification?.filter((item: any) => item?.viewed === false)
+                      ?.length
+                  }
+                </span>
+              </button>
+              <Notifications open={open} setOpen={setOpen} />
+              {open && (
+                <div
+                  onClick={handelNotify}
+                  className="fixed top-0 left-0 bg-black bg-opacity-25 w-screen h-screen"
+                ></div>
+              )}
+            </div>
+            <div className="bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] rounded-md">
+              <p className="text-white px-5 py-1 bg-[#323232] font-light lg:text-xl rounded-md">
+                {credits?.toFixed(1)} $
+              </p>
+            </div>
+            <div className="relative">
+              <button
+                className="w-[1.7rem] lg:h-[3rem] h-[1.7rem] pt-[3px] cursor-pointer  "
+                onClick={() => setToggle(!toggle)}
+              >
+                <Profile />
+              </button>
+              <div
+                className={`absolute ${toggle ? "scale-100" : "scale-0"
+                  } transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}
+              >
+                <div
+                  onClick={() => setToggle(!toggle)}
+                  className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col items-center gap-3 text-center text-sm"
+                >
+                  <User />
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+
         <Line />
       </div>
       {toggle && (

@@ -3,6 +3,7 @@ import StoreProvider from "./StateProvider";
 import { SocketProvider } from "@/components/SocketProvider";
 import { getCookie } from "@/utils/utils";
 import Header from "@/components/Header";
+import AllNotification from "@/components/AllNotification";
 
 export const metadata = {
   title: "Betting Paradise",
@@ -18,14 +19,15 @@ export default async function RootLayout({
   return (
     <StoreProvider>
       <SocketProvider token={token as string}>
-        <div className="w-screen flex h-auto px-[1vw]">
-          <div className="lg:w-[300px]">
+        <div className="lg:flex h-auto">
+          <div>
             <Sidebar />
           </div>
-          <div className="w-full lg:w-[calc(100vw-350px)] px-[1vw] mx-auto relative">
+          <div>
             <Header />
             <div>{children}</div>
           </div>
+          <AllNotification/>
         </div>
       </SocketProvider>
     </StoreProvider>

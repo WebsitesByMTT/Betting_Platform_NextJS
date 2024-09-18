@@ -15,7 +15,7 @@ export default function Home({ params }: any) {
     (state) => state.notification.isNotiFication
   );
   return (
-    <div className={`flex-1  ${notification?'xl:w-[63vw]':'w-[96vw] md:w-[83vw]'} mx-auto`}>
+    <div className={`flex-1  ${notification?'xl:w-[63vw]':'w-[96vw] md:w-[83vw]'} pl-[1vw] mx-auto`}>
       <div className="h-[89vh] overflow-y-scroll pb-5 space-y-[max(1vw,10px)] hideScrollBar">
         <Banner />
         <Categories />

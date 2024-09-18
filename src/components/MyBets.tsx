@@ -24,6 +24,7 @@ const MyBets = () => {
   const activeNotificationBet = useAppSelector(
     (state) => state.bet.notificationBet
   );
+
   const isMounted = useRef(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -137,7 +138,7 @@ const MyBets = () => {
           </button>
         ))}
       </div>
-      <div className="h-[calc(100%-13vh)] hideScrollBar border-[1px] border-[#484848] rounded-2xl overflow-y-scroll scroll-smooth">
+      <div className="h-[calc(100%-13vh)] hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
         <table className="w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
           <thead>
             <tr className="text-xl">

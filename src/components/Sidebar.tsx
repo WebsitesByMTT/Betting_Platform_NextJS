@@ -10,14 +10,17 @@ import Hamburger from "./svg/sidebar/Hamburger";
 import CrossIcon from "./svg/CrossIcon";
 import { svgMap } from "./svg/SvgMap";
 import { setSelectedCategory } from "@/lib/store/features/sports/sportsSlice";
+import { setIsSideBar } from "@/lib/store/features/notification/notificationSlice";
 
 const Sidebar = () => {
-  const [toggle, setToggle] = useState(false);
   const sportsCategories = useAppSelector((state) => state?.sports.categories);
   const { socket } = useSocket();
   const pathname = usePathname();
   const url = decodeURIComponent(pathname);
   const dispatch = useAppDispatch();
+  const toggle = useAppSelector(
+    (state) => state.notification.isSideBar
+  );
   function extractBetweenSlashes(url: string): string | null {
     const parts = url.split("/");
     if (parts.length < 2) return null;
@@ -32,8 +35,8 @@ const Sidebar = () => {
 
   //phone screen toggle
   const handeltoggle = () => {
-    setToggle(!toggle);
     document.body.classList.toggle("no-scroll", !toggle);
+    dispatch(setIsSideBar(!toggle));
   };
 
   //event for all the categories for sidebar from socket
@@ -61,24 +64,16 @@ const Sidebar = () => {
     },
   ];
 
+
   return (
-    <div className="sticky top-[20px] z-[499]">
-      <button
-        className={`absolute left-3 top-0 lg:hidden cursor-pointer text-white  h-[1.5rem] ${toggle ? "hidden" : "block"
-          }`}
-        onClick={handeltoggle}
-      >
-        <Hamburger />
-      </button>
+    <div className="sticky top-[20px] lg:w-[15vw] z-[499] lg:z-0">
       <div
-        className={`transition-all fixed lg:sticky top-0 w-[60%] ${
-          toggle ? "left-0 " : "left-[-200%]"
-        } text-white z-[500] h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2  border-[#2E2D32] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+        className={`transition-all fixed lg:sticky top-0 w-[60%] ${toggle ? "left-0 " : "left-[-200%]"
+          } text-white z-[500] lg:z-0 h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2  border-[#2E2D32] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
-          className={`absolute left-3 top-auto w-[30px] h-[5rem] lg:hidden cursor-pointer text-white text-opacity-60 ${
-            toggle ? "block" : "hidden"
-          }`}
+          className={`absolute left-3 top-auto w-[30px] h-[5rem] lg:hidden cursor-pointer text-white text-opacity-60 ${toggle ? "block" : "hidden"
+            }`}
           onClick={handeltoggle}
         >
           <CrossIcon />
@@ -102,15 +97,14 @@ const Sidebar = () => {
                   const IconComponent =
                     svgMap[subitem?.category?.toLowerCase()];
                   return (
-                    <div  key={subind} onClick={() => setToggle(!toggle)}>
+                    <div key={subind} onClick={handeltoggle}                    >
                       <Link
                         href={`/${subitem?.category}/${subitem?.events[0].key}`}
                         key={subind}
-                        className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${
-                          subitem?.category === matchurl
+                        className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${subitem?.category === matchurl
                             ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"
                             : ""
-                        }`}
+                          }`}
                       >
                         <div className="relative h-[20px] w-[20px] my-auto">
                           {IconComponent}

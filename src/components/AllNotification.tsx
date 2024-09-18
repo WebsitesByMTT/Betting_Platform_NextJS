@@ -47,8 +47,8 @@ const AllNotification = () => {
         dispatch(setIsNotification(false));
     }
     return (
-        <div className={`${notification ? 'text-white' : '!hidden'} fixed  top-0 lg:static right-0 bg-[#0C0B14] px-2 z-[500] lg:flex transition-all gap-2 flex-col h-screen scrollbar lg:h-[calc(100vh-40px)] overflow-y-scroll`}>
-            <div className="text-white md:text-lg text-sm  font-extralight flex items-center justify-between tracking-wide  p-3">
+        <div className={`${notification ? 'text-white' : '!hidden'} fixed  top-0 lg:static right-0 bg-[#0C0B14] px-2 z-[99] lg:flex transition-all gap-2 flex-col h-screen scrollbar lg:h-[calc(100vh-50px)] overflow-y-scroll`}>
+            <div className="text-white md:text-lg text-sm  sticky top-0 bg-[#0C0B14] font-extralight flex items-center justify-between tracking-wide  p-3">
                 <span className="bg-[#1E1C22] px-3 py-1 rounded-2xl">All Notifications</span>
                 <button
                     className="w-[30px] h-[5rem] cursor-pointer text-white text-opacity-60"

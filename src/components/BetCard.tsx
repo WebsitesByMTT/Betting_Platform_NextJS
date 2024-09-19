@@ -113,7 +113,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         <Favourite />
       </div>
       <p className="text-[#67ffff] capitalize text-sm">
-        {new Date(leagues.commence_time).toLocaleDateString("en-US", {
+        {new Date(leagues.commence_time).toLocaleDateString([], {
           year: "numeric",
           month: "short",
           day: "numeric",

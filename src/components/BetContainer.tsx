@@ -8,7 +8,7 @@ import BetCard from "./BetCard";
 import SkeletonCard from "./SkeletonCard";
 import Today from "./svg/Today";
 
-const BetContainer = ({cat}:any) => {
+const BetContainer = ({ cat }: any) => {
   const [liveEventLeagues, setLiveEventLeagues] = useState<Leagues[]>([]);
   const [todayEventLeagues, setTodayEventLeagues] = useState<Leagues[]>([]);
   const [upcomingEventLeagues, setUpcomingEventLeagues] = useState<Leagues[]>(
@@ -17,6 +17,7 @@ const BetContainer = ({cat}:any) => {
   const loading = useAppSelector((state) => state.sports.loading);
   const leagueData = useAppSelector((state) => state?.sports?.leagues);
   useEffect(() => {
+    console.log("LEAGUES", leagueData);
     setLiveEventLeagues(leagueData?.live_games);
     setTodayEventLeagues(leagueData?.todays_upcoming_games);
     setUpcomingEventLeagues(leagueData?.future_upcoming_games);

@@ -39,7 +39,7 @@ const QuickBet = () => {
   const betType = ["single", "combo"];
 
   const hasDuplicateEventIds = () => {
-    const betPairs = bets.map((bet) => `${bet.event_id}-${bet.market}`);
+    const betPairs = bets.map((bet) => `${bet.event_id}-${bet.category}`);
     const betPairsSet = new Set(betPairs);
 
     return betPairs.length !== betPairsSet.size;

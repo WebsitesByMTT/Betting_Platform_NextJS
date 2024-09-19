@@ -68,10 +68,7 @@ export const betSlice = createSlice({
     calculateTotalOdds: (state) => {
       let totalOdds = 1;
       for (const bet of state.allbets) {
-        const odds =
-          bet.bet_on === "home_team"
-            ? parseFloat(bet.home_team.odds)
-            : parseFloat(bet.away_team.odds);
+        const odds = bet.bet_on.odds
 
         totalOdds *= odds;
       }
@@ -86,10 +83,7 @@ export const betSlice = createSlice({
         case "single":
           let totalPotentialWin = 0;
           for (const bet of state.allbets) {
-            const odds =
-              bet.bet_on === "home_team"
-                ? parseFloat(bet.home_team.odds)
-                : parseFloat(bet.away_team.odds);
+            const odds = bet.bet_on.odds
 
             totalPotentialWin += bet.amount * odds;
           }

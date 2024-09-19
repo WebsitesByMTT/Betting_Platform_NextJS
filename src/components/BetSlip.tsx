@@ -48,25 +48,17 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       </button>
       <div className="px-3 py-2 w-[85%]">
         <div className="flex space-x-4 md:gap-2 text-sm font-medium text-[#ffffff]">
-          <div className="relative w-[15px]">
-            {IconComponent}
-          </div>
-          <p className="text-md font-normal">
-            {betinfo.bet_on == "home_team"
-              ? betinfo.home_team.name
-              : betinfo.away_team.name}
-          </p>
+          <div className="relative w-[15px]">{IconComponent}</div>
+          <p className="text-md font-normal">{betinfo.bet_on.name}</p>
         </div>
         <p className="text-[#dfdfdf9a] font-light text-sm whitespace-nowrap overflow-clip">
-          <span>{betinfo.home_team.name}</span> v/s{" "}
-          <span>{betinfo.away_team.name}</span>
+          <span>{betinfo.bet_on.name}</span> v/s{" "}
+          <span>{betinfo.bet_on.name}</span>
         </p>
         <p className="text-[#fff] font-medium text-sm">{betinfo.market}</p>
         <div className="grid grid-cols-4 items-center">
           <p className="text-xl font-semibold col-span-3">
-            {betinfo.bet_on == "home_team"
-              ? betinfo.home_team.odds
-              : betinfo.away_team.odds}
+            {betinfo.bet_on.odds}
           </p>
           {betType === "single" && (
             <input

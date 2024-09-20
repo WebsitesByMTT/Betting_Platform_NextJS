@@ -19,6 +19,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const [previousBetsData, setPreviousBetsData] = useState<any>(betsData);
   const router = useRouter();
   const IconComponent = svgMap[currentCategory.toLowerCase()];
+
   const { socket } = useSocket();
 
   useEffect(() => {
@@ -77,6 +78,26 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
     return allbets.some((bet) => bet.id === betId);
+  };
+
+  //disable placing bets for bets which are already placed
+  const isBetDisabled = (betOn: string, event_id: string) => {
+    for (const myBet of myBets) {
+      if (Array.isArray(myBet?.data)) {
+        const isDisabled = myBet.data.some((bet: any) => {
+          return (
+            bet.event_id === event_id &&
+            bet.bet_on === betOn &&
+            bet.status === "pending"
+          );
+        });
+
+        if (isDisabled) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
 
   const handelLeagueInfo = () => {

@@ -71,7 +71,7 @@ export const betSlice = createSlice({
     calculateTotalOdds: (state) => {
       let totalOdds = 1;
       for (const bet of state.allbets) {
-        const odds = bet.bet_on.odds
+        const odds = bet?.bet_on.odds
 
         totalOdds *= odds;
       }

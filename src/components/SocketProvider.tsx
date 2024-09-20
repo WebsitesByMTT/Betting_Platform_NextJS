@@ -116,6 +116,11 @@ export const SocketProvider: React.FC<{
             toast.success(message.payload.data.message);
             dispatch(setSocketNotification(message?.payload));
             break;
+
+          case "BET_SLIP":
+            console.log("BET SLIP : ", message?.payload);
+            break;
+
           default:
             break;
         }

@@ -42,6 +42,7 @@ const QuickBet = () => {
   const betType = ["single", "combo"];
 
   const hasDuplicateEventIds = () => {
+    if (currentBetType === "single") return false;
     const betPairs = bets.map((bet) => `${bet.event_id}-${bet.category}`);
     const betPairsSet = new Set(betPairs);
 
@@ -99,7 +100,7 @@ const QuickBet = () => {
 
   //calculate all amounts when tabs switch between combo and single
   useEffect(() => {
-    setDisabled(hasDuplicateEventIds());
+      setDisabled(hasDuplicateEventIds());
     dispatch(
       calculatePotentialWin({
         betType: currentBetType,

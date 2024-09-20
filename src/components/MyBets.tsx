@@ -55,7 +55,6 @@ const MyBets = () => {
     if (response?.error) {
       return toast.error(response?.error || "Error fetching Bets");
     }
-    console.log(response?.responseData);
     setmyBets(response?.responseData);
     dispatch(setMyBets(response?.responseData));
   };

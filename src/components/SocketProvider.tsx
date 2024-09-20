@@ -1,5 +1,9 @@
 "use client";
-import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
+import {
+  addAllBets,
+  setMyBets,
+  setRedeemAmount,
+} from "@/lib/store/features/bet/betSlice";
 import { setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
 import {
   setCategories,
@@ -112,6 +116,11 @@ export const SocketProvider: React.FC<{
             toast.success(message.payload.data.message);
             dispatch(setSocketNotification(message?.payload));
             break;
+
+          case "BET_SLIP":
+            console.log("BET SLIP : ", message?.payload);
+            break;
+
           default:
             break;
         }

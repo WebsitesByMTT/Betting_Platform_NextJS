@@ -6,16 +6,20 @@ import { addAllBets } from "@/lib/store/features/bet/betSlice";
 import { svgMap } from "./svg/SvgMap";
 import { useRouter } from "next/navigation";
 import Triangle from "./svg/Triangle";
+import { useSocket } from "./SocketProvider";
 
 const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const [leagues, setLeagues] = useState(betsData);
   const dispatch = useAppDispatch();
   const allbets = useAppSelector((state) => state.bet.allbets);
   const myBets = useAppSelector((state) => state.bet.myBets);
-  const currentCategory = useAppSelector((state) => state?.sports?.selectedCategory);
+  const currentCategory = useAppSelector(
+    (state) => state?.sports?.selectedCategory
+  );
   const [previousBetsData, setPreviousBetsData] = useState<any>(betsData);
   const router = useRouter();
   const IconComponent = svgMap[currentCategory.toLowerCase()];
+  const { socket } = useSocket();
 
   useEffect(() => {
     setLeagues(betsData);
@@ -32,7 +36,13 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   ) => {
     event.stopPropagation();
     const betDetails: BetDetails = {
-      id: betOn + betsData.id + betsData.markets[0]?.key,
+      id:
+        betsData.id +
+        betOn.replace(/\s+/g, "") + // Remove spaces from betOn
+        betsData.markets[0]?.key +
+        betsData.markets[0].outcomes.find(
+          (outcome: any) => outcome.name === betOn
+        ).price,
       teams: betsData.markets[0]?.outcomes.map(
         (team: { name: string; price: number }) => ({
           name: team.name,
@@ -56,6 +66,10 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       amount: 50,
     };
     dispatch(addAllBets(betDetails));
+    socket?.emit("bet", {
+      action: "ADD_TO_BETSLIP",
+      payload: { data: betDetails },
+    });
   };
 
   // };

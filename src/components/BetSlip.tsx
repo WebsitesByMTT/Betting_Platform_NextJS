@@ -5,9 +5,11 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CrossIcon from "./svg/CrossIcon";
 import { useEffect, useState } from "react";
 import { svgMap } from "./svg/SvgMap";
+import { useSocket } from "./SocketProvider";
 
 const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const dispatch = useAppDispatch();
+  const { socket } = useSocket();
   const [amount, setAmount] = useState(betinfo.amount);
   const [show, setShow] = useState(true);
   const currentCategory = useAppSelector(
@@ -23,6 +25,10 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
     const newAmount = Number(e.target.value);
     setAmount(newAmount);
     dispatch(updateBetAmount({ betId: betinfo.id, amount: newAmount }));
+    socket?.emit("bet", {
+      action: "UPDATE_BET_AMOUNT",
+      payload: { bet: betinfo, amount: newAmount },
+    });
   };
 
   const handleRemove = (betId: string) => {

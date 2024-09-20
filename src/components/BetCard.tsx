@@ -12,16 +12,10 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const dispatch = useAppDispatch();
   const allbets = useAppSelector((state) => state.bet.allbets);
   const myBets = useAppSelector((state) => state.bet.myBets);
-  const currentCategory = useAppSelector(
-    (state) => state?.sports?.selectedCategory
-  );
+  const currentCategory = useAppSelector((state) => state?.sports?.selectedCategory);
   const [previousBetsData, setPreviousBetsData] = useState<any>(betsData);
   const router = useRouter();
   const IconComponent = svgMap[currentCategory.toLowerCase()];
-  const [disabledBets, setDisabledBets] = useState({
-    home_team: false,
-    away_team: false,
-  });
 
   useEffect(() => {
     setLeagues(betsData);
@@ -37,12 +31,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     betsData: any
   ) => {
     event.stopPropagation();
-    console.log("betOn", betOn);
-    console.log("betsData", betsData);
-
-    const selectedTeamName =
-      betOn === "home_team" ? betsData.home_team : betsData.away_team;
-
     const betDetails: BetDetails = {
       id: betOn + betsData.id + betsData.markets[0]?.key,
       teams: betsData.markets[0]?.outcomes.map(
@@ -52,9 +40,9 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         })
       ),
       bet_on: {
-        name: selectedTeamName,
+        name: betOn,
         odds: betsData.markets[0].outcomes.find(
-          (outcome: any) => outcome.name === selectedTeamName
+          (outcome: any) => outcome.name === betOn
         ).price,
       },
       event_id: betsData.id,
@@ -67,8 +55,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       oddsFormat: "decimal",
       amount: 50,
     };
-
-    console.log("betDetails", betDetails);
     dispatch(addAllBets(betDetails));
   };
 
@@ -78,36 +64,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const isBetInAllBets = (betId: string) => {
     return allbets.some((bet) => bet.id === betId);
   };
-
-  //disable placing bets for bets which are already placed
-  const isBetDisabled = (betOn: string, event_id: string) => {
-    for (const myBet of myBets) {
-      if (Array.isArray(myBet?.data)) {
-        const isDisabled = myBet.data.some((bet: any) => {
-          return (
-            bet.event_id === event_id &&
-            bet.bet_on === betOn &&
-            bet.status === "pending"
-          );
-        });
-
-        if (isDisabled) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  useEffect(() => {
-    const homeTeamDisabled = isBetDisabled("home_team", betsData.id);
-    const awayTeamDisabled = isBetDisabled("away_team", betsData.id);
-
-    setDisabledBets({
-      home_team: homeTeamDisabled,
-      away_team: awayTeamDisabled,
-    });
-  }, [myBets, betsData]);
 
   const handelLeagueInfo = () => {
     if (betsData) {
@@ -173,15 +129,16 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       </div>
       <div className="flex gap-2 w-full betPlaced relative">
         <button
-          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] relative disabled:cursor-not-allowed transition-colors border-[1px] flex group justify-between px-2 ${
-            isBetInAllBets("home_team" + betsData.id + betsData.markets[0]?.key)
+          className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
+            isBetInAllBets(
+              betsData.home_team + betsData.id + betsData.markets[0]?.key
+            )
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"
           }`}
           onClick={(event) => {
-            handleBet(event, "home_team", betsData);
+            handleBet(event, betsData.home_team, betsData);
           }}
-          disabled={disabledBets.home_team}
         >
           {betsData?.markets
             .flatMap((market: any) => market.outcomes)
@@ -221,22 +178,18 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                 ?.price
             }
           </p>
-          {disabledBets.home_team && (
-            <p className="text-[12px] text-red-500 betPlacedText italic text-right invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute -top-[70%] right-0 w-full">
-              This bet is already placed
-            </p>
-          )}
         </button>
         <button
-          className={`flex-1 py-2 rounded-lg text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] relative disabled:cursor-not-allowed transition-colors border-[1px] flex justify-between px-2 group ${
-            isBetInAllBets("away_team" + betsData.id + betsData.markets[0]?.key)
+          className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
+            isBetInAllBets(
+              betsData.away_team + betsData.id + betsData.markets[0]?.key
+            )
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"
           }`}
           onClick={(event) => {
-            handleBet(event, "away_team", betsData);
+            handleBet(event, betsData.away_team, betsData);
           }}
-          disabled={disabledBets.away_team}
         >
           {betsData?.markets
             .flatMap((market: any) => market.outcomes)
@@ -275,11 +228,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                 ?.price
             }
           </p>
-          {disabledBets.away_team && (
-            <p className="text-[12px] text-red-500 betPlacedText italic text-right invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute -top-[70%] right-0 w-full">
-              This bet is already placed
-            </p>
-          )}
         </button>
       </div>
     </div>

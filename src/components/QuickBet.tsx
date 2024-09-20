@@ -25,11 +25,14 @@ const QuickBet = () => {
   const [allBets, setAllBets] = useState<BetDetails[]>([]);
   const [currentBetType, setCurrentBetType] = useState<String>("single");
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [retryBetMessage, setRetryBetMessage] = useState<boolean>();
   const [comboBetAmount, setCombobetAmount] = useState<any>(100);
   const potentialWin = useAppSelector((state) => state.bet.potentialWin);
   const totalBetAmount = useAppSelector((state) => state.bet.totalBetAmount);
   const totalBetOdds = useAppSelector((state) => state.bet.totalOdds);
   const bets = useAppSelector((state) => state.bet.allbets);
+  const oddsMismatch = useAppSelector((state) => state.bet.oddsMismatch);
+
   const myBets = useAppSelector((state) => state.bet.myBets);
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
@@ -91,7 +94,7 @@ const QuickBet = () => {
     } else {
       console.log("SOCKET NOT CONNECTED");
     }
-    dispatch(deleteAllBets());
+    // dispatch(deleteAllBets());
   };
 
   //calculate all amounts when tabs switch between combo and single
@@ -122,7 +125,11 @@ const QuickBet = () => {
   const handleDelete = () => {
     dispatch(deleteAllBets());
   };
-
+  useEffect(() => {
+    if (oddsMismatch) {
+     setRetryBetMessage(true)
+    }
+  }, [oddsMismatch]);
   //scroll to bottom when new bet is added to show latest bet
   useEffect(() => {
     if (betsContainerRef.current) {
@@ -130,6 +137,7 @@ const QuickBet = () => {
         betsContainerRef.current.scrollHeight;
     }
   }, [allBets]);
+console.log(oddsMismatch,"odds");
 
   return (
     <div
@@ -275,6 +283,12 @@ const QuickBet = () => {
                 <p className="flex-1 text-right">{potentialWin.toFixed(1)} $</p>
               </div>
             </div>
+            <div className="text-red-700 ">
+            {retryBetMessage && (
+    <span className="block sm:inline">The odds for cuurent bets have changed, please retry!</span>
+)}
+   
+            </div>
             <div className="flex gap-3">
               <button
                 onClick={handleDelete}
@@ -282,12 +296,13 @@ const QuickBet = () => {
               >
                 <DeleteIcon />
               </button>
+              
               <button
                 disabled={disabled}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >
-                Place Bet
+           {retryBetMessage?"RETRY":"PLACE BET"}
               </button>
             </div>
           </>

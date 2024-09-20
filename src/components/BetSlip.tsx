@@ -32,7 +32,6 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       setShow(true);
     }, 300);
   };
-  console.log(betinfo, "info");
 
   return (
     <div

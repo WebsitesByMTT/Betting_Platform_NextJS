@@ -101,9 +101,7 @@ const Page = ({ params }: any) => {
     betsData: any,
     outcome: any
   ) => {
-    console.log(betsData, outcome);
     event.stopPropagation();
-    const betson = betOn.toLowerCase();
     const betDetails: BetDetails = {
       id: betOn + leagues_Info?.id + betsData?.key,
       teams: betsData.outcomes.map((team: { name: string; price: number }) => ({
@@ -124,36 +122,12 @@ const Page = ({ params }: any) => {
       oddsFormat: "decimal",
       amount: 50,
     };
-    console.log(betDetails, "end");
     dispatch(addAllBets(betDetails));
   };
 
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
-    if (betId === "Over" || betId === "Under") {
-      return allbets.some((bet) => bet.bet_on.name === betId);
-    }
     return allbets.some((bet) => bet.id === betId);
-  };
-
-  const isBetDisabled = (betOn: string, event_id: string, market: string) => {
-    for (const myBet of myBets) {
-      if (Array.isArray(myBet?.data)) {
-        const isDisabled = myBet.data.some((bet: any) => {
-          return (
-            bet.event_id === event_id &&
-            bet.bet_on === betOn &&
-            bet.status === "pending" &&
-            bet.market === market
-          );
-        });
-
-        if (isDisabled) {
-          return true;
-        }
-      }
-    }
-    return false;
   };
 
   return (
@@ -266,24 +240,13 @@ const Page = ({ params }: any) => {
                                 outcome?.point ? "block" : "flex space-x-.5"
                               } items-center justify-between px-1 group ${
                                 isBetInAllBets(
-                                  item.key === "totals"
-                                    ? outcome?.name
-                                    : (outcome?.name === leagues_Info?.home_team
-                                        ? "home_team"
-                                        : "away_team") +
-                                        leagues_Info?.id +
-                                        item.key
+                                  outcome.name +
+                                    leagues_Info.id +
+                                    leagues_Info.markets[0]?.key
                                 )
                                   ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                                   : "bg-[#040404] border-transparent"
                               }`}
-                              disabled={isBetDisabled(
-                                outcome.name === leagues_Info?.home_team
-                                  ? "home_team"
-                                  : "away_team",
-                                leagues_Info?.id,
-                                item?.key
-                              )}
                             >
                               <div className="text-xs md:text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2">
                                 {outcome.name}
@@ -313,17 +276,6 @@ const Page = ({ params }: any) => {
                               >
                                 {outcome.price}
                               </div>
-                              {isBetDisabled(
-                                outcome.name === leagues_Info?.home_team
-                                  ? "home_team"
-                                  : "away_team",
-                                leagues_Info?.id,
-                                item?.key
-                              ) && (
-                                <p className="text-[12px] text-red-500 betPlacedText italic text-center invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute bg-black rounded-xl top-[20%] left-[5%] right-[5%] w-full">
-                                  This bet is already placed
-                                </p>
-                              )}
                             </button>
                           )
                         )

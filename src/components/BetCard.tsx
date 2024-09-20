@@ -12,7 +12,9 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const dispatch = useAppDispatch();
   const allbets = useAppSelector((state) => state.bet.allbets);
   const myBets = useAppSelector((state) => state.bet.myBets);
-  const currentCategory = useAppSelector((state) => state?.sports?.selectedCategory);
+  const currentCategory = useAppSelector(
+    (state) => state?.sports?.selectedCategory
+  );
   const [previousBetsData, setPreviousBetsData] = useState<any>(betsData);
   const router = useRouter();
   const IconComponent = svgMap[currentCategory.toLowerCase()];
@@ -33,12 +35,12 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     event.stopPropagation();
     const betDetails: BetDetails = {
       id: betOn + betsData.id + betsData.markets[0]?.key,
-      teams: betsData.markets[0]?.outcomes.map(
-        (team: { name: string; price: number }) => ({
+      teams: betsData.markets[0]?.outcomes
+        .filter((team: { name: string; price: number }) => team.name !== "Draw")
+        .map((team: { name: string; price: number }) => ({
           name: team.name,
           odds: team.price,
-        })
-      ),
+        })),
       bet_on: {
         name: betOn,
         odds: betsData.markets[0].outcomes.find(
@@ -58,7 +60,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     dispatch(addAllBets(betDetails));
   };
 
-  // };
+  console.log(betsData);
 
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
@@ -179,6 +181,62 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
             }
           </p>
         </button>
+        {betsData?.markets[0]?.outcomes?.map(
+          (data: any, index: any) =>
+            data.name === "Draw" && (
+              <button
+                key={index}
+                className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
+                  isBetInAllBets(
+                    data.name + betsData.id + betsData.markets[0]?.key
+                  )
+                    ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
+                    : "bg-[#040404] border-transparent"
+                }`}
+                onClick={(event) => {
+                  handleBet(event, data.name, betsData);
+                }}
+              >
+                {betsData?.markets
+                  .flatMap((market: any) => market.outcomes)
+                  .find((outcome: any) => outcome.name === data.name)?.price >
+                  previousBetsData?.markets
+                    .flatMap((market: any) => market.outcomes)
+                    .find(
+                      (outcome: any) => outcome.name === previousBetsData.name
+                    )?.price &&
+                  previousBetsData?.sport_key === betsData?.sport_key && (
+                    <span className="absolute animatePulse right-0 top-0 text-green-500 rotate-[-91deg]">
+                      <Triangle color={"#00ff00"} />
+                    </span>
+                  )}
+                {betsData?.markets
+                  .flatMap((market: any) => market.outcomes)
+                  .find((outcome: any) => outcome.name === data.name)?.price <
+                  previousBetsData?.markets
+                    .flatMap((market: any) => market.outcomes)
+                    .find(
+                      (outcome: any) => outcome.name === previousBetsData?.name
+                    )?.price &&
+                  previousBetsData?.sport_key === betsData?.sport_key && (
+                    <span className="absolute right-0 bottom-0 text-red-500 animatePulse">
+                      <Triangle color={"#ff0000"} />
+                    </span>
+                  )}
+
+                <p className="text-[#dfdfdf76]">
+                  {data.name !== "Draw" ? index + 1 : data.name}
+                </p>
+                <p className="text-white">
+                  {
+                    betsData.markets
+                      .flatMap((market: any) => market.outcomes)
+                      .find((outcome: any) => outcome.name === data.name)?.price
+                  }
+                </p>
+              </button>
+            )
+        )}
         <button
           className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
             isBetInAllBets(

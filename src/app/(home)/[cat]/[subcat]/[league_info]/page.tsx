@@ -104,10 +104,12 @@ const Page = ({ params }: any) => {
     event.stopPropagation();
     const betDetails: BetDetails = {
       id: betOn + leagues_Info?.id + betsData?.key,
-      teams: betsData.outcomes.map((team: { name: string; price: number }) => ({
-        name: team.name,
-        odds: team.price,
-      })),
+      teams: betsData.outcomes
+        .filter((team: { name: string; price: number }) => team.name !== "Draw")
+        .map((team: { name: string; price: number }) => ({
+          name: team.name,
+          odds: team.price,
+        })),
       bet_on: {
         name: betOn,
         odds: betsData.outcomes.find((outcome: any) => outcome.name === betOn)

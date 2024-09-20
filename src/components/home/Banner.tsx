@@ -13,13 +13,10 @@ import { getCategoryBanners } from "@/utils/actions";
 const Banner: React.FC = () => {
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
   const [banners, setBanners] = useState<any[]>([]);
-  const currentCategory = useAppSelector(
-    (state) => state.sports.selectedCategory
-  );
+  const currentCategory = useAppSelector((state) => state.sports.selectedCategory);
 
   useEffect(() => {
     const fetchBanner = async (currentCategory: string) => {
-      console.log(currentCategory);
       const data = await getCategoryBanners(currentCategory);
       setBanners(data?.banners);
     };

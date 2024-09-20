@@ -21,14 +21,15 @@ const MyBets = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [betID, setBetID] = useState();
-  const activeNotificationBet = useAppSelector(
-    (state) => state.bet.notificationBet
-  );
-
-  const isMounted = useRef(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const pathname = usePathname();
+  const activeNotificationBetId = useAppSelector(
+    (state) => state.bet.notificationBet
+  );
+  const isMounted = useRef(false);
   const [selectedOption, setSelectedOption] = useState<string>("all");
+
   const options = [
     "all",
     "pending",
@@ -38,6 +39,7 @@ const MyBets = () => {
     "combo",
     "failed",
   ];
+
   const headers = [
     { icon: <Sport />, text: "sport" },
     { icon: <Bet />, text: "Stake" },
@@ -48,11 +50,10 @@ const MyBets = () => {
     { icon: <Action />, text: "action" },
   ];
 
-  const pathname = usePathname();
   const fetchBet = async () => {
     const response = await GetPlayerBets(selectedOption);
     if (response?.error) {
-      return toast.error(response.error || "Error fetching Bets");
+      return toast.error(response?.error || "Error fetching Bets");
     }
     console.log(response?.responseData);
     setmyBets(response?.responseData);
@@ -99,7 +100,7 @@ const MyBets = () => {
       isMounted.current = true;
       return;
     }
-    const element = document.getElementById(activeNotificationBet);
+    const element = document.getElementById(activeNotificationBetId);
     if (element) {
       setTimeout(() => {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -112,7 +113,7 @@ const MyBets = () => {
         }, 500);
       }, 200);
     }
-  }, [pathname, isMounted.current, activeNotificationBet]);
+  }, [pathname, isMounted.current, activeNotificationBetId]);
 
   return (
     <div className="z-[100] text-white h-full ">
@@ -219,7 +220,15 @@ const MyBets = () => {
                                 }
                               >
                                 {team?.name}{" "}
-                                {index < data.teams?.length - 1 ? "v/s" : ""}{" "}
+                                <span
+                                  className={`${
+                                    data.status === "redeem"
+                                      ? "text-[#424149]"
+                                      : "text-white"
+                                  }`}
+                                >
+                                  {index < data.teams?.length - 1 ? "v/s" : ""}{" "}
+                                </span>
                               </span>
                             ))}
                           </span>
@@ -373,7 +382,17 @@ const MyBets = () => {
                                   }
                                 >
                                   {team?.name}{" "}
-                                  {index < data.teams?.length - 1 ? "v/s" : ""}{" "}
+                                  <span
+                                    className={`${
+                                      data.status === "redeem"
+                                        ? "text-[#424149]"
+                                        : "text-white"
+                                    }`}
+                                  >
+                                    {index < data.teams?.length - 1
+                                      ? "v/s"
+                                      : ""}{" "}
+                                  </span>
                                 </span>
                               ))}
                             </span>

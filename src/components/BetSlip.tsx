@@ -63,7 +63,11 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
               }
               key={index}
             >
-              {data.name} {index < betinfo.teams.length - 1 ? "v/s" : ""}{" "}
+              {data.name}
+              <span className="text-[#dfdfdf9a]">
+                {" "}
+                {index < betinfo.teams.length - 1 ? "v/s" : ""}{" "}
+              </span>
             </span>
           ))}
         </p>

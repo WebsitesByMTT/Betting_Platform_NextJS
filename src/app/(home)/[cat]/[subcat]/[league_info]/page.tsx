@@ -101,33 +101,30 @@ const Page = ({ params }: any) => {
     betsData: any,
     outcome: any
   ) => {
+    console.log(betsData, outcome);
     event.stopPropagation();
     const betson = betOn.toLowerCase();
     const betDetails: BetDetails = {
-      id: betOn + betsData.id + betsData.markets[0]?.key,
-      teams: betsData.markets[0]?.outcomes.map(
-        (team: { name: string; price: number }) => ({
-          name: team.name,
-          odds: team.price,
-        })
-      ),
+      id: betOn + leagues_Info?.id + betsData?.key,
+      teams: betsData.outcomes.map((team: { name: string; price: number }) => ({
+        name: team.name,
+        odds: team.price,
+      })),
       bet_on: {
         name: betOn,
-        odds: betsData.markets[0].outcomes.find(
-          (outcome: any) => outcome.name === betOn
-        ).price,
+        odds: betsData.outcomes.find((outcome: any) => outcome.name === betOn)
+          .price,
       },
-      event_id: betsData.id,
-      sport_title: betsData.sport_title,
-      sport_key: betsData.sport_key,
-
-      commence_time: betsData.commence_time,
-      category: betsData.markets[0]?.key,
-      bookmaker: betsData.selected,
+      event_id: leagues_Info.id,
+      sport_title: leagues_Info.sport_title,
+      sport_key: leagues_Info.sport_key,
+      commence_time: leagues_Info.commence_time,
+      category: betsData.key,
+      bookmaker: leagues_Info.selected,
       oddsFormat: "decimal",
       amount: 50,
     };
-    console.log(betDetails);
+    console.log(betDetails, "end");
     dispatch(addAllBets(betDetails));
   };
 
@@ -262,16 +259,7 @@ const Page = ({ params }: any) => {
                           (outcome: any, outcomeIndex: number) => (
                             <button
                               onClick={(event) => {
-                                handleBet(
-                                  event,
-                                  item.key === "totals"
-                                    ? outcome.name
-                                    : outcome.name === leagues_Info?.home_team
-                                    ? "home_team"
-                                    : "away_team",
-                                  item,
-                                  outcome
-                                );
+                                handleBet(event, outcome.name, item, outcome);
                               }}
                               key={outcomeIndex}
                               className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${

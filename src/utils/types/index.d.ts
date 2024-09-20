@@ -42,12 +42,6 @@ interface Event {
   title: string;
 }
 
-interface Leagues {
-  sport_title: string;
-  home_team: string;
-  away_team: string;
-}
-
 interface Mybet {
   commence_time: string;
   home_team: {

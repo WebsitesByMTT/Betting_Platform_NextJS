@@ -1,6 +1,6 @@
 "use client";
 import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
-import {setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
+import { setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
 import {
   setCategories,
   setEvents,
@@ -74,7 +74,7 @@ export const SocketProvider: React.FC<{
             dispatch(setLeaguesInfo(data?.data));
             break;
           case "REDEEM_AMOUNT":
-            dispatch(setRedeemAmount(data?.data))
+            dispatch(setRedeemAmount(data?.data));
             break;
           case "SEARCH EVENT":
             dispatch(setLoading(false));
@@ -110,14 +110,12 @@ export const SocketProvider: React.FC<{
         switch (message.type) {
           case "NOTIFICATION":
             toast.success(message.payload.data.message);
-            dispatch(setSocketNotification(message?.payload))
+            dispatch(setSocketNotification(message?.payload));
             break;
           default:
             break;
         }
       });
-
-
 
       socketInstance.on("error", (error) => {
         toast.remove();

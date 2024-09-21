@@ -6,6 +6,7 @@ import { addAllBets } from "@/lib/store/features/bet/betSlice";
 import { svgMap } from "./svg/SvgMap";
 import { useRouter } from "next/navigation";
 import Triangle from "./svg/Triangle";
+import { useSocket } from "./SocketProvider";
 
 const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const [leagues, setLeagues] = useState(betsData);
@@ -18,6 +19,8 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const [previousBetsData, setPreviousBetsData] = useState<any>(betsData);
   const router = useRouter();
   const IconComponent = svgMap[currentCategory.toLowerCase()];
+
+  const { socket } = useSocket();
 
   useEffect(() => {
     setLeagues(betsData);
@@ -58,6 +61,10 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       amount: 50,
     };
     dispatch(addAllBets(betDetails));
+    socket?.emit("bet", {
+      action: "ADD_TO_BETSLIP",
+      payload: { data: betDetails },
+    });
   };
 
   console.log(betsData);
@@ -65,6 +72,26 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
     return allbets.some((bet) => bet.id === betId);
+  };
+
+  //disable placing bets for bets which are already placed
+  const isBetDisabled = (betOn: string, event_id: string) => {
+    for (const myBet of myBets) {
+      if (Array.isArray(myBet?.data)) {
+        const isDisabled = myBet.data.some((bet: any) => {
+          return (
+            bet.event_id === event_id &&
+            bet.bet_on === betOn &&
+            bet.status === "pending"
+          );
+        });
+
+        if (isDisabled) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
 
   const handelLeagueInfo = () => {

@@ -1,5 +1,5 @@
 "use client";
-import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
+import { setMyBets, setOddsMismatch, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
 import { setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
 import {
   setCategories,
@@ -81,6 +81,10 @@ export const SocketProvider: React.FC<{
             dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
             break;
+          case "ODDS_MISMATCH":
+            dispatch(setOddsMismatch(true)); 
+
+                break;  
           case "BLOCKED":
           default:
             break;
@@ -113,6 +117,11 @@ export const SocketProvider: React.FC<{
             toast.success(message.payload.data.message);
             dispatch(setSocketNotification(message?.payload));
             break;
+
+          case "BET_SLIP":
+            console.log("BET SLIP : ", message?.payload);
+            break;
+
           default:
             break;
         }

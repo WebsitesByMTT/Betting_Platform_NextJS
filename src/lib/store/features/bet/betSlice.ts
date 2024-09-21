@@ -9,7 +9,7 @@ interface BetState {
   myBets: any;
   RedeemAmount: number;
   notificationBet: string;
-  oddsMismatch: boolean;  
+  oddsMismatch: boolean;
 }
 
 const initialState: BetState = {
@@ -20,7 +20,7 @@ const initialState: BetState = {
   myBets: [],
   RedeemAmount: 0,
   notificationBet: "",
-  oddsMismatch: false, 
+  oddsMismatch: false,
 
 };
 
@@ -55,6 +55,8 @@ export const betSlice = createSlice({
       });
     },
     deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
+      console.log("action.payload", action.payload);
+
       const { betId } = action.payload;
       state.allbets = state.allbets.filter((bet) => bet.id !== betId);
     },

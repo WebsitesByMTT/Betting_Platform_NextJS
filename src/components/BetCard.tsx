@@ -7,6 +7,7 @@ import { svgMap } from "./svg/SvgMap";
 import { useRouter } from "next/navigation";
 import Triangle from "./svg/Triangle";
 import { useSocket } from "./SocketProvider";
+import { generateId } from "@/lib/utils";
 
 const BetCard: React.FC<any> = ({ betsData, cat }) => {
   const [leagues, setLeagues] = useState(betsData);
@@ -37,7 +38,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
   ) => {
     event.stopPropagation();
     const betDetails: BetDetails = {
-      id: betOn + betsData.id + betsData.markets[0]?.key,
+      id: generateId(betsData.id, betOn, betsData.markets[0]?.key),
       teams: betsData.markets[0]?.outcomes
         .filter((team: { name: string; price: number }) => team.name !== "Draw")
         .map((team: { name: string; price: number }) => ({
@@ -66,8 +67,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       payload: { data: betDetails },
     });
   };
-
-  console.log(betsData);
 
   //bets included in all bets in redux
   const isBetInAllBets = (betId: string) => {
@@ -160,7 +159,11 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         <button
           className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
             isBetInAllBets(
-              betsData.home_team + betsData.id + betsData.markets[0]?.key
+              generateId(
+                betsData.id,
+                betsData.home_team,
+                betsData.markets[0]?.key
+              )
             )
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"
@@ -267,7 +270,11 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         <button
           className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
             isBetInAllBets(
-              betsData.away_team + betsData.id + betsData.markets[0]?.key
+              generateId(
+                betsData.id,
+                betsData.away_team,
+                betsData.markets[0]?.key
+              )
             )
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"

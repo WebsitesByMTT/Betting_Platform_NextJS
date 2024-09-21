@@ -12,6 +12,7 @@ import { setLoading } from "@/lib/store/features/sports/sportsSlice";
 import QuickBet from "@/components/QuickBet";
 import { BetDetails } from "@/utils/types";
 import { addAllBets } from "@/lib/store/features/bet/betSlice";
+import { generateId } from "@/lib/utils";
 
 const Page = ({ params }: any) => {
   const { socket } = useSocket();
@@ -103,7 +104,7 @@ const Page = ({ params }: any) => {
   ) => {
     event.stopPropagation();
     const betDetails: BetDetails = {
-      id: betOn + leagues_Info?.id + betsData?.key,
+      id: generateId(leagues_Info.id, betOn, betsData.key),
       teams: betsData.outcomes
         .filter((team: { name: string; price: number }) => team.name !== "Draw")
         .map((team: { name: string; price: number }) => ({
@@ -124,6 +125,9 @@ const Page = ({ params }: any) => {
       oddsFormat: "decimal",
       amount: 50,
     };
+
+    console.log("betDetails", betsData);
+
     dispatch(addAllBets(betDetails));
   };
 
@@ -242,9 +246,11 @@ const Page = ({ params }: any) => {
                                 outcome?.point ? "block" : "flex space-x-.5"
                               } items-center justify-between px-1 group ${
                                 isBetInAllBets(
-                                  outcome.name +
-                                    leagues_Info.id +
+                                  generateId(
+                                    leagues_Info.id,
+                                    outcome.name,
                                     leagues_Info.markets[0]?.key
+                                  )
                                 )
                                   ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                                   : "bg-[#040404] border-transparent"

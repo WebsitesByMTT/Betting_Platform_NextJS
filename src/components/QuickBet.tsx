@@ -100,7 +100,7 @@ const QuickBet = () => {
 
   //calculate all amounts when tabs switch between combo and single
   useEffect(() => {
-      setDisabled(hasDuplicateEventIds());
+    setDisabled(hasDuplicateEventIds());
     dispatch(
       calculatePotentialWin({
         betType: currentBetType,
@@ -128,7 +128,7 @@ const QuickBet = () => {
   };
   useEffect(() => {
     if (oddsMismatch) {
-     setRetryBetMessage(true)
+      setRetryBetMessage(true);
     }
   }, [oddsMismatch]);
   //scroll to bottom when new bet is added to show latest bet
@@ -138,7 +138,7 @@ const QuickBet = () => {
         betsContainerRef.current.scrollHeight;
     }
   }, [allBets]);
-console.log(oddsMismatch,"odds");
+  console.log(oddsMismatch, "odds");
 
   return (
     <div
@@ -285,10 +285,11 @@ console.log(oddsMismatch,"odds");
               </div>
             </div>
             <div className="text-red-700 ">
-            {retryBetMessage && (
-    <span className="block sm:inline">The odds for cuurent bets have changed, please retry!</span>
-)}
-   
+              {retryBetMessage && (
+                <span className="block sm:inline">
+                  The odds for cuurent bets have changed, please retry!
+                </span>
+              )}
             </div>
             <div className="flex gap-3">
               <button
@@ -297,13 +298,13 @@ console.log(oddsMismatch,"odds");
               >
                 <DeleteIcon />
               </button>
-              
+
               <button
                 disabled={disabled}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >
-           {retryBetMessage?"RETRY":"PLACE BET"}
+                {retryBetMessage ? "RETRY" : "PLACE BET"}
               </button>
             </div>
           </>

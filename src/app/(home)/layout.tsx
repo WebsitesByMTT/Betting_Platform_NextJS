@@ -19,7 +19,7 @@ export default async function RootLayout({
   return (
     <StoreProvider>
       <SocketProvider token={token as string}>
-        <div className="h-auto flex-1 lg:space-x-4 lg:flex lg:pl-5 lg:pr-2">
+        <div className="overflow-hidden flex-1 lg:space-x-4 h-screen lg:flex lg:pl-5 lg:pr-2">
           <Sidebar />
             <div>
               <Header />

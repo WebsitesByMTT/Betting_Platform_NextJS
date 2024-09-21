@@ -135,7 +135,7 @@ const QuickBet = () => {
     <div
       className={`transition-all text-white  ${
         open ? "bottom-0" : "-bottom-[1rem]"
-      }  fixed  z-[100] md:right-10 right-auto w-[96%] md:w-[360px] max-h-[80vh]`}
+      }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
     >
       <div
         onClick={() => {
@@ -217,7 +217,7 @@ const QuickBet = () => {
                 disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
               } ${
                 currentBetType === "combo" ? "gap-0" : "gap-2"
-              }  max-h-[calc(40vh-90px)] overflow-y-scroll`}
+              }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
             >
               {allBets?.map((item, index) => (
                 <BetSlip key={index} betinfo={item} betType={currentBetType} />

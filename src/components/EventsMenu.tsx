@@ -53,13 +53,13 @@ const EventsMenu = ({ cat }: any) => {
 
   const scrollNext = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 500, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: 100, behavior: "smooth" });
     }
   };
 
   const scrollPrev = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -500, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: -100, behavior: "smooth" });
     }
   };
 
@@ -75,9 +75,9 @@ const EventsMenu = ({ cat }: any) => {
           </p>
         </div>
       )}
-      <div className="flex items-center">
-        <button onClick={scrollPrev} className="text-white hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full mr-2"><NextPrev /></button>
-        <div className="flex gap-4 overflow-x-scroll hideScrollBar" ref={scrollRef}>
+      <div className="flex lg:w-[50vw]  items-center">
+        <button onClick={scrollPrev} className="text-white hover:bg-opacity-70  bg-gray-800 rounded-full mr-2"><NextPrev /></button>
+        <div className="flex gap-4  overflow-x-scroll hideScrollBar" ref={scrollRef}>
           {events?.map((item, index) => (
             <Link
               href={`/${cat.cat}/${item.key}`}
@@ -99,7 +99,7 @@ const EventsMenu = ({ cat }: any) => {
         </div>
         <button
           onClick={scrollNext}
-          className="text-white rotate-180 hover:bg-opacity-70 lg:block hidden bg-gray-800 rounded-full ml-2"
+          className="text-white rotate-180 hover:bg-opacity-70 bg-gray-800 rounded-full ml-2"
         >
           <NextPrev />
         </button>

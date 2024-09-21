@@ -227,7 +227,6 @@ const Page = ({ params }: any) => {
             </div>
           </div>
         ))}
-
       </div>
       <QuickBet />
 

@@ -75,7 +75,7 @@ const EventsMenu = ({ cat }: any) => {
           </p>
         </div>
       )}
-      <div className="flex lg:w-[50vw]  items-center">
+      <div className="flex lg:w-[60vw]  items-center">
         <button onClick={scrollPrev} className="text-white hover:bg-opacity-70  bg-gray-800 rounded-full mr-2"><NextPrev /></button>
         <div className="flex gap-4  overflow-x-scroll hideScrollBar" ref={scrollRef}>
           {events?.map((item, index) => (

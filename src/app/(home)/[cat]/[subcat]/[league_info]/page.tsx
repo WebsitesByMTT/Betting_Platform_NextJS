@@ -126,9 +126,11 @@ const Page = ({ params }: any) => {
       amount: 50,
     };
 
-    console.log("betDetails", betsData);
-
     dispatch(addAllBets(betDetails));
+    socket?.emit("bet", {
+      action: "ADD_TO_BETSLIP",
+      payload: { data: betDetails },
+    });
   };
 
   //bets included in all bets in redux
@@ -140,8 +142,8 @@ const Page = ({ params }: any) => {
     <>
       <Categories />
 
-      <div className='w-full px-2 lg:px-0 pb-14 mx-auto'>
-        <div className='py-5'>
+      <div className="w-full px-2 lg:px-0 pb-14 mx-auto">
+        <div className="py-5">
           {category && (
             <div className="border-[1px] border-[#2e3134] px-1 space-x-1 md:space-x-0 md:px-3 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex items-center gap-2">
               <div className="relative h-auto w-[30px] md:w-[40px] p-2">
@@ -297,7 +299,6 @@ const Page = ({ params }: any) => {
         )}
       </div>
       <QuickBet />
-
     </>
   );
 };

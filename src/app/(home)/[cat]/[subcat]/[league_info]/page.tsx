@@ -145,7 +145,7 @@ const Page = ({ params }: any) => {
   return (
     <>
       <Categories />
-      <div className='w-full  pb-14 mx-auto'>
+      <div className='w-full px-2 lg:px-0 pb-14 mx-auto'>
         <div className='py-5'>
           {category && (
             <div className="border-[1px] border-[#2e3134] px-1 space-x-1 md:space-x-0 md:px-3 md:py-1 bg-gradient-to-b from-[#2E2D30] to-[#0C0B14] rounded-full w-fit flex items-center gap-2">
@@ -227,8 +227,10 @@ const Page = ({ params }: any) => {
             </div>
           </div>
         ))}
+
       </div>
       <QuickBet />
+
     </>
   );
 };

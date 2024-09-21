@@ -15,17 +15,17 @@ export default function Home({ params }: any) {
     (state) => state.notification.isNotiFication
   );
   return (
-    <div className={`flex-1  ${notification?'xl:w-[63vw]':'w-[96vw] md:w-[83vw]'} pl-[1vw] mx-auto`}>
-      <div className="h-[89vh] overflow-y-scroll pb-5 space-y-[max(1vw,10px)] hideScrollBar">
+    <>
+      <div className="pb-5 px-2 lg:px-0 z-50 overflow-y-scroll h-screen space-y-[max(1vw,10px)] hideScrollBar">
         <Banner />
         <Categories />
         <EventsMenu cat={params} />
-        <QuickBet />
         <Searchbar sportkey={params?.subcat} />
         <BetContainer cat={params} />
-        <Footer/>
+        <Footer />
       </div>
-    </div>
+      <QuickBet />
+    </>
 
   );
 }

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+  box-sizing: border-box;
+}
+
 .hideScrollBar {
   scrollbar-width: none !important;
 }
@@ -130,7 +134,7 @@ input[type="number"] {
 
 .scrollbar::-webkit-scrollbar {
   background-color: #fff;
-  width: 6px;
+  width: 3px;
 }
 
 .scrollbar::-webkit-scrollbar-track {

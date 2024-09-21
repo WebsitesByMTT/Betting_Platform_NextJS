@@ -9,7 +9,6 @@ const Searchbar = ({ sportkey }: { sportkey: string }) => {
     const dispatch = useAppDispatch()
     const { socket } = useSocket()
     const handelChange = async (value: string) => {
-        console.log(value,"value")
         if (socket && (!value||value)) {
             dispatch(setLoading(true));
             socket.emit("data", {

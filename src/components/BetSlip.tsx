@@ -5,9 +5,11 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CrossIcon from "./svg/CrossIcon";
 import { useEffect, useState } from "react";
 import { svgMap } from "./svg/SvgMap";
+import { useSocket } from "./SocketProvider";
 
 const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const dispatch = useAppDispatch();
+  const { socket } = useSocket();
   const [amount, setAmount] = useState(betinfo.amount);
   const [show, setShow] = useState(true);
   const currentCategory = useAppSelector(
@@ -23,6 +25,10 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
     const newAmount = Number(e.target.value);
     setAmount(newAmount);
     dispatch(updateBetAmount({ betId: betinfo.id, amount: newAmount }));
+    socket?.emit("bet", {
+      action: "UPDATE_BET_AMOUNT",
+      payload: { bet: betinfo, amount: newAmount },
+    });
   };
 
   const handleRemove = (betId: string) => {
@@ -32,6 +38,7 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       setShow(true);
     }, 300);
   };
+
   return (
     <div
       className={`border-[1.5px] border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
@@ -48,25 +55,31 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       </button>
       <div className="px-3 py-2 w-[85%]">
         <div className="flex space-x-4 md:gap-2 text-sm font-medium text-[#ffffff]">
-          <div className="relative w-[15px]">
-            {IconComponent}
-          </div>
-          <p className="text-md font-normal">
-            {betinfo.bet_on == "home_team"
-              ? betinfo.home_team.name
-              : betinfo.away_team.name}
-          </p>
+          <div className="relative w-[15px]">{IconComponent}</div>
+          <p className="text-md font-normal">{betinfo.sport_title}</p>
         </div>
-        <p className="text-[#dfdfdf9a] font-light text-sm whitespace-nowrap overflow-clip">
-          <span>{betinfo.home_team.name}</span> v/s{" "}
-          <span>{betinfo.away_team.name}</span>
+        <p className="text-[#dfdfdf9a] font-light text-sm overflow-clip">
+          {betinfo?.teams?.map((data: any, index: number) => (
+            <span
+              className={
+                betinfo.bet_on.name === data.name
+                  ? "text-yellow-500"
+                  : "text-[#dfdfdf9a]"
+              }
+              key={index}
+            >
+              {data.name}
+              <span className="text-[#dfdfdf9a]">
+                {" "}
+                {index < betinfo.teams.length - 1 ? "v/s" : ""}{" "}
+              </span>
+            </span>
+          ))}
         </p>
         <p className="text-[#fff] font-medium text-sm">{betinfo.market}</p>
         <div className="grid grid-cols-4 items-center">
           <p className="text-xl font-semibold col-span-3">
-            {betinfo.bet_on == "home_team"
-              ? betinfo.home_team.odds
-              : betinfo.away_team.odds}
+            {betinfo.bet_on.odds}
           </p>
           {betType === "single" && (
             <input

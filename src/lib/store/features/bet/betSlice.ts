@@ -9,6 +9,7 @@ interface BetState {
   myBets: any;
   RedeemAmount: number;
   notificationBet: string;
+  oddsMismatch: boolean;
 }
 
 const initialState: BetState = {
@@ -19,6 +20,8 @@ const initialState: BetState = {
   myBets: [],
   RedeemAmount: 0,
   notificationBet: "",
+  oddsMismatch: false,
+
 };
 
 export const betSlice = createSlice({
@@ -52,6 +55,8 @@ export const betSlice = createSlice({
       });
     },
     deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
+      console.log("action.payload", action.payload);
+
       const { betId } = action.payload;
       state.allbets = state.allbets.filter((bet) => bet.id !== betId);
     },
@@ -68,10 +73,7 @@ export const betSlice = createSlice({
     calculateTotalOdds: (state) => {
       let totalOdds = 1;
       for (const bet of state.allbets) {
-        const odds =
-          bet.bet_on === "home_team"
-            ? parseFloat(bet.home_team.odds)
-            : parseFloat(bet.away_team.odds);
+        const odds = bet?.bet_on.odds
 
         totalOdds *= odds;
       }
@@ -86,10 +88,7 @@ export const betSlice = createSlice({
         case "single":
           let totalPotentialWin = 0;
           for (const bet of state.allbets) {
-            const odds =
-              bet.bet_on === "home_team"
-                ? parseFloat(bet.home_team.odds)
-                : parseFloat(bet.away_team.odds);
+            const odds = bet.bet_on.odds
 
             totalPotentialWin += bet.amount * odds;
           }
@@ -112,6 +111,9 @@ export const betSlice = createSlice({
       const { betId } = action.payload;
       state.notificationBet = betId;
     },
+    setOddsMismatch: (state, action: PayloadAction<boolean>) => {
+      state.oddsMismatch = action.payload;
+    },
   },
 });
 
@@ -127,5 +129,6 @@ export const {
   setMyBets,
   setRedeemAmount,
   notificationBet,
+  setOddsMismatch
 } = betSlice.actions;
 export default betSlice.reducer;

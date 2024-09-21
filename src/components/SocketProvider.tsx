@@ -1,6 +1,11 @@
 "use client";
-import { setMyBets, setRedeemAmount } from "@/lib/store/features/bet/betSlice";
-import {setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
+import {
+  deleteBet,
+  setMyBets,
+  setOddsMismatch,
+  setRedeemAmount,
+} from "@/lib/store/features/bet/betSlice";
+import { setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
 import {
   setCategories,
   setEvents,
@@ -70,15 +75,20 @@ export const SocketProvider: React.FC<{
             dispatch(setMyBets(data?.bets));
             break;
           case "GET event odds":
+            console.log(data.data);
             dispatch(setLoading(false));
             dispatch(setLeaguesInfo(data?.data));
             break;
           case "REDEEM_AMOUNT":
-            dispatch(setRedeemAmount(data?.data))
+            dispatch(setRedeemAmount(data?.data));
             break;
           case "SEARCH EVENT":
             dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
+            break;
+          case "ODDS_MISMATCH":
+            dispatch(setOddsMismatch(true));
+
             break;
           case "BLOCKED":
           default:
@@ -104,20 +114,30 @@ export const SocketProvider: React.FC<{
         }
       });
 
+ 
+
       socketInstance.on("alert", (data: any) => {
         const message = data?.message;
 
         switch (message.type) {
           case "NOTIFICATION":
             toast.success(message.payload.data.message);
-            dispatch(setSocketNotification(message?.payload))
+            dispatch(setSocketNotification(message?.payload));
             break;
+
+          case "BET_SLIP":
+            console.log("BET SLIP : ", message?.payload);
+            break;
+
+          case "BET_PLACED":
+            console.log("BET PLACED : ", message);
+            dispatch(deleteBet({ betId: message?.payload.betId }));
+            break;
+
           default:
             break;
         }
       });
-
-
 
       socketInstance.on("error", (error) => {
         toast.remove();

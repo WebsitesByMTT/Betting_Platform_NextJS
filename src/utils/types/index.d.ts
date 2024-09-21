@@ -2,24 +2,22 @@ import { Socket } from "socket.io-client";
 
 interface BetDetails {
   id: string;
-  away_team: {
+  teams: {
     name: string;
-    odds: string;
+    odds: number;
+  }[];
+  bet_on: {
+    name: string;
+    odds: number;
     points?: number;
   };
-  home_team: {
-    name: string;
-    odds: string;
-    points?: number;
-  };
-  bet_on: string;
-  market: string;
-  oddsFormat: string;
-  sport_key: string;
-  sport_title: string;
   event_id: string;
+  sport_title: string;
+  sport_key: string;
   commence_time: string;
-  selected: string;
+  category: string;
+  bookmaker: string;
+  oddsFormat: string;
   amount: number;
 }
 
@@ -42,12 +40,6 @@ interface DecodedToken {
 interface Event {
   key: string;
   title: string;
-}
-
-interface Leagues {
-  sport_title: string;
-  home_team: string;
-  away_team: string;
 }
 
 interface Mybet {

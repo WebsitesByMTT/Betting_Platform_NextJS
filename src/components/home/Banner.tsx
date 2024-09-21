@@ -16,9 +16,7 @@ const Banner: React.FC = () => {
   const router=useRouter()
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
   const [banners, setBanners] = useState<any[]>([]);
-  const currentCategory = useAppSelector(
-    (state) => state.sports.selectedCategory
-  );
+  const currentCategory = useAppSelector((state) => state.sports.selectedCategory);
 
   useEffect(() => {
     const fetchBanner = async (currentCategory: string) => {
@@ -37,16 +35,16 @@ const Banner: React.FC = () => {
       <div className="">
         <Carousel plugins={[plugin.current]}>
           <CarouselContent>
-            {banners.length > 0 &&
+            {banners?.length > 0 &&
               banners?.map((item, index) => (
                 <CarouselItem className="basis-[100%]" key={index}>
                   <div className="relative min-h-[150px] h-[23vw]">
                     <Image
-                      src={item.url}
+                      src={item?.url}
                       fill
                       quality={100}
                       className="w-full rounded-[2vw]"
-                      alt={item.title}
+                      alt={item?.title}
                       priority
                     />
                   </div>

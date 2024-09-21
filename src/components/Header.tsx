@@ -7,13 +7,13 @@ import Line from "./svg/Line";
 import { GetPlayerBets, getUser } from "@/utils/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setUserCredits } from "@/lib/store/features/user/userSlice";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { setMyBets } from "@/lib/store/features/bet/betSlice";
 import Notifications from "./Notifications";
 import Hamburger from "./svg/sidebar/Hamburger";
 import { setIsSideBar } from "@/lib/store/features/notification/notificationSlice";
-
+import { getCurrentUser } from "@/utils/utils";
 const Header = () => {
   const [toggle, setToggle] = useState(false);
   const dispatch = useAppDispatch();
@@ -22,17 +22,13 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const notification = useAppSelector(
-    (state) => state.notification.notification
+    (state) => state?.notification?.notification
   );
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();
-      setUserName(user?.username)
-      if (user?.error) {
-        router.push("/logout");
-        return toast.error(user.error);
-      }
-
+       setUserName(user?.username)
       if (user?.role !== "player") {
         router.push("/logout");
       }
@@ -67,19 +63,19 @@ const Header = () => {
           >
             <Hamburger />
           </button>
-          <div className="flex items-center justify-center z-50 gap-x-4 lg:gap-x-7 ">
+          <div className="flex items-center justify-center z-50 gap-x-2 lg:gap-x-7 ">
             <div className="md:relative pt-3">
               <button
                 onClick={() => {
                   setOpen(!open);
                 }}
-                className="w-[2rem] relative cursor-pointer lg:h-[3rem] h-[1.5rem]"
+                className="w-[2.5rem] relative cursor-pointer lg:h-[3rem] h-[2rem]"
               >
                 <Notification />
                 <span className="bg-[#D71B21] text-white w-[1rem] h-[1rem] md:w-[1.5rem] md:h-[1.5rem] pt-[1px] md:pt-[2px] rounded-full text-[.6rem] md:text-[.8rem] top-0 absolute">
                   {
-                    notification?.filter((item: any) => item?.viewed === false)
-                      ?.length
+                    notification?.length>0&&(notification?.filter((item: any) => item?.viewed === false)
+                      ?.length)
                   }
                 </span>
               </button>

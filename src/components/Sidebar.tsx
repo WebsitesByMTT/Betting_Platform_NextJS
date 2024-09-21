@@ -66,10 +66,10 @@ const Sidebar = () => {
 
 
   return (
-    <div className="sticky top-[20px] lg:w-[15vw] z-[499] lg:z-0">
+    <div className="z-[499]  xl:z-0">
       <div
         className={`transition-all fixed lg:sticky top-0 w-[60%] ${toggle ? "left-0 " : "left-[-200%]"
-          } text-white z-[500] lg:z-0 h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2  border-[#2E2D32] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
+          } text-white z-[500] xl:z-0 h-screen lg:h-[calc(100vh-40px)] bg-[#1E1C22] lg:rounded-3xl lg:my-5 border-2  border-[#2E2D32] md:w-[30%] min-w-[200px] lg:w-auto px-[0.5vw]`}
       >
         <div
           className={`absolute left-3 top-auto w-[30px] h-[5rem] lg:hidden cursor-pointer text-white text-opacity-60 ${toggle ? "block" : "hidden"
@@ -115,7 +115,7 @@ const Sidebar = () => {
                       </Link>
                     </div>
                   );
-                })}
+                })} 
               </div>
             </div>
           ))}
@@ -124,7 +124,7 @@ const Sidebar = () => {
       {/* Blur Screen */}
       {toggle && <div
         onClick={handeltoggle}
-        className="lg:hidden cursor-pointer transition w-screen h-screen backdrop-blur-sm z-30 fixed top-0 left-0"
+        className="lg:hidden cursor-pointer transition w-screen h-screen backdrop-blur-sm z-[400] fixed top-0 left-0"
       ></div>}
     </div>
   );

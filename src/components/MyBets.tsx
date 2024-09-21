@@ -116,11 +116,11 @@ const MyBets = () => {
   }, [pathname, isMounted.current, activeNotificationBetId]);
 
   return (
-    <div className="z-[100] text-white h-full ">
+    <div className="z-[100] text-white h-full w-full ">
       <button onClick={() => router.back()}>
         <Back />
       </button>
-      <div className="w-full overflow-auto flex gap-x-3  md:gap-5 py-3">
+      <div className="w-full flex-wrap overflow-auto gap-y-2 md:gap-y-0 flex gap-x-2  md:gap-5 py-3">
         {options.map((item, index) => (
           <button
             onClick={() => setSelectedOption(item)}
@@ -131,17 +131,16 @@ const MyBets = () => {
               <div className="h-full px-1 rounded-tl-lg rounded-bl-lg bg-gradient-to-b from-[#ECB800] to-[#58565D00]"></div>
             )}
             <p
-              className={`text-sm lg:text-lg font-medium whitespace-nowrap py-1 ${
-                selectedOption === item ? "px-3" : "px-5"
-              } capitalize `}
+              className={`text-sm  font-medium whitespace-nowrap py-1 ${selectedOption === item ? "px-3" : "px-5"
+                } capitalize `}
             >
               {item}
             </p>
           </button>
         ))}
       </div>
-      <div className="h-[calc(100%-13vh)] hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
-        <table className="w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
+      <div className="h-[calc(100%-13vh)] w-[96vw] md:w-full hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
+        <table className=" overflow-x-scroll w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
           <thead>
             <tr className="text-xl">
               {headers.map((item, index) => (

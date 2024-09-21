@@ -56,6 +56,7 @@ const MyBets = () => {
       return toast.error(response?.error || "Error fetching Bets");
     }
     setmyBets(response?.responseData);
+    console.log(response?.responseData);
     dispatch(setMyBets(response?.responseData));
   };
 
@@ -272,9 +273,7 @@ const MyBets = () => {
                               data.status === "redeem" ? "text-[#555458]" : ""
                             }`}
                           >
-                            {data.bet_on.name === "away_team"
-                              ? data.teams[1].odds
-                              : data.teams[0].odds}
+                            {data.bet_on.odds}
                           </span>
                         </div>
                       </td>
@@ -432,9 +431,7 @@ const MyBets = () => {
                                 data.status === "redeem" ? "text-[#555458]" : ""
                               }`}
                             >
-                              {data.bet_on.name === "away_team"
-                                ? data.team[0].odds
-                                : data.teams[1].odds}
+                              {data.bet_on.odds}
                             </span>
                           </div>
                         </td>

@@ -70,6 +70,7 @@ export const SocketProvider: React.FC<{
             dispatch(setMyBets(data?.bets));
             break;
           case "GET event odds":
+            console.log(data.data);
             dispatch(setLoading(false));
             dispatch(setLeaguesInfo(data?.data));
             break;

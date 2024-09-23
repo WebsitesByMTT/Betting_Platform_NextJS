@@ -91,7 +91,7 @@ const QuickBet = () => {
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
-    dispatch(setBetLoadingState(true))
+    dispatch(setBetLoadingState(true));
     if (socket) {
       socket.emit("bet", { action: "PLACE", payload: finalbets });
     } else {
@@ -125,8 +125,22 @@ const QuickBet = () => {
 
   //delete all bets
   const handleDelete = () => {
-    dispatch(deleteAllBets());
+    socket?.emit(
+      "bet",
+      { action: "REMOVE_ALL_FROM_BETSLIP" },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          console.log("All bets successfully removed:", response.message);
+          // Now update the client state after receiving a success response
+          dispatch(deleteAllBets()); // Only dispatch after the server confirms the removal
+        } else {
+          console.error("Failed to remove all bets:", response.message);
+          // Optionally show an error message to the user
+        }
+      }
+    );
   };
+
   useEffect(() => {
     if (oddsMismatch) {
       setRetryBetMessage(true);
@@ -196,7 +210,7 @@ const QuickBet = () => {
           </>
         ) : (
           <>
-              <div className="flex text-md">
+            <div className="flex text-md">
               {betType?.map((item, index) => (
                 <button
                   key={index}
@@ -290,7 +304,7 @@ const QuickBet = () => {
                   The odds for cuurent bets have changed, please retry!
                 </span>
               )}
-              </div>
+            </div>
             <div className="flex gap-3">
               <button
                 onClick={handleDelete}

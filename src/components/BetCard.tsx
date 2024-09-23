@@ -61,12 +61,21 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       bookmaker: betsData.selected,
       oddsFormat: "decimal",
       amount: 50,
+      loading: false,
     };
-    dispatch(addAllBets(betDetails));
-    socket?.emit("bet", {
-      action: "ADD_TO_BETSLIP",
-      payload: { data: betDetails },
-    });
+
+    socket?.emit(
+      "bet",
+      { action: "ADD_TO_BETSLIP", payload: { data: betDetails } },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          dispatch(addAllBets(betDetails));
+          console.log("Bet successfully added:", response.message);
+        } else {
+          console.error("Failed to add bet:", response.message);
+        }
+      }
+    );
   };
 
   useEffect(() => {

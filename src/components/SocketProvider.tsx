@@ -129,7 +129,7 @@ export const SocketProvider: React.FC<{
             break;
 
           case "BET_PLACED":
-            console.log("BET PLACED : ", message);
+            console.log("BET PLACED : ", message?.payload.betId);
             dispatch(deleteBet({ betId: message?.payload.betId }));
             break;
 

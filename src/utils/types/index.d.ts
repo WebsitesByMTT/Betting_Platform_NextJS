@@ -19,6 +19,7 @@ interface BetDetails {
   bookmaker: string;
   oddsFormat: string;
   amount: number;
+  loading:boolean
 }
 
 interface Bet extends BetDetails {

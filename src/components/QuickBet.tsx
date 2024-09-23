@@ -14,6 +14,7 @@ import {
   calculateTotalBetAmount,
   calculateTotalOdds,
   deleteAllBets,
+  setBetLoadingState,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
 import { jwtDecode } from "jwt-decode";
@@ -90,12 +91,12 @@ const QuickBet = () => {
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
+    dispatch(setBetLoadingState(true));
     if (socket) {
       socket.emit("bet", { action: "PLACE", payload: finalbets });
     } else {
       console.log("SOCKET NOT CONNECTED");
     }
-    // dispatch(deleteAllBets());
   };
 
   //calculate all amounts when tabs switch between combo and single
@@ -124,7 +125,20 @@ const QuickBet = () => {
 
   //delete all bets
   const handleDelete = () => {
-    dispatch(deleteAllBets());
+    socket?.emit(
+      "bet",
+      { action: "REMOVE_ALL_FROM_BETSLIP" },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          console.log("All bets successfully removed:", response.message);
+          // Now update the client state after receiving a success response
+          dispatch(deleteAllBets()); // Only dispatch after the server confirms the removal
+        } else {
+          console.error("Failed to remove all bets:", response.message);
+          // Optionally show an error message to the user
+        }
+      }
+    );
   };
 
   useEffect(() => {

@@ -35,11 +35,26 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   };
 
   const handleRemove = (betId: string) => {
-    setShow(false);
-    setTimeout(() => {
-      dispatch(deleteBet({ betId: betId }));
-      setShow(true);
-    }, 300);
+    setShow(false); // Hide UI element (e.g., loading indicator or modal)
+
+    socket?.emit(
+      "bet",
+      {
+        action: "REMOVE_FROM_BETSLIP",
+        payload: { betId: betId },
+      },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          // Now update the client state after receiving a success response from the server
+          dispatch(deleteBet({ betId: betId }));
+          setShow(true); // Show UI element again after successful removal
+        } else {
+          console.error("Failed to remove bet:", response.message);
+          // Optionally show an error message or handle the failure case
+          setShow(true); // Optionally show UI again, even on failure
+        }
+      }
+    );
   };
 
   useEffect(() => {
@@ -48,7 +63,7 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
 
   return (
     <div
-      className={`border-[1.5px] border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
+      className={`border-[1.5px] relative border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
         show ? "bet-slip-enter-active" : "bet-slip-exit-active"
       }`}
     >
@@ -100,6 +115,19 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
           )}
         </div>
       </div>
+      {/* Loader */}
+      {betinfo.loading && (
+        <div className="fixed z-[9999]  bg-black bg-opacity-50 top-0 left-0 w-full h-full">
+          <div className="relative w-full h-full">
+            <svg
+              className="loader absolute top-[45%] left-[48%]"
+              viewBox="25 25 50 50"
+            >
+              <circle r="20" cy="50" cx="50"></circle>
+            </svg>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

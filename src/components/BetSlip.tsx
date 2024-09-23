@@ -41,9 +41,8 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
 
   return (
     <div
-      className={`border-[1.5px] border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
-        show ? "bet-slip-enter-active" : "bet-slip-exit-active"
-      }`}
+      className={`border-[1.5px] relative border-[#dfdfdf34] rounded-md flex items-stretch betslip ${show ? "bet-slip-enter-active" : "bet-slip-exit-active"
+        }`}
     >
       <button
         className="bg-[#2f2f2f] button group rounded-tl-md rounded-bl-md w-[15%] max-w-[2rem] whitespace-nowrap px-[0.4vw] lg:max-w-[3rem]  hover:bg-gradient-to-b from-[#d71b212b] to-[#7800047a] transition-all"
@@ -91,6 +90,14 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
           )}
         </div>
       </div>
+      {/* Loader */}
+      {betinfo.loading&&(<div className="fixed z-[9999]  bg-black bg-opacity-50 top-0 left-0 w-full h-full">
+        <div className="relative w-full h-full">
+          <svg className="loader absolute top-[45%] left-[48%]" viewBox="25 25 50 50">
+            <circle r="20" cy="50" cx="50"></circle>
+          </svg>
+        </div>
+      </div>)}
     </div>
   );
 };

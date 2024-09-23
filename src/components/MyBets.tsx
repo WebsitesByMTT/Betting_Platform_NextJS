@@ -139,7 +139,7 @@ const MyBets = () => {
           </button>
         ))}
       </div>
-      <div className="h-[calc(100%-13vh)] w-[96vw] md:w-full hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
+      <div className="h-[calc(100vh-200px)] w-[96vw] md:w-full hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
         <table className=" overflow-x-scroll w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
           <thead>
             <tr className="text-xl">

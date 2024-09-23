@@ -48,9 +48,10 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         })),
       bet_on: {
         name: betOn,
-        odds: betsData.markets[0].outcomes.find(
-          (outcome: any) => outcome.name === betOn
-        ).price,
+        odds:1.5//hard coding
+        //  betsData.markets[0].outcomes.find(
+        //   (outcome: any) => outcome.name === betOn
+        // ).price,
       },
       event_id: betsData.id,
       sport_title: betsData.sport_title,

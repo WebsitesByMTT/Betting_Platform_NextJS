@@ -1,6 +1,7 @@
 "use client";
 import {
   deleteBet,
+  setBetLoadingState,
   setMyBets,
   setOddsMismatch,
   setRedeemAmount,
@@ -88,7 +89,8 @@ export const SocketProvider: React.FC<{
             dispatch(setLeagues(data?.data));
             break;
           case "ODDS_MISMATCH":
-            dispatch(setOddsMismatch(true));
+            dispatch(setBetLoadingState(false));
+            dispatch(setOddsMismatch({ message: data.message, id: data.id }));
 
             break;
           case "BLOCKED":
@@ -129,7 +131,7 @@ export const SocketProvider: React.FC<{
             break;
 
           case "BET_PLACED":
-            console.log("BET PLACED : ", message?.payload.betId);
+            console.log("BET PLACED : ", message);
             dispatch(deleteBet({ betId: message?.payload.betId }));
             break;
 

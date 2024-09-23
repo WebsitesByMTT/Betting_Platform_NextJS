@@ -32,7 +32,6 @@ const QuickBet = () => {
   const totalBetAmount = useAppSelector((state) => state.bet.totalBetAmount);
   const totalBetOdds = useAppSelector((state) => state.bet.totalOdds);
   const bets = useAppSelector((state) => state.bet.allbets);
-  const oddsMismatch = useAppSelector((state) => state.bet.oddsMismatch);
 
   const myBets = useAppSelector((state) => state.bet.myBets);
   const { socket } = useSocket();
@@ -131,21 +130,14 @@ const QuickBet = () => {
       (response: { status: string; message: string }) => {
         if (response.status === "success") {
           console.log("All bets successfully removed:", response.message);
-          // Now update the client state after receiving a success response
-          dispatch(deleteAllBets()); // Only dispatch after the server confirms the removal
+
+          dispatch(deleteAllBets());
         } else {
           console.error("Failed to remove all bets:", response.message);
-          // Optionally show an error message to the user
         }
       }
     );
   };
-
-  useEffect(() => {
-    if (oddsMismatch) {
-      setRetryBetMessage(true);
-    }
-  }, [oddsMismatch]);
 
   //scroll to bottom when new bet is added to show latest bet
   useEffect(() => {
@@ -244,7 +236,11 @@ const QuickBet = () => {
               }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
             >
               {allBets?.map((item, index) => (
-                <BetSlip key={index} betinfo={item} betType={currentBetType} />
+                <BetSlip
+                  key={index}
+                  betinfo={item}
+                  betType={currentBetType}
+                />
               ))}
             </div>
             {disabled && (
@@ -298,13 +294,6 @@ const QuickBet = () => {
                 <p className="flex-1 uppercase">Potential win</p>
                 <p className="flex-1 text-right">{potentialWin.toFixed(1)} $</p>
               </div>
-            </div>
-            <div className="text-red-700 ">
-              {retryBetMessage && (
-                <span className="block sm:inline">
-                  The odds for cuurent bets have changed, please retry!
-                </span>
-              )}
             </div>
             <div className="flex gap-3">
               <button

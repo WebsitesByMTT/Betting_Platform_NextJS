@@ -9,7 +9,7 @@ interface BetState {
   myBets: any;
   RedeemAmount: number;
   notificationBet: string;
-  oddsMismatch: boolean;
+  oddsMismatch: any[];
 }
 
 const initialState: BetState = {
@@ -20,7 +20,7 @@ const initialState: BetState = {
   myBets: [],
   RedeemAmount: 0,
   notificationBet: "",
-  oddsMismatch: false,
+  oddsMismatch: [],
 };
 
 export const betSlice = createSlice({
@@ -72,7 +72,7 @@ export const betSlice = createSlice({
     calculateTotalOdds: (state) => {
       let totalOdds = 1;
       for (const bet of state.allbets) {
-        const odds = bet?.bet_on.odds
+        const odds = bet?.bet_on.odds;
 
         totalOdds *= odds;
       }
@@ -87,7 +87,7 @@ export const betSlice = createSlice({
         case "single":
           let totalPotentialWin = 0;
           for (const bet of state.allbets) {
-            const odds = bet.bet_on.odds
+            const odds = bet.bet_on.odds;
 
             totalPotentialWin += bet.amount * odds;
           }
@@ -110,14 +110,26 @@ export const betSlice = createSlice({
       const { betId } = action.payload;
       state.notificationBet = betId;
     },
-    setOddsMismatch: (state, action: PayloadAction<boolean>) => {
-      state.oddsMismatch = action.payload;
+    setOddsMismatch: (state, action: PayloadAction<any>) => {
+      const payloadId = action.payload.id;
+      const exists = state.oddsMismatch.some((item) => item.id === payloadId);
+
+      if (!exists) {
+        state.oddsMismatch.push(action.payload);
+      }
     },
     setBetLoadingState: (state, action: PayloadAction<boolean>) => {
       state.allbets.forEach((bet) => {
         bet.loading = action.payload;
       });
-    }
+    },
+    deleteFromOddsMismatch: (
+      state,
+      action: PayloadAction<{ betId: string }>
+    ) => {
+      const { betId } = action.payload;
+      state.oddsMismatch = state.oddsMismatch.filter((bet) => bet.id !== betId);
+    },
   },
 });
 
@@ -134,6 +146,7 @@ export const {
   setRedeemAmount,
   notificationBet,
   setOddsMismatch,
-  setBetLoadingState
+  setBetLoadingState,
+  deleteFromOddsMismatch,
 } = betSlice.actions;
 export default betSlice.reducer;

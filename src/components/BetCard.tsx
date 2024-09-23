@@ -55,7 +55,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       event_id: betsData.id,
       sport_title: betsData.sport_title,
       sport_key: betsData.sport_key,
-
       commence_time: betsData.commence_time,
       category: betsData.markets[0]?.key,
       bookmaker: betsData.selected,
@@ -356,7 +355,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
               hour12: true,
             })}
           </p>
-          <div className="grid grid-cols-3 gap-x-10 gap-y-4 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 py-4">
             {leagues.markets[0].outcomes.map((data: any, index: any) => (
               <button
                 key={index}

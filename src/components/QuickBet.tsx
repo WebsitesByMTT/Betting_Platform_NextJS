@@ -149,9 +149,8 @@ const QuickBet = () => {
 
   return (
     <div
-      className={`transition-all text-white  ${
-        open ? "bottom-0" : "-bottom-[1rem]"
-      }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
+      className={`transition-all text-white  ${open ? "bottom-0" : "-bottom-[1rem]"
+        }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
     >
       <div
         onClick={() => {
@@ -181,11 +180,10 @@ const QuickBet = () => {
         </div>
       </div>
       <div
-        className={`bg-[#1b1a1a] ${
-          open
+        className={`bg-[#1b1a1a] ${open
             ? "space-y-2 transition-all duration-300 ease-in-out"
             : "max-h-0  transition-all duration-300 ease-in-out"
-        } px-2  py-2 `}
+          } px-2  py-2 `}
       >
         {allBets?.length <= 0 ? (
           <>
@@ -209,11 +207,10 @@ const QuickBet = () => {
                   key={index}
                   disabled={bets.length < 2 && item === "combo"}
                   onClick={() => setCurrentBetType(item)}
-                  className={`flex-1 py-1 border-b-[2px] capitalize transition-all disabled:text-[#dfdfdf6f] ${
-                    item === currentBetType
+                  className={`flex-1 py-1 border-b-[2px] capitalize transition-all disabled:text-[#dfdfdf6f] ${item === currentBetType
                       ? "border-b-[#Bf141a]"
                       : "border-transparent"
-                  } `}
+                    } `}
                 >
                   {item}
                 </button>
@@ -229,11 +226,9 @@ const QuickBet = () => {
             )}
             <div
               ref={betsContainerRef}
-              className={`w-full flex flex-col ${
-                disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
-              } ${
-                currentBetType === "combo" ? "gap-0" : "gap-2"
-              }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
+              className={`w-full flex flex-col ${disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
+                } ${currentBetType === "combo" ? "gap-0" : "gap-2"
+                }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
             >
               {allBets?.map((item, index) => (
                 <BetSlip
@@ -304,7 +299,7 @@ const QuickBet = () => {
               </button>
 
               <button
-                disabled={disabled}
+                disabled={disabled||allBets?.some((bet) => bet.loading)}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >

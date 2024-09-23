@@ -93,6 +93,10 @@ export const SocketProvider: React.FC<{
             dispatch(setOddsMismatch({ message: data.message, id: data.id }));
 
             break;
+
+         case "ODDS_UPDATED":
+              console.log(data.data, "UPDATED ODDS");
+                 
           case "BLOCKED":
           default:
             break;

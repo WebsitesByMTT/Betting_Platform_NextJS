@@ -36,7 +36,7 @@ const EventsMenu = ({ cat }: any) => {
     if (category && sportsCategories) {
       setEvents(
         sportsCategories.find((item) => item.category === category)?.events ||
-          []
+        []
       );
     }
   }, [category, sportsCategories]);
@@ -50,7 +50,7 @@ const EventsMenu = ({ cat }: any) => {
         scrollRef.current.scrollTo({ left: offset, behavior: "smooth" });
       }
     }
-  }, [cat.subcat,events]);
+  }, [cat.subcat, events]);
 
   const scrollNext = () => {
     if (scrollRef.current) {
@@ -76,7 +76,7 @@ const EventsMenu = ({ cat }: any) => {
           </p>
         </div>
       )}
-      <div className={`flex ${notification?'lg:w-[calc(100vw-600px)] xl:w-[calc(100vw-700px)]':'lg:w-[calc(100vw-300px)] xl:w-[calc(100vw-400px)]'}   items-center`}>
+      <div className={`flex ${notification?'lg:w-[calc(100vw-770px)]':'lg:w-[calc(100vw-380px)]'}  items-center`}>
         <button onClick={scrollPrev} className="text-white hover:bg-opacity-70  bg-gray-800 rounded-full mr-2"><NextPrev /></button>
         <div className="flex gap-4  overflow-x-scroll hideScrollBar" ref={scrollRef}>
           {events?.map((item, index) => (
@@ -85,12 +85,11 @@ const EventsMenu = ({ cat }: any) => {
               className="text-white flex items-center gap-2 rounded-lg bg-gradient-to-b from-[#ffffff0f] to-[#4e4e4e2f]  "
               key={index}
             >
-              <div className={`flex ${ cat.subcat === item.key ?'bg-gradient-to-b from-[#D71B21] to-[#780005]':''} py-1.5 rounded-lg items-center`}>
+              <div className={`flex ${cat.subcat === item.key ? 'bg-gradient-to-b from-[#D71B21] to-[#780005]' : ''} py-1.5 rounded-lg items-center`}>
                 <World />
                 <p
-                  className={`text-[12px] md:text-sm font-light px-2 whitespace-nowrap ${
-                    cat.subcat === item.key ? "" : ""
-                  }`}
+                  className={`text-[12px] md:text-sm font-light px-2 whitespace-nowrap ${cat.subcat === item.key ? "" : ""
+                    }`}
                 >
                   {item.title}
                 </p>

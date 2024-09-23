@@ -57,6 +57,7 @@ export const SocketProvider: React.FC<{
         switch (data.type) {
           case "CATEGORIES":
             dispatch(setCategories(data.data));
+            console.log(data.data);
             break;
           case "CATEGORY_SPORTS":
             dispatch(setEvents(data?.data));
@@ -64,6 +65,7 @@ export const SocketProvider: React.FC<{
           case "ODDS":
             dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
+            console.log(data.data);
             break;
           case "CREDITS":
             dispatch(setUserCredits(data?.credits));
@@ -75,7 +77,6 @@ export const SocketProvider: React.FC<{
             dispatch(setMyBets(data?.bets));
             break;
           case "GET event odds":
-            console.log(data.data);
             dispatch(setLoading(false));
             dispatch(setLeaguesInfo(data?.data));
             break;
@@ -113,8 +114,6 @@ export const SocketProvider: React.FC<{
             break;
         }
       });
-
- 
 
       socketInstance.on("alert", (data: any) => {
         const message = data?.message;

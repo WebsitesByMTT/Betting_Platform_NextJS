@@ -60,6 +60,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       bookmaker: betsData.selected,
       oddsFormat: "decimal",
       amount: 50,
+      loading:false
     };
     dispatch(addAllBets(betDetails));
     socket?.emit("bet", {
@@ -157,17 +158,16 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       </div>
       <div className="flex gap-2 w-full betPlaced relative">
         <button
-          className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
-            isBetInAllBets(
-              generateId(
-                betsData.id,
-                betsData.home_team,
-                betsData.markets[0]?.key
-              )
+          className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${isBetInAllBets(
+            generateId(
+              betsData.id,
+              betsData.home_team,
+              betsData.markets[0]?.key
             )
+          )
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"
-          }`}
+            }`}
           onClick={(event) => {
             handleBet(event, betsData.home_team, betsData);
           }}
@@ -216,13 +216,12 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
             data.name === "Draw" && (
               <button
                 key={index}
-                className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
-                  isBetInAllBets(
-                    data.name + betsData.id + betsData.markets[0]?.key
-                  )
+                className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${isBetInAllBets(
+                  data.name + betsData.id + betsData.markets[0]?.key
+                )
                     ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                     : "bg-[#040404] border-transparent"
-                }`}
+                  }`}
                 onClick={(event) => {
                   handleBet(event, data.name, betsData);
                 }}
@@ -268,17 +267,16 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
             )
         )}
         <button
-          className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
-            isBetInAllBets(
-              generateId(
-                betsData.id,
-                betsData.away_team,
-                betsData.markets[0]?.key
-              )
+          className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${isBetInAllBets(
+            generateId(
+              betsData.id,
+              betsData.away_team,
+              betsData.markets[0]?.key
             )
+          )
               ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
               : "bg-[#040404] border-transparent"
-          }`}
+            }`}
           onClick={(event) => {
             handleBet(event, betsData.away_team, betsData);
           }}

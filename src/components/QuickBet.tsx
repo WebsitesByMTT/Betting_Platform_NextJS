@@ -14,6 +14,7 @@ import {
   calculateTotalBetAmount,
   calculateTotalOdds,
   deleteAllBets,
+  setBetLoadingState,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
 import { jwtDecode } from "jwt-decode";
@@ -90,12 +91,12 @@ const QuickBet = () => {
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
+    dispatch(setBetLoadingState(true))
     if (socket) {
       socket.emit("bet", { action: "PLACE", payload: finalbets });
     } else {
       console.log("SOCKET NOT CONNECTED");
     }
-    // dispatch(deleteAllBets());
   };
 
   //calculate all amounts when tabs switch between combo and single
@@ -138,7 +139,6 @@ const QuickBet = () => {
         betsContainerRef.current.scrollHeight;
     }
   }, [allBets]);
-  console.log(oddsMismatch, "odds");
 
   return (
     <div
@@ -196,7 +196,7 @@ const QuickBet = () => {
           </>
         ) : (
           <>
-            <div className="flex text-md">
+              <div className="flex text-md">
               {betType?.map((item, index) => (
                 <button
                   key={index}
@@ -290,7 +290,7 @@ const QuickBet = () => {
                   The odds for cuurent bets have changed, please retry!
                 </span>
               )}
-            </div>
+              </div>
             <div className="flex gap-3">
               <button
                 onClick={handleDelete}

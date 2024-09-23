@@ -21,7 +21,6 @@ const initialState: BetState = {
   RedeemAmount: 0,
   notificationBet: "",
   oddsMismatch: false,
-
 };
 
 export const betSlice = createSlice({
@@ -114,6 +113,11 @@ export const betSlice = createSlice({
     setOddsMismatch: (state, action: PayloadAction<boolean>) => {
       state.oddsMismatch = action.payload;
     },
+    setBetLoadingState: (state, action: PayloadAction<boolean>) => {
+      state.allbets.forEach((bet) => {
+        bet.loading = action.payload;
+      });
+    }
   },
 });
 
@@ -129,6 +133,7 @@ export const {
   setMyBets,
   setRedeemAmount,
   notificationBet,
-  setOddsMismatch
+  setOddsMismatch,
+  setBetLoadingState
 } = betSlice.actions;
 export default betSlice.reducer;

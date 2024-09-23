@@ -146,6 +146,7 @@ const QuickBet = () => {
       setRetryBetMessage(true);
     }
   }, [oddsMismatch]);
+
   //scroll to bottom when new bet is added to show latest bet
   useEffect(() => {
     if (betsContainerRef.current) {

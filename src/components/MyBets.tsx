@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setMyBets } from "@/lib/store/features/bet/betSlice";
 import Back from "./svg/Back";
 import { usePathname, useRouter } from "next/navigation";
+import { getOutright } from "@/lib/utils";
 
 const MyBets = () => {
   const [myBets, setmyBets] = useState<any[]>([]);
@@ -29,6 +30,7 @@ const MyBets = () => {
   );
   const isMounted = useRef(false);
   const [selectedOption, setSelectedOption] = useState<string>("all");
+  const sportsCategories = useAppSelector((state) => state.sports.categories);
 
   const options = [
     "all",
@@ -131,8 +133,9 @@ const MyBets = () => {
               <div className="h-full px-1 rounded-tl-lg rounded-bl-lg bg-gradient-to-b from-[#ECB800] to-[#58565D00]"></div>
             )}
             <p
-              className={`text-sm  font-medium whitespace-nowrap py-1 ${selectedOption === item ? "px-3" : "px-5"
-                } capitalize `}
+              className={`text-sm  font-medium whitespace-nowrap py-1 ${
+                selectedOption === item ? "px-3" : "px-5"
+              } capitalize `}
             >
               {item}
             </p>
@@ -202,14 +205,20 @@ const MyBets = () => {
                                 key={index}
                                 className={
                                   data.bet_on.name === team?.name
-                                    ? `${data.status === "redeem"
-                                      ? "text-[#57555f]"
-                                      : "text-[#FFC400]"
-                                    }`
-                                    : `${data.status === "redeem"
-                                      ? "text-[#424149]"
-                                      : "text-white"
-                                    }`
+                                    ? `${
+                                        data.status === "redeem"
+                                          ? "text-[#57555f]"
+                                          : "text-[#FFC400]"
+                                      }`
+                                    : getOutright(
+                                        sportsCategories,
+                                        data.sport_title
+                                      )
+                                    ? "hidden"
+                                    : `${
+                                        data.status === "redeem"
+                                          ? "text-[#424149]"
+                                          : "text-white"
                                 }
                               >
                                 {team?.name}{" "}
@@ -217,7 +226,14 @@ const MyBets = () => {
                                   className={`${data.status === "redeem"
                                       ? "text-[#424149]"
                                       : "text-white"
-                                    }`}
+                                  } ${
+                                    getOutright(
+                                      sportsCategories,
+                                      data.sport_title
+                                    )
+                                      ? "hidden"
+                                      : ""
+                                  }`}
                                 >
                                   {index < data.teams?.length - 1 ? "v/s" : ""}{" "}
                                 </span>

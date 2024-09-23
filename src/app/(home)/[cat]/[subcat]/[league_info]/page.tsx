@@ -127,11 +127,18 @@ const Page = ({ params }: any) => {
       amount: 50,
     };
 
-    dispatch(addAllBets(betDetails));
-    socket?.emit("bet", {
-      action: "ADD_TO_BETSLIP",
-      payload: { data: betDetails },
-    });
+    socket?.emit(
+      "bet",
+      { action: "ADD_TO_BETSLIP", payload: { data: betDetails } },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          dispatch(addAllBets(betDetails));
+          console.log("Bet successfully added:", response.message);
+        } else {
+          console.error("Failed to add bet:", response.message);
+        }
+      }
+    );
   };
 
   //bets included in all bets in redux

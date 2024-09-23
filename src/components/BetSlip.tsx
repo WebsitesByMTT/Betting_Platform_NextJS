@@ -6,15 +6,18 @@ import CrossIcon from "./svg/CrossIcon";
 import { useEffect, useState } from "react";
 import { svgMap } from "./svg/SvgMap";
 import { useSocket } from "./SocketProvider";
+import { getOutright } from "@/lib/utils";
 
 const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const dispatch = useAppDispatch();
   const { socket } = useSocket();
   const [amount, setAmount] = useState(betinfo.amount);
   const [show, setShow] = useState(true);
+  const [outright, setOutright] = useState(false);
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
+  const sportsCategories = useAppSelector((state) => state.sports.categories);
   const IconComponent = svgMap[currentCategory.toLowerCase()];
 
   useEffect(() => {
@@ -38,6 +41,10 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       setShow(true);
     }, 300);
   };
+
+  useEffect(() => {
+    setOutright(getOutright(sportsCategories, betinfo.sport_title));
+  }, [betinfo.sport_title]);
 
   return (
     <div
@@ -64,12 +71,14 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
               className={
                 betinfo.bet_on.name === data.name
                   ? "text-yellow-500"
+                  : outright
+                  ? "hidden"
                   : "text-[#dfdfdf9a]"
               }
               key={index}
             >
               {data.name}
-              <span className="text-[#dfdfdf9a]">
+              <span className={outright ? "hidden" : "text-[#dfdfdf9a]"}>
                 {" "}
                 {index < betinfo.teams.length - 1 ? "v/s" : ""}{" "}
               </span>

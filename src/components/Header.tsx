@@ -100,15 +100,15 @@ const Header = () => {
                 >
                   <Profile />
                 </button>
-                <div className="text-white capitalize md:block hidden">{userName}</div>
+                <div className="text-white capitalize hidden md:block">{userName}</div>
               </div>
               <div
                 className={`absolute ${toggle ? "scale-100" : "scale-0"
-                  } transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}
+                  } transition-all top-[100%] right-0  bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}
               >
                 <div
                   onClick={() => setToggle(!toggle)}
-                  className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col items-center gap-3 text-center text-sm"
+                  className=" text-white hover:block  bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col items-center gap-3 text-center text-sm"
                 >
                   <User userName={userName} />
                 </div>

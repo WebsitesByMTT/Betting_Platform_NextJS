@@ -13,6 +13,7 @@ const EventsMenu = ({ cat }: any) => {
   const [events, setEvents] = useState<{ title: string; key: string }[]>([]);
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
+  const notification = useAppSelector((state) => state.notification.isNotiFication);
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
@@ -53,13 +54,13 @@ const EventsMenu = ({ cat }: any) => {
 
   const scrollNext = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 100, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: 500, behavior: "smooth" });
     }
   };
 
   const scrollPrev = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -100, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: -500, behavior: "smooth" });
     }
   };
 
@@ -75,7 +76,7 @@ const EventsMenu = ({ cat }: any) => {
           </p>
         </div>
       )}
-      <div className="flex lg:w-[60vw]  items-center">
+      <div className={`flex ${notification?'lg:w-[calc(100vw-600px)] xl:w-[calc(100vw-700px)]':'lg:w-[calc(100vw-300px)] xl:w-[calc(100vw-400px)]'}   items-center`}>
         <button onClick={scrollPrev} className="text-white hover:bg-opacity-70  bg-gray-800 rounded-full mr-2"><NextPrev /></button>
         <div className="flex gap-4  overflow-x-scroll hideScrollBar" ref={scrollRef}>
           {events?.map((item, index) => (

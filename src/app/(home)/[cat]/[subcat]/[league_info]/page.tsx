@@ -248,7 +248,7 @@ const Page = ({ params }: any) => {
                                 generateId(
                                   leagues_Info.id,
                                   outcome.name,
-                                  leagues_Info.markets[0]?.key
+                                  leagues_Info.markets[index]?.key
                                 )
                               )
                                 ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"

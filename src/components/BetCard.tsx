@@ -216,9 +216,10 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
             data.name === "Draw" && (
               <button
                 key={index}
-                className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${isBetInAllBets(
-                  data.name + betsData.id + betsData.markets[0]?.key
-                )
+                className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
+                  isBetInAllBets(
+                    generateId(betsData.id, data.name, betsData.markets[0]?.key)
+                  )
                     ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
                     : "bg-[#040404] border-transparent"
                   }`}

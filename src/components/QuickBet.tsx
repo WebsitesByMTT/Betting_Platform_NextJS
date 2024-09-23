@@ -157,8 +157,8 @@ const QuickBet = () => {
 
   return (
     <div
-      className={`transition-all text-white  ${open ? "bottom-0" : "-bottom-[1rem]"
-        }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
+      className={`transition-all text-white ${open ? "bottom-0" : "-bottom-[1rem]"
+        }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[100vh]`}
     >
       <div
         onClick={() => {

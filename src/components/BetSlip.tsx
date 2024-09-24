@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  deleteBet,
-  deleteFromOddsMismatch,
-  updateBetAmount,
-} from "@/lib/store/features/bet/betSlice";
+import { deleteBet, updateBetAmount } from "@/lib/store/features/bet/betSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CrossIcon from "./svg/CrossIcon";
 import { useEffect, useState } from "react";
@@ -55,7 +51,6 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       (response: { status: string; message: string }) => {
         if (response.status === "success") {
           dispatch(deleteBet({ betId: betId }));
-          dispatch(deleteFromOddsMismatch({ betId: betId }));
           setShow(true);
         } else {
           console.error("Failed to remove bet:", response.message);
@@ -129,6 +124,7 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
         </div>
         {error && <p className="text-red-500 text-[12px] italic">{error}</p>}
         {betError &&
+          betType === "single" &&
           betError.map((err: any, index) => {
             return err.id === betinfo.id ? (
               <p key={index} className="text-red-500 text-[12px] italic">

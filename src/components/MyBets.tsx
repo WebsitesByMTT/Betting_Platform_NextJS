@@ -12,7 +12,6 @@ import Amount from "./svg/mybets/Amount";
 import Status from "./svg/mybets/Status";
 import Action from "./svg/mybets/Action";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { setMyBets } from "@/lib/store/features/bet/betSlice";
 import Back from "./svg/Back";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -55,9 +54,7 @@ const MyBets = () => {
     if (response?.error) {
       return toast.error(response?.error || "Error fetching Bets");
     }
-    setmyBets(response?.responseData);
-    console.log(response?.responseData);
-    dispatch(setMyBets(response?.responseData));
+    setmyBets(response?.responseData);  
   };
 
   useEffect(() => {

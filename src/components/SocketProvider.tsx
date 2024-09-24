@@ -4,7 +4,7 @@ import {
   setBetLoadingState,
   setMyBets,
   setOddsMismatch,
-  setRedeemAmount,
+  updateBetSlipOdds,
 } from "@/lib/store/features/bet/betSlice";
 import { setSocketNotification } from "@/lib/store/features/notification/notificationSlice";
 import {
@@ -56,47 +56,28 @@ export const SocketProvider: React.FC<{
 
       socketInstance.on("data", (data: any) => {
         switch (data.type) {
-          case "CATEGORIES":
+          case "CATEGORIES": //render sidebar categories and events
             dispatch(setCategories(data.data));
-            console.log(data.data);
             break;
-          case "CATEGORY_SPORTS":
-            dispatch(setEvents(data?.data));
-            break;
-          case "ODDS":
+          case "ODDS": //get data of all matches for an event
             dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
-            console.log(data.data);
             break;
-          case "CREDITS":
+          case "CREDITS": //update any type of player credits change
             dispatch(setUserCredits(data?.credits));
             break;
-          case "INACTIVE":
-            dispatch(setUserCredits(data?.credits));
-            break;
-          case "MYBETS":
-            dispatch(setMyBets(data?.bets));
-            break;
-          case "GET event odds":
+          case "GET event odds": //get odds of a particular event id
             dispatch(setLoading(false));
             dispatch(setLeaguesInfo(data?.data));
             break;
-          case "REDEEM_AMOUNT":
-            dispatch(setRedeemAmount(data?.data));
-            break;
-          case "SEARCH EVENT":
+          case "SEARCH EVENT": //search data
             dispatch(setLoading(false));
             dispatch(setLeagues(data?.data));
             break;
-          case "ODDS_MISMATCH":
+          case "ODDS_MISMATCH": //mismatch bet ids
             dispatch(setBetLoadingState(false));
             dispatch(setOddsMismatch({ message: data.message, id: data.id }));
-
             break;
-
-         case "ODDS_UPDATED":
-              console.log(data.data, "UPDATED ODDS");
-                 
           case "BLOCKED":
           default:
             break;
@@ -108,7 +89,6 @@ export const SocketProvider: React.FC<{
           case "BET":
             toast.success(data.data);
             break;
-
           case "STATUS":
             if (!data.payload) {
               toast.error("You are blocked by admin");
@@ -131,14 +111,16 @@ export const SocketProvider: React.FC<{
             break;
 
           case "BET_SLIP":
-            console.log("BET SLIP : ", message?.payload);
+            console.log("BET SLIP : ", message);
             break;
 
           case "BET_PLACED":
-            console.log("BET PLACED : ", message);
             dispatch(deleteBet({ betId: message?.payload.betId }));
             break;
 
+          case "ODDS_UPDATE":
+            dispatch(updateBetSlipOdds(message?.payload));
+            break;
           default:
             break;
         }

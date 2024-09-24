@@ -31,6 +31,25 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     });
   }, [betsData]);
 
+  const handleRemove = (betId: string, betDetails: any) => {
+    if (allbets.some((bet) => bet.id === betId)) {
+      socket?.emit(
+        "bet",
+        {
+          action: "REMOVE_FROM_BETSLIP",
+          payload: { betId: betId },
+        },
+        (response: { status: string; message: string }) => {
+          if (response.status === "success") {
+            dispatch(addAllBets(betDetails));
+          } else {
+            console.error("Failed to remove bet:", response.message);
+          }
+        }
+      );
+    }
+  };
+
   //add bet to allbets in redux
   const handleBet = async (
     event: React.MouseEvent,
@@ -48,8 +67,8 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         })),
       bet_on: {
         name: betOn,
-        odds:1.5//hard coding
-        //  betsData.markets[0].outcomes.find(
+        odds: 1.48,
+        // betsData.markets[0].outcomes.find(
         //   (outcome: any) => outcome.name === betOn
         // ).price,
       },
@@ -63,14 +82,12 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       amount: 50,
       loading: false,
     };
-
     socket?.emit(
       "bet",
       { action: "ADD_TO_BETSLIP", payload: { data: betDetails } },
       (response: { status: string; message: string }) => {
         if (response.status === "success") {
           dispatch(addAllBets(betDetails));
-          console.log("Bet successfully added:", response.message);
         } else {
           console.error("Failed to add bet:", response.message);
         }

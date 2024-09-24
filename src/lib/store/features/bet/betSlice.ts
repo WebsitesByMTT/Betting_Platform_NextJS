@@ -7,7 +7,6 @@ interface BetState {
   potentialWin: any;
   totalOdds: any;
   myBets: any;
-  RedeemAmount: number;
   notificationBet: string;
   oddsMismatch: any[];
 }
@@ -18,7 +17,6 @@ const initialState: BetState = {
   potentialWin: 0,
   totalOdds: 0,
   myBets: [],
-  RedeemAmount: 0,
   notificationBet: "",
   oddsMismatch: [],
 };
@@ -35,6 +33,14 @@ export const betSlice = createSlice({
         state.allbets = state.allbets.filter(
           (bet) => bet.id !== action.payload.id
         );
+        const exists = state.oddsMismatch.some(
+          (item) => item.id === action.payload.id
+        );
+        if (exists) {
+          state.oddsMismatch = state.oddsMismatch.filter(
+            (bet) => bet.id !== action.payload.id
+          );
+        }
       }
     },
     updateBetAmount: (
@@ -54,13 +60,18 @@ export const betSlice = createSlice({
       });
     },
     deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
-      console.log("action.payload", action.payload);
-
       const { betId } = action.payload;
       state.allbets = state.allbets.filter((bet) => bet.id !== betId);
+      const exists = state.oddsMismatch.some((item) => item.id === betId);
+      if (exists) {
+        state.oddsMismatch = state.oddsMismatch.filter(
+          (bet) => bet.id !== betId
+        );
+      }
     },
     deleteAllBets: (state) => {
       state.allbets = [];
+      state.oddsMismatch = [];
     },
     calculateTotalBetAmount: (state) => {
       let totalAmount = 0;
@@ -71,8 +82,8 @@ export const betSlice = createSlice({
     },
     calculateTotalOdds: (state) => {
       let totalOdds = 1;
-      for (const bet of state.allbets) {
-        const odds = bet?.bet_on.odds;
+      for (const bet of state?.allbets) {
+        const odds = bet?.bet_on?.odds;
 
         totalOdds *= odds;
       }
@@ -103,9 +114,6 @@ export const betSlice = createSlice({
     setMyBets(state, action: PayloadAction<[]>) {
       state.myBets = action.payload;
     },
-    setRedeemAmount: (state, action: PayloadAction<number>) => {
-      state.RedeemAmount = action.payload;
-    },
     notificationBet: (state, action: PayloadAction<{ betId: string }>) => {
       const { betId } = action.payload;
       state.notificationBet = betId;
@@ -113,7 +121,6 @@ export const betSlice = createSlice({
     setOddsMismatch: (state, action: PayloadAction<any>) => {
       const payloadId = action.payload.id;
       const exists = state.oddsMismatch.some((item) => item.id === payloadId);
-
       if (!exists) {
         state.oddsMismatch.push(action.payload);
       }
@@ -123,12 +130,21 @@ export const betSlice = createSlice({
         bet.loading = action.payload;
       });
     },
-    deleteFromOddsMismatch: (
-      state,
-      action: PayloadAction<{ betId: string }>
-    ) => {
-      const { betId } = action.payload;
-      state.oddsMismatch = state.oddsMismatch.filter((bet) => bet.id !== betId);
+    updateBetSlipOdds: (state, action: PayloadAction<any>) => {
+      const { eventId, latestOdds } = action.payload;
+      console.log(action.payload);
+      const bet = state.allbets.filter((bet) => bet.event_id === eventId);
+      // console.log(bet,"FOUND IN ALL BETS")
+      // if (bet) {
+      //   const previousOdds = bet.bet_on.odds;
+      //   bet.bet_on.odds = newOdds;
+      //   bet.oddsChanged =
+      //     previousOdds < newOdds
+      //       ? "rise"
+      //       : previousOdds > newOdds
+      //       ? "drop"
+      //       : "same";
+      // }
     },
   },
 });
@@ -143,10 +159,9 @@ export const {
   calculateTotalOdds,
   calculatePotentialWin,
   setMyBets,
-  setRedeemAmount,
   notificationBet,
   setOddsMismatch,
   setBetLoadingState,
-  deleteFromOddsMismatch,
+  updateBetSlipOdds,
 } = betSlice.actions;
 export default betSlice.reducer;

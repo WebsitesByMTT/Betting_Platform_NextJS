@@ -115,6 +115,9 @@ const Page = ({ params }: any) => {
         name: betOn,
         odds: betsData.outcomes.find((outcome: any) => outcome.name === betOn)
           .price,
+        prevOdds: betsData.outcomes.find(
+          (outcome: any) => outcome.name === betOn
+        ).price,
       },
       event_id: leagues_Info.id,
       sport_title: leagues_Info.sport_title,

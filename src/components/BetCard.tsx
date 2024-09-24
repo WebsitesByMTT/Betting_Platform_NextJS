@@ -67,10 +67,12 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         })),
       bet_on: {
         name: betOn,
-        odds: 1.48,
-        // betsData.markets[0].outcomes.find(
-        //   (outcome: any) => outcome.name === betOn
-        // ).price,
+        odds: betsData.markets[0].outcomes.find(
+          (outcome: any) => outcome.name === betOn
+        ).price,
+        prevOdds: betsData.markets[0].outcomes.find(
+          (outcome: any) => outcome.name === betOn
+        ).price,
       },
       event_id: betsData.id,
       sport_title: betsData.sport_title,
@@ -82,6 +84,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       amount: 50,
       loading: false,
     };
+    console.log(betDetails);
     socket?.emit(
       "bet",
       { action: "ADD_TO_BETSLIP", payload: { data: betDetails } },
@@ -388,36 +391,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                   handleBet(event, data.name, betsData);
                 }}
               >
-                {/* {betsData?.markets
-                  .flatMap((market: any) => market.outcomes)
-                  .find((outcome: any) => outcome.name === betsData.away_team)
-                  ?.price >
-                  previousBetsData?.markets
-                    .flatMap((market: any) => market.outcomes)
-                    .find(
-                      (outcome: any) =>
-                        outcome.name === previousBetsData.away_team
-                    )?.price &&
-                  previousBetsData?.sport_key === betsData?.sport_key && (
-                    <span className="absolute animatePulse right-0 top-0 text-green-500 rotate-[-91deg]">
-                      <Triangle color={"#00ff00"} />
-                    </span>
-                  )} */}
-                {/* {betsData?.markets
-                  .flatMap((market: any) => market.outcomes)
-                  .find((outcome: any) => outcome.name === betsData.away_team)
-                  ?.price <
-                  previousBetsData?.markets
-                    .flatMap((market: any) => market.outcomes)
-                    .find(
-                      (outcome: any) =>
-                        outcome.name === previousBetsData.away_team
-                    )?.price &&
-                  previousBetsData?.sport_key === betsData?.sport_key && (
-                    <span className="absolute right-0 bottom-0 text-red-500 animatePulse">
-                      <Triangle color={"#ff0000"} />
-                    </span>
-                  )} */}
                 <p className="text-[#dfdfdf76] flex gap-3">
                   <span className="flex-[0.5]">{index + 1}.</span>{" "}
                   <span className="flex-1 whitespace-nowrap">

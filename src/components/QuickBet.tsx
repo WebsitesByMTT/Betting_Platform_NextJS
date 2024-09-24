@@ -131,21 +131,13 @@ const QuickBet = () => {
       (response: { status: string; message: string }) => {
         if (response.status === "success") {
           console.log("All bets successfully removed:", response.message);
-          // Now update the client state after receiving a success response
-          dispatch(deleteAllBets()); // Only dispatch after the server confirms the removal
+          dispatch(deleteAllBets());
         } else {
           console.error("Failed to remove all bets:", response.message);
-          // Optionally show an error message to the user
         }
       }
     );
   };
-
-  useEffect(() => {
-    if (oddsMismatch) {
-      setRetryBetMessage(true);
-    }
-  }, [oddsMismatch]);
 
   //scroll to bottom when new bet is added to show latest bet
   useEffect(() => {
@@ -157,8 +149,9 @@ const QuickBet = () => {
 
   return (
     <div
-      className={`transition-all text-white  ${open ? "bottom-0" : "-bottom-[1rem]"
-        }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
+      className={`transition-all text-white  ${
+        open ? "bottom-0" : "-bottom-[1rem]"
+      }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
     >
       <div
         onClick={() => {
@@ -188,10 +181,11 @@ const QuickBet = () => {
         </div>
       </div>
       <div
-        className={`bg-[#1b1a1a] ${open
+        className={`bg-[#1b1a1a] ${
+          open
             ? "space-y-2 transition-all duration-300 ease-in-out"
             : "max-h-0  transition-all duration-300 ease-in-out"
-          } px-2  py-2 `}
+        } px-2  py-2 `}
       >
         {allBets?.length <= 0 ? (
           <>
@@ -215,10 +209,11 @@ const QuickBet = () => {
                   key={index}
                   disabled={bets.length < 2 && item === "combo"}
                   onClick={() => setCurrentBetType(item)}
-                  className={`flex-1 py-1 border-b-[2px] capitalize transition-all disabled:text-[#dfdfdf6f] ${item === currentBetType
+                  className={`flex-1 py-1 border-b-[2px] capitalize transition-all disabled:text-[#dfdfdf6f] ${
+                    item === currentBetType
                       ? "border-b-[#Bf141a]"
                       : "border-transparent"
-                    } `}
+                  } `}
                 >
                   {item}
                 </button>
@@ -234,9 +229,14 @@ const QuickBet = () => {
             )}
             <div
               ref={betsContainerRef}
-              className={`w-full flex flex-col ${disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
-                } ${currentBetType === "combo" ? "gap-0" : "gap-2"
-                }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
+              className={`w-full flex flex-col ${
+                disabled ||
+                (oddsMismatch.length > 0 && currentBetType === "combo")
+                  ? "border-[1px] rounded-lg border-[#D96C4B]"
+                  : ""
+              } ${
+                currentBetType === "combo" ? "gap-0" : "gap-2"
+              }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
             >
               {allBets?.map((item, index) => (
                 <BetSlip key={index} betinfo={item} betType={currentBetType} />
@@ -247,6 +247,11 @@ const QuickBet = () => {
                 {currentBetType === "single"
                   ? "Can't place this bet"
                   : "Can't place bet on this combo"}
+              </p>
+            )}
+            {oddsMismatch.length > 0 && currentBetType === "combo" && (
+              <p className="text-red-500 text-[12px] italic text-right">
+                Odds have changed
               </p>
             )}
             {currentBetType === "combo" && (
@@ -294,13 +299,6 @@ const QuickBet = () => {
                 <p className="flex-1 text-right">{potentialWin.toFixed(1)} $</p>
               </div>
             </div>
-            <div className="text-red-700 ">
-              {retryBetMessage && (
-                <span className="block sm:inline">
-                  The odds for cuurent bets have changed, please retry!
-                </span>
-              )}
-            </div>
             <div className="flex gap-3">
               <button
                 onClick={handleDelete}
@@ -310,7 +308,7 @@ const QuickBet = () => {
               </button>
 
               <button
-                disabled={disabled||allBets?.some((bet) => bet.loading)}
+                disabled={disabled || allBets?.some((bet) => bet.loading)}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >

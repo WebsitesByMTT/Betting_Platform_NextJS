@@ -14,9 +14,14 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const [amount, setAmount] = useState(betinfo.amount);
   const [show, setShow] = useState(true);
   const [outright, setOutright] = useState(false);
+  const [error, setError] = useState<string>("");
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
+  const [betError, setBetError] = useState<{ message: string; type: string }[]>(
+    []
+  );
+  const oddsMismatch = useAppSelector((state) => state.bet.oddsMismatch);
   const sportsCategories = useAppSelector((state) => state.sports.categories);
   const IconComponent = svgMap[currentCategory.toLowerCase()];
 
@@ -45,12 +50,11 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       },
       (response: { status: string; message: string }) => {
         if (response.status === "success") {
-          // Now update the client state after receiving a success response from the server
           dispatch(deleteBet({ betId: betId }));
-          setShow(true); // Show UI element again after successful removal
+          setShow(true);
         } else {
           console.error("Failed to remove bet:", response.message);
-          // Optionally show an error message or handle the failure case
+          setError("Failed to remove bet");
           setShow(true); // Optionally show UI again, even on failure
         }
       }
@@ -60,6 +64,10 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   useEffect(() => {
     setOutright(getOutright(sportsCategories, betinfo.sport_title));
   }, [betinfo.sport_title]);
+
+  useEffect(() => {
+    setBetError(oddsMismatch);
+  }, [oddsMismatch]);
 
   return (
     <div
@@ -114,6 +122,16 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
             ></input>
           )}
         </div>
+        {error && <p className="text-red-500 text-[12px] italic">{error}</p>}
+        {betError &&
+          betType === "single" &&
+          betError.map((err: any, index) => {
+            return err.id === betinfo.id ? (
+              <p key={index} className="text-red-500 text-[12px] italic">
+                {err.message}
+              </p>
+            ) : null;
+          })}
       </div>
       {/* Loader */}
       {betinfo.loading && (

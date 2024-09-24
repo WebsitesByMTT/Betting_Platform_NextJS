@@ -13,18 +13,20 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const Banner: React.FC = () => {
-  const router=useRouter()
+  const router = useRouter();
   const plugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: false }));
   const [banners, setBanners] = useState<any[]>([]);
-  const currentCategory = useAppSelector((state) => state.sports.selectedCategory);
+  const currentCategory = useAppSelector(
+    (state) => state.sports.selectedCategory
+  );
 
   useEffect(() => {
     const fetchBanner = async (currentCategory: string) => {
       const data = await getCategoryBanners(currentCategory);
       if (data?.error) {
-         router.push('/logout')
+        router.push("/logout");
       } else {
-        setBanners(data.banners);        
+        setBanners(data?.banners);
       }
     };
     fetchBanner(currentCategory);

@@ -110,7 +110,15 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
         </p>
         <p className="text-[#fff] font-medium text-sm">{betinfo.market}</p>
         <div className="grid grid-cols-4 items-center">
-          <p className="text-xl font-semibold col-span-3">
+          <p
+            className={`text-xl font-semibold col-span-3 ${
+              betinfo.bet_on.odds > betinfo.bet_on.prevOdds
+                ? "text-green-500 animate-pulse"
+                : betinfo.bet_on.odds < betinfo.bet_on.prevOdds
+                ? "text-red-500 animate-pulse"
+                : "text-white"
+            }`}
+          >
             {betinfo.bet_on.odds}
           </p>
           {betType === "single" && (
@@ -122,7 +130,14 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
             ></input>
           )}
         </div>
-        {error && <p className="text-red-500 text-[12px] italic">{error}</p>}
+        {betinfo.bet_on.prevOdds !== betinfo.bet_on.odds && (
+          <p className="text-[12px] pt-2 text-[#dfdfdf70]">
+            Odds changed from{" "}
+            <span className="text-white">{betinfo.bet_on.prevOdds}</span> to{" "}
+            <span className="text-white">{betinfo.bet_on.odds}</span>
+          </p>
+        )}
+        {error && <p className="text-red-500 text-[13px] italic">{error}</p>}
         {betError &&
           betType === "single" &&
           betError.map((err: any, index) => {

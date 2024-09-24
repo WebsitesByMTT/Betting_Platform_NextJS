@@ -147,6 +147,7 @@ export const betSlice = createSlice({
             );
             if (oddsData) {
               const prevOdds = bet.bet_on.odds;
+              bet.bet_on.prevOdds = prevOdds;
               bet.bet_on.odds = oddsData.price;
             }
           }

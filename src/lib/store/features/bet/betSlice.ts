@@ -132,19 +132,26 @@ export const betSlice = createSlice({
     },
     updateBetSlipOdds: (state, action: PayloadAction<any>) => {
       const { eventId, latestOdds } = action.payload;
-      console.log(action.payload);
-      const bet = state.allbets.filter((bet) => bet.event_id === eventId);
-      // console.log(bet,"FOUND IN ALL BETS")
-      // if (bet) {
-      //   const previousOdds = bet.bet_on.odds;
-      //   bet.bet_on.odds = newOdds;
-      //   bet.oddsChanged =
-      //     previousOdds < newOdds
-      //       ? "rise"
-      //       : previousOdds > newOdds
-      //       ? "drop"
-      //       : "same";
-      // }
+      console.log(latestOdds);
+      const bets: any[] = state.allbets.filter(
+        (bet) => bet.event_id === eventId
+      );
+      if (bets.length > 0) {
+        for (const bet of bets) {
+          const marketData = latestOdds?.markets?.find(
+            (data: any) => data.key === bet?.category
+          );
+          if (marketData) {
+            const oddsData = marketData?.outcomes?.find(
+              (outcome: any) => outcome.name === bet.bet_on.name
+            );
+            if (oddsData) {
+              const prevOdds = bet.bet_on.odds;
+              bet.bet_on.odds = oddsData.price;
+            }
+          }
+        }
+      }
     },
   },
 });

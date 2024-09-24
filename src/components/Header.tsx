@@ -4,23 +4,20 @@ import Profile from "./svg/Profile";
 import Notification from "./svg/Notification";
 import User from "./User";
 import Line from "./svg/Line";
-import { GetPlayerBets, getUser } from "@/utils/actions";
+import { getUser } from "@/utils/actions";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setUserCredits } from "@/lib/store/features/user/userSlice";
-import { redirect, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { setMyBets } from "@/lib/store/features/bet/betSlice";
+import { useRouter } from "next/navigation";
 import Notifications from "./Notifications";
 import Hamburger from "./svg/sidebar/Hamburger";
 import { setIsSideBar } from "@/lib/store/features/notification/notificationSlice";
-import { getCurrentUser } from "@/utils/utils";
 const Header = () => {
   const [toggle, setToggle] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const credits = useAppSelector((state) => state.user.credits);
   const [open, setOpen] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
   const notification = useAppSelector(
     (state) => state?.notification?.notification
   );
@@ -28,18 +25,12 @@ const Header = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const user = await getUser();
-       setUserName(user?.username)
+      setUserName(user?.username);
       if (user?.role !== "player") {
         router.push("/logout");
       }
 
-      const response = await GetPlayerBets("all");
-      if (response?.error) {
-        return toast.error(response.error);
-      }
-
       dispatch(setUserCredits(user?.credits));
-      dispatch(setMyBets(response?.responseData));
     };
     fetchCurrentUser();
   }, []);
@@ -49,13 +40,12 @@ const Header = () => {
   };
 
   const handeltoggle = () => {
-    dispatch(setIsSideBar(true))
-  }
+    dispatch(setIsSideBar(true));
+  };
 
   return (
     <>
       <div className="w-full z-50 bg-[#0C0B14] sticky top-0 p-[.5rem]  pb-4">
-
         <div className="flex items-center w-full justify-between">
           <button
             className={`lg:invisible cursor-pointer text-white`}
@@ -73,10 +63,9 @@ const Header = () => {
               >
                 <Notification />
                 <span className="bg-[#D71B21] text-white w-[1rem] h-[1rem] md:w-[1.5rem] md:h-[1.5rem] pt-[1px] md:pt-[2px] rounded-full text-[.6rem] md:text-[.8rem] top-0 absolute">
-                  {
-                    notification?.length>0&&(notification?.filter((item: any) => item?.viewed === false)
-                      ?.length)
-                  }
+                  {notification?.length > 0 &&
+                    notification?.filter((item: any) => item?.viewed === false)
+                      ?.length}
                 </span>
               </button>
               <Notifications open={open} setOpen={setOpen} />
@@ -100,23 +89,25 @@ const Header = () => {
                 >
                   <Profile />
                 </button>
-                <div className="text-white capitalize">{userName}</div>
+                <div className="text-white capitalize md:block hidden">
+                  {userName}
+                </div>
               </div>
               <div
-                className={`absolute ${toggle ? "scale-100" : "scale-0"
-                  } transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}
+                className={`absolute ${
+                  toggle ? "scale-100" : "scale-0"
+                } transition-all top-[100%] right-0 bg-gradient-to-b from-[#FFC400] to-[#D8890A] px-[1px] z-[10001] rounded-md`}
               >
                 <div
                   onClick={() => setToggle(!toggle)}
                   className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col items-center gap-3 text-center text-sm"
                 >
-                  <User />
+                  <User userName={userName} />
                 </div>
               </div>
             </div>
           </div>
         </div>
-
 
         <Line />
       </div>

@@ -14,6 +14,7 @@ import {
   calculateTotalBetAmount,
   calculateTotalOdds,
   deleteAllBets,
+  setBetLoadingState,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
 import { jwtDecode } from "jwt-decode";
@@ -90,12 +91,12 @@ const QuickBet = () => {
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
+    dispatch(setBetLoadingState(true));
     if (socket) {
       socket.emit("bet", { action: "PLACE", payload: finalbets });
     } else {
       console.log("SOCKET NOT CONNECTED");
     }
-    // dispatch(deleteAllBets());
   };
 
   //calculate all amounts when tabs switch between combo and single
@@ -124,13 +125,20 @@ const QuickBet = () => {
 
   //delete all bets
   const handleDelete = () => {
-    dispatch(deleteAllBets());
+    socket?.emit(
+      "bet",
+      { action: "REMOVE_ALL_FROM_BETSLIP" },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          console.log("All bets successfully removed:", response.message);
+          dispatch(deleteAllBets());
+        } else {
+          console.error("Failed to remove all bets:", response.message);
+        }
+      }
+    );
   };
-  useEffect(() => {
-    if (oddsMismatch) {
-      setRetryBetMessage(true);
-    }
-  }, [oddsMismatch]);
+
   //scroll to bottom when new bet is added to show latest bet
   useEffect(() => {
     if (betsContainerRef.current) {
@@ -138,7 +146,6 @@ const QuickBet = () => {
         betsContainerRef.current.scrollHeight;
     }
   }, [allBets]);
-  console.log(oddsMismatch, "odds");
 
   return (
     <div
@@ -223,7 +230,10 @@ const QuickBet = () => {
             <div
               ref={betsContainerRef}
               className={`w-full flex flex-col ${
-                disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
+                disabled ||
+                (oddsMismatch.length > 0 && currentBetType === "combo")
+                  ? "border-[1px] rounded-lg border-[#D96C4B]"
+                  : ""
               } ${
                 currentBetType === "combo" ? "gap-0" : "gap-2"
               }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
@@ -237,6 +247,11 @@ const QuickBet = () => {
                 {currentBetType === "single"
                   ? "Can't place this bet"
                   : "Can't place bet on this combo"}
+              </p>
+            )}
+            {oddsMismatch.length > 0 && currentBetType === "combo" && (
+              <p className="text-red-500 text-[12px] italic text-right">
+                Odds have changed
               </p>
             )}
             {currentBetType === "combo" && (
@@ -284,13 +299,6 @@ const QuickBet = () => {
                 <p className="flex-1 text-right">{potentialWin.toFixed(1)} $</p>
               </div>
             </div>
-            <div className="text-red-700 ">
-              {retryBetMessage && (
-                <span className="block sm:inline">
-                  The odds for cuurent bets have changed, please retry!
-                </span>
-              )}
-            </div>
             <div className="flex gap-3">
               <button
                 onClick={handleDelete}
@@ -300,7 +308,7 @@ const QuickBet = () => {
               </button>
 
               <button
-                disabled={disabled}
+                disabled={disabled || allBets?.some((bet) => bet.loading)}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >

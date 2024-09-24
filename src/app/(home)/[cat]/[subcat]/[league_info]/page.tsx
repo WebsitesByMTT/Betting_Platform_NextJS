@@ -115,6 +115,9 @@ const Page = ({ params }: any) => {
         name: betOn,
         odds: betsData.outcomes.find((outcome: any) => outcome.name === betOn)
           .price,
+        prevOdds: betsData.outcomes.find(
+          (outcome: any) => outcome.name === betOn
+        ).price,
       },
       event_id: leagues_Info.id,
       sport_title: leagues_Info.sport_title,
@@ -123,14 +126,22 @@ const Page = ({ params }: any) => {
       category: betsData.key,
       bookmaker: leagues_Info.selected,
       oddsFormat: "decimal",
+      loading: false,
       amount: 50,
     };
 
-    dispatch(addAllBets(betDetails));
-    socket?.emit("bet", {
-      action: "ADD_TO_BETSLIP",
-      payload: { data: betDetails },
-    });
+    socket?.emit(
+      "bet",
+      { action: "ADD_TO_BETSLIP", payload: { data: betDetails } },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          dispatch(addAllBets(betDetails));
+          console.log("Bet successfully added:", response.message);
+        } else {
+          console.error("Failed to add bet:", response.message);
+        }
+      }
+    );
   };
 
   //bets included in all bets in redux
@@ -139,9 +150,8 @@ const Page = ({ params }: any) => {
   };
 
   return (
-    <>
+    <div className="h-[calc(100vh-110px)] hideScrollBar overflow-y-scroll">
       <Categories />
-
       <div className="w-full px-2 lg:px-0 pb-14 mx-auto">
         <div className="py-5">
           {category && (
@@ -201,105 +211,102 @@ const Page = ({ params }: any) => {
             </div>
           </div>
         </div>
-        {leagues_Info?.markets?.map(
-          (item: any, index: number) =>
-            item.key === "h2h" && (
-              <div key={index} className="accordion-item">
-                <div
-                  className="bg-gradient-to-tr cursor-pointer mt-5 rounded-full from-[#0D0C15] to-[#1C1A21] py-2.5 px-5 border-[.2px] border-white border-opacity-[0.02] flex items-center justify-between"
-                  onClick={() => toggleAccordion(index)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="text-white text-sm md:text-base tracking-wide capitalize">
-                      {item.key}
-                    </div>
-                    <div
-                      className={
-                        openIndices[index]
-                          ? "rotate-180 transition-all ease-in-out"
-                          : "rotate-0 ease-in-out transition-all"
-                      }
-                    >
-                      <CircleDropdown />
-                    </div>
-                  </div>
-                  <Pin />
+        {leagues_Info?.markets?.map((item: any, index: number) => (
+          <div key={index} className="accordion-item">
+            <div
+              className="bg-gradient-to-tr cursor-pointer mt-5 rounded-full from-[#0D0C15] to-[#1C1A21] py-2.5 px-5 border-[.2px] border-white border-opacity-[0.02] flex items-center justify-between"
+              onClick={() => toggleAccordion(index)}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="text-white text-sm md:text-base tracking-wide capitalize">
+                  {item.key}
                 </div>
                 <div
-                  className={`accordion-content transition-max-height duration-200 ease-in-out overflow-hidden ${
-                    openIndices[index] ? "max-h-screen" : "max-h-0"
-                  }`}
+                  className={
+                    openIndices[index]
+                      ? "rotate-180 transition-all ease-in-out"
+                      : "rotate-0 ease-in-out transition-all"
+                  }
                 >
-                  <div className="border-[.2px] space-y-3 mt-[3px] rounded-xl border-white border-opacity-5 p-1.5 bg-gradient-to-tr from-[#0D0C15] to-[#1C1A21]">
-                    <div className="flex md:items-center gap-x-2 md:gap-x-10">
-                      {loading ? (
-                        <>
-                          <div className="bg-[#dfdfdf43] w-full rounded-md animate-pulse"></div>
-                          <div className="bg-[#dfdfdf43]  w-full rounded-md animate-pulse"></div>
-                        </>
-                      ) : (
-                        item?.outcomes?.map(
-                          (outcome: any, outcomeIndex: number) => (
-                            <button
-                              onClick={(event) => {
-                                handleBet(event, outcome.name, item, outcome);
-                              }}
-                              key={outcomeIndex}
-                              className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${
-                                outcome?.point ? "block" : "flex space-x-.5"
-                              } items-center justify-between px-1 group ${
-                                isBetInAllBets(
-                                  generateId(
-                                    leagues_Info.id,
-                                    outcome.name,
-                                    leagues_Info.markets[0]?.key
-                                  )
-                                )
-                                  ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
-                                  : "bg-[#040404] border-transparent"
-                              }`}
-                            >
-                              <div className="text-xs md:text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2">
-                                {outcome.name}
-                              </div>
-                              <div
-                                className={`flex items-center text-xs justify-between pt-2 ${
-                                  outcome?.point ? "flex" : "hidden"
-                                }  text-red-400`}
-                              >
-                                <span
-                                  className={`${
-                                    outcome?.point < 0
-                                      ? "text-red-500"
-                                      : "text-green-500"
-                                  }`}
-                                >
-                                  {outcome?.point}
-                                </span>
-                                <div className="text-xs text-white py-1 px-1.5 rounded-md bg-[#343434]">
-                                  {outcome.price}
-                                </div>
-                              </div>
-                              <div
-                                className={`text-xs text-white py-1 ${
-                                  outcome?.point ? "hidden" : "block"
-                                } px-1.5  rounded-md bg-[#343434]`}
-                              >
-                                {outcome.price}
-                              </div>
-                            </button>
-                          )
-                        )
-                      )}
-                    </div>
-                  </div>
+                  <CircleDropdown />
                 </div>
               </div>
-            )
-        )}
+              <Pin />
+            </div>
+            <div
+              className={`accordion-content transition-max-height duration-200 ease-in-out overflow-hidden ${
+                openIndices[index] ? "max-h-screen" : "max-h-0"
+              }`}
+            >
+              <div className="border-[.2px] space-y-3 mt-[3px] rounded-xl border-white border-opacity-5 p-1.5 bg-gradient-to-tr from-[#0D0C15] to-[#1C1A21]">
+                <div className="flex md:items-center gap-x-2 md:gap-x-10">
+                  {loading ? (
+                    <>
+                      <div className="bg-[#dfdfdf43] w-full rounded-md animate-pulse"></div>
+                      <div className="bg-[#dfdfdf43]  w-full rounded-md animate-pulse"></div>
+                    </>
+                  ) : (
+                    item?.outcomes?.map(
+                      (outcome: any, outcomeIndex: number) => (
+                        <button
+                          onClick={(event) => {
+                            handleBet(event, outcome.name, item, outcome);
+                          }}
+                          key={outcomeIndex}
+                          className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${
+                            outcome?.point ? "block" : "flex space-x-.5"
+                          } items-center justify-between px-1 group ${
+                            isBetInAllBets(
+                              generateId(
+                                leagues_Info.id,
+                                outcome.name,
+                                leagues_Info.markets[index]?.key
+                              )
+                            )
+                              ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
+                              : "bg-[#040404] border-transparent"
+                          }`}
+                        >
+                          <div className="text-xs md:text-sm text-white text-opacity-30 font-light flex items-center md:gap-x-2">
+                            {outcome.name}
+                          </div>
+                          <div
+                            className={`flex items-center text-xs justify-between pt-2 ${
+                              outcome?.point ? "flex" : "hidden"
+                            }  text-red-400`}
+                          >
+                            <span
+                              className={`${
+                                outcome?.point < 0
+                                  ? "text-red-500"
+                                  : "text-green-500"
+                              }`}
+                            >
+                              {outcome?.point}
+                            </span>
+                            <div className="text-xs text-white py-1 px-1.5 rounded-md bg-[#343434]">
+                              {outcome.price}
+                            </div>
+                          </div>
+                          <div
+                            className={`text-xs text-white py-1 ${
+                              outcome?.point ? "hidden" : "block"
+                            } px-1.5  rounded-md bg-[#343434]`}
+                          >
+                            {outcome.price}
+                          </div>
+                        </button>
+                      )
+                    )
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
       <QuickBet />
-    </>
+    </div>
   );
 };
 

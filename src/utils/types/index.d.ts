@@ -10,6 +10,7 @@ interface BetDetails {
     name: string;
     odds: number;
     points?: number;
+    prevOdds: number;
   };
   event_id: string;
   sport_title: string;
@@ -19,6 +20,7 @@ interface BetDetails {
   bookmaker: string;
   oddsFormat: string;
   amount: number;
+  loading: boolean;
 }
 
 interface Bet extends BetDetails {

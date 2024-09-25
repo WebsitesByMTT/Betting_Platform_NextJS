@@ -4,6 +4,7 @@ import { config } from "./config";
 import { FormData } from "./types";
 import { getCookie, getCurrentUser } from "./utils";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 interface Player extends JwtPayload {
   userId: string;
@@ -11,16 +12,19 @@ interface Player extends JwtPayload {
 
 export const login = async (data: FormData) => {
   try {
-    const response = await fetch(`${config.server}/api/auth/login?origin=platform`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: data.username,
-        password: data.password,
-      }),
-    });
+    const response = await fetch(
+      `${config.server}/api/auth/login?origin=platform`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password,
+        }),
+      }
+    );
     if (!response.ok) {
       const error = await response.json();
       return { error: error.message };
@@ -53,6 +57,7 @@ export const getUser = async () => {
     return data;
   } catch (error) {
     console.error(error);
+    redirect("/logout");
   }
 };
 

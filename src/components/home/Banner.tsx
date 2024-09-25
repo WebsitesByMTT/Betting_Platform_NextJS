@@ -24,7 +24,7 @@ const Banner: React.FC = () => {
     const fetchBanner = async (currentCategory: string) => {
       const data = await getCategoryBanners(currentCategory);
       if (data?.error) {
-        router.push("/logout");
+        console.log("error");
       } else {
         setBanners(data?.banners);
       }

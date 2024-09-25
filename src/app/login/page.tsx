@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 const Login = () => {
   const [data, setData] = useState<FormData>({
     username: "",
-    password: ""
+    password: "",
   });
 
   const [hide, setHide] = useState(false);
@@ -40,10 +40,10 @@ const Login = () => {
         Cookies.set("token", token);
         router.push("/All/americanfootball_cfl");
       } else {
-        alert("Access denied!");
+        return toast.error("Access denied!");
       }
     } else {
-      alert("Invalid Token!");
+      return toast.error("Invalid Token!");
     }
   };
 

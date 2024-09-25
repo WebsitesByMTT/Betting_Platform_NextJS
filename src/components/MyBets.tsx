@@ -318,9 +318,11 @@ const MyBets = () => {
                   ))
                 ) : (
                   <>
-                    <div className="bg-black px-5 py-1 rounded-tl-2xl border-[#f3aa3589] border-x-[1px] border-b-[1px] rounded-tr-2xl  inline-block mt-2">
-                      Combo
-                    </div>
+                    <tr>
+                      <td className="bg-black px-5 py-1 rounded-tl-2xl border-[#f3aa3589] border-x-[1px] border-b-[1px] rounded-tr-2xl  inline-block mt-2">
+                        Combo
+                      </td>
+                    </tr>
                     {item.data.map((data: any, dataIndex: any) => (
                       <tr
                         id={item._id}

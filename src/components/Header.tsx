@@ -104,7 +104,7 @@ const Header = () => {
               >
                 <div
                   onClick={() => setToggle(!toggle)}
-                  className=" text-white hover:block w-[100px] bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col items-center gap-3 text-center text-sm"
+                  className=" text-white hover:block  bg-[#323232] px-3 py-2 whitespace-nowrap rounded-md flex-col items-center gap-3 text-center text-sm"
                 >
                   <User userName={userName} />
                 </div>

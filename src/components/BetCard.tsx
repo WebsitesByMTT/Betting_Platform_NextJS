@@ -30,7 +30,6 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
     });
   }, [betsData]);
 
-  //Remove Bet Data from bet Slip
   const handleRemove = (betId: string, betDetails: any) => {
     if (allbets.some((bet) => bet.id === betId)) {
       socket?.emit(
@@ -48,10 +47,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         }
       );
     }
-
   };
-
-
   //add bet to allbets in redux
   const handleBet = async (
     event: React.MouseEvent,
@@ -72,11 +68,13 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
         odds: betsData.markets[0].outcomes.find(
           (outcome: any) => outcome.name === betOn
         ).price,
+        prevOdds: betsData.markets[0].outcomes.find(
+          (outcome: any) => outcome.name === betOn
+        ).price,
       },
       event_id: betsData.id,
       sport_title: betsData.sport_title,
       sport_key: betsData.sport_key,
-
       commence_time: betsData.commence_time,
       category: betsData.markets[0]?.key,
       bookmaker: betsData.selected,
@@ -84,20 +82,15 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       amount: 50,
       loading: false,
     };
-
-    if (allbets.some((bet) => bet.id === betDetails?.id)) {
-      handleRemove(betDetails.id, betDetails)
-    } else {
-      socket?.emit(
-        "bet",
-        { action: "ADD_TO_BETSLIP", payload: { data: betDetails } },
-        (response: { status: string; message: string }) => {
-          if (response.status === "success") {
-            dispatch(addAllBets(betDetails));
-            console.log("Bet successfully added:", response.message);
-          } else {
-            console.error("Failed to add bet:", response.message);
-          }
+    console.log(betDetails);
+    socket?.emit(
+      "bet",
+      { action: "ADD_TO_BETSLIP", payload: { data: betDetails } },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          dispatch(addAllBets(betDetails));
+        } else {
+          console.error("Failed to add bet:", response.message);
         }
       );
     }
@@ -244,10 +237,8 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                 ?.price
             }
           </p>
-        </button>
-        {betsData?.markets[0]?.outcomes?.map(
-          (data: any, index: any) =>
-            data.name === "Draw" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 py-4">
+            {leagues.markets[0].outcomes.map((data: any, index: any) => (
               <button
                 key={index}
                 className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${isBetInAllBets(
@@ -260,42 +251,12 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                   handleBet(event, data.name, betsData);
                 }}
               >
-                {betsData?.markets
-                  .flatMap((market: any) => market.outcomes)
-                  .find((outcome: any) => outcome.name === data.name)?.price >
-                  previousBetsData?.markets
-                    .flatMap((market: any) => market.outcomes)
-                    .find(
-                      (outcome: any) => outcome.name === previousBetsData.name
-                    )?.price &&
-                  previousBetsData?.sport_key === betsData?.sport_key && (
-                    <span className="absolute animatePulse right-0 top-0 text-green-500 rotate-[-91deg]">
-                      <Triangle color={"#00ff00"} />
-                    </span>
-                  )}
-                {betsData?.markets
-                  .flatMap((market: any) => market.outcomes)
-                  .find((outcome: any) => outcome.name === data.name)?.price <
-                  previousBetsData?.markets
-                    .flatMap((market: any) => market.outcomes)
-                    .find(
-                      (outcome: any) => outcome.name === previousBetsData?.name
-                    )?.price &&
-                  previousBetsData?.sport_key === betsData?.sport_key && (
-                    <span className="absolute right-0 bottom-0 text-red-500 animatePulse">
-                      <Triangle color={"#ff0000"} />
-                    </span>
-                  )}
-
-                <p className="text-[#dfdfdf76]">
-                  {data.name !== "Draw" ? index + 1 : data.name}
-                </p>
-                <p className="text-white">
-                  {
-                    betsData.markets
-                      .flatMap((market: any) => market.outcomes)
-                      .find((outcome: any) => outcome.name === data.name)?.price
-                  }
+                <p className="text-[#dfdfdf76] flex gap-3">
+                  <span className="flex-[0.5]">{index + 1}.</span>{" "}
+                  <span className="flex-1 whitespace-nowrap">
+                    {" "}
+                    {data?.name}
+                  </span>
                 </p>
               </button>
             )

@@ -7,9 +7,8 @@ interface BetState {
   potentialWin: any;
   totalOdds: any;
   myBets: any;
-  RedeemAmount: number;
   notificationBet: string;
-  oddsMismatch: boolean;
+  oddsMismatch: any[];
 }
 
 const initialState: BetState = {
@@ -18,9 +17,8 @@ const initialState: BetState = {
   potentialWin: 0,
   totalOdds: 0,
   myBets: [],
-  RedeemAmount: 0,
   notificationBet: "",
-  oddsMismatch: false,
+  oddsMismatch: [],
 };
 
 export const betSlice = createSlice({
@@ -35,6 +33,14 @@ export const betSlice = createSlice({
         state.allbets = state.allbets.filter(
           (bet) => bet.id !== action.payload.id
         );
+        const exists = state.oddsMismatch.some(
+          (item) => item.id === action.payload.id
+        );
+        if (exists) {
+          state.oddsMismatch = state.oddsMismatch.filter(
+            (bet) => bet.id !== action.payload.id
+          );
+        }
       }
     },
     updateBetAmount: (
@@ -54,13 +60,18 @@ export const betSlice = createSlice({
       });
     },
     deleteBet: (state, action: PayloadAction<{ betId: string }>) => {
-      console.log("action.payload", action.payload);
-
       const { betId } = action.payload;
       state.allbets = state.allbets.filter((bet) => bet.id !== betId);
+      const exists = state.oddsMismatch.some((item) => item.id === betId);
+      if (exists) {
+        state.oddsMismatch = state.oddsMismatch.filter(
+          (bet) => bet.id !== betId
+        );
+      }
     },
     deleteAllBets: (state) => {
       state.allbets = [];
+      state.oddsMismatch = [];
     },
     calculateTotalBetAmount: (state) => {
       let totalAmount = 0;
@@ -71,8 +82,8 @@ export const betSlice = createSlice({
     },
     calculateTotalOdds: (state) => {
       let totalOdds = 1;
-      for (const bet of state.allbets) {
-        const odds = bet?.bet_on.odds
+      for (const bet of state?.allbets) {
+        const odds = bet?.bet_on?.odds;
 
         totalOdds *= odds;
       }
@@ -87,7 +98,7 @@ export const betSlice = createSlice({
         case "single":
           let totalPotentialWin = 0;
           for (const bet of state.allbets) {
-            const odds = bet.bet_on.odds
+            const odds = bet.bet_on.odds;
 
             totalPotentialWin += bet.amount * odds;
           }
@@ -103,21 +114,46 @@ export const betSlice = createSlice({
     setMyBets(state, action: PayloadAction<[]>) {
       state.myBets = action.payload;
     },
-    setRedeemAmount: (state, action: PayloadAction<number>) => {
-      state.RedeemAmount = action.payload;
-    },
     notificationBet: (state, action: PayloadAction<{ betId: string }>) => {
       const { betId } = action.payload;
       state.notificationBet = betId;
     },
-    setOddsMismatch: (state, action: PayloadAction<boolean>) => {
-      state.oddsMismatch = action.payload;
+    setOddsMismatch: (state, action: PayloadAction<any>) => {
+      const payloadId = action.payload.id;
+      const exists = state.oddsMismatch.some((item) => item.id === payloadId);
+      if (!exists) {
+        state.oddsMismatch.push(action.payload);
+      }
     },
     setBetLoadingState: (state, action: PayloadAction<boolean>) => {
       state.allbets.forEach((bet) => {
         bet.loading = action.payload;
       });
-    }
+    },
+    updateBetSlipOdds: (state, action: PayloadAction<any>) => {
+      const { eventId, latestOdds } = action.payload;
+      console.log(latestOdds);
+      const bets: any[] = state.allbets.filter(
+        (bet) => bet.event_id === eventId
+      );
+      if (bets.length > 0) {
+        for (const bet of bets) {
+          const marketData = latestOdds?.markets?.find(
+            (data: any) => data.key === bet?.category
+          );
+          if (marketData) {
+            const oddsData = marketData?.outcomes?.find(
+              (outcome: any) => outcome.name === bet.bet_on.name
+            );
+            if (oddsData) {
+              const prevOdds = bet.bet_on.odds;
+              bet.bet_on.prevOdds = prevOdds;
+              bet.bet_on.odds = oddsData.price;
+            }
+          }
+        }
+      }
+    },
   },
 });
 
@@ -131,9 +167,9 @@ export const {
   calculateTotalOdds,
   calculatePotentialWin,
   setMyBets,
-  setRedeemAmount,
   notificationBet,
   setOddsMismatch,
-  setBetLoadingState
+  setBetLoadingState,
+  updateBetSlipOdds,
 } = betSlice.actions;
 export default betSlice.reducer;

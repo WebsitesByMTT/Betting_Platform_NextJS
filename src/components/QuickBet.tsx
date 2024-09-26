@@ -14,6 +14,7 @@ import {
   calculateTotalBetAmount,
   calculateTotalOdds,
   deleteAllBets,
+  setBetLoadingState,
   updateAllBetsAmount,
 } from "@/lib/store/features/bet/betSlice";
 import { jwtDecode } from "jwt-decode";
@@ -25,11 +26,14 @@ const QuickBet = () => {
   const [allBets, setAllBets] = useState<BetDetails[]>([]);
   const [currentBetType, setCurrentBetType] = useState<String>("single");
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [retryBetMessage, setRetryBetMessage] = useState<boolean>();
   const [comboBetAmount, setCombobetAmount] = useState<any>(100);
   const potentialWin = useAppSelector((state) => state.bet.potentialWin);
   const totalBetAmount = useAppSelector((state) => state.bet.totalBetAmount);
   const totalBetOdds = useAppSelector((state) => state.bet.totalOdds);
   const bets = useAppSelector((state) => state.bet.allbets);
+  const oddsMismatch = useAppSelector((state) => state.bet.oddsMismatch);
+
   const myBets = useAppSelector((state) => state.bet.myBets);
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
@@ -39,7 +43,8 @@ const QuickBet = () => {
   const betType = ["single", "combo"];
 
   const hasDuplicateEventIds = () => {
-    const betPairs = bets.map((bet) => `${bet.event_id}-${bet.market}`);
+    if (currentBetType === "single") return false;
+    const betPairs = bets.map((bet) => `${bet.event_id}-${bet.category}`);
     const betPairsSet = new Set(betPairs);
 
     return betPairs.length !== betPairsSet.size;
@@ -86,12 +91,12 @@ const QuickBet = () => {
       amount: currentBetType === "single" ? 0 : comboBetAmount,
       betType: currentBetType,
     };
+    dispatch(setBetLoadingState(true));
     if (socket) {
       socket.emit("bet", { action: "PLACE", payload: finalbets });
     } else {
       console.log("SOCKET NOT CONNECTED");
     }
-    dispatch(deleteAllBets());
   };
 
   //calculate all amounts when tabs switch between combo and single
@@ -120,7 +125,18 @@ const QuickBet = () => {
 
   //delete all bets
   const handleDelete = () => {
-    dispatch(deleteAllBets());
+    socket?.emit(
+      "bet",
+      { action: "REMOVE_ALL_FROM_BETSLIP" },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          console.log("All bets successfully removed:", response.message);
+          dispatch(deleteAllBets());
+        } else {
+          console.error("Failed to remove all bets:", response.message);
+        }
+      }
+    );
   };
 
   //scroll to bottom when new bet is added to show latest bet
@@ -135,7 +151,7 @@ const QuickBet = () => {
     <div
       className={`transition-all text-white  ${
         open ? "bottom-0" : "-bottom-[1rem]"
-      }  fixed  z-[100] md:right-10 right-auto w-[96%] md:w-[360px] max-h-[80vh]`}
+      }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
     >
       <div
         onClick={() => {
@@ -214,10 +230,13 @@ const QuickBet = () => {
             <div
               ref={betsContainerRef}
               className={`w-full flex flex-col ${
-                disabled ? "border-[1px] rounded-lg border-[#D96C4B]" : ""
+                disabled ||
+                (oddsMismatch.length > 0 && currentBetType === "combo")
+                  ? "border-[1px] rounded-lg border-[#D96C4B]"
+                  : ""
               } ${
                 currentBetType === "combo" ? "gap-0" : "gap-2"
-              }  max-h-[calc(40vh-90px)] overflow-y-scroll`}
+              }  max-h-[calc(40vh-90px)] hideScrollBar overflow-y-scroll`}
             >
               {allBets?.map((item, index) => (
                 <BetSlip key={index} betinfo={item} betType={currentBetType} />
@@ -228,6 +247,11 @@ const QuickBet = () => {
                 {currentBetType === "single"
                   ? "Can't place this bet"
                   : "Can't place bet on this combo"}
+              </p>
+            )}
+            {oddsMismatch.length > 0 && currentBetType === "combo" && (
+              <p className="text-red-500 text-[12px] italic text-right">
+                Odds have changed
               </p>
             )}
             {currentBetType === "combo" && (
@@ -282,12 +306,13 @@ const QuickBet = () => {
               >
                 <DeleteIcon />
               </button>
+
               <button
-                disabled={disabled}
+                disabled={disabled || allBets?.some((bet) => bet.loading)}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >
-                Place Bet
+                {retryBetMessage ? "RETRY" : "PLACE BET"}
               </button>
             </div>
           </>

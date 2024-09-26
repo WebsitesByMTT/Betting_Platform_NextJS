@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 const Login = () => {
   const [data, setData] = useState<FormData>({
     username: "",
-    password: ""
+    password: "",
   });
 
   const [hide, setHide] = useState(false);
@@ -40,15 +40,15 @@ const Login = () => {
         Cookies.set("token", token);
         router.push("/All/americanfootball_cfl");
       } else {
-        alert("Access denied!");
+        return toast.error("Access denied!");
       }
     } else {
-      alert("Invalid Token!");
+      return toast.error("Invalid Token!");
     }
   };
 
   return (
-    <div className=" bg-[#1a1a1d] h-screen backdrop-filter backdrop-blur-[5px] bg-opacity-10 flex z-[1] items-center justify-center w-full  rounded-[1.8vw] p-5">
+    <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] backdrop-filter backdrop-blur-[5px] bg-opacity-10 flex z-[1] items-center justify-center w-full  rounded-[1.8vw] p-5">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center justify-evenly gap-12 md:w-[25%] w-[50%] min-w-[300px]"

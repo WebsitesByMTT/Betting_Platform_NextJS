@@ -19,15 +19,13 @@ export default async function RootLayout({
   return (
     <StoreProvider>
       <SocketProvider token={token as string}>
-        <div className="lg:flex h-auto">
-          <div>
-            <Sidebar />
-          </div>
-          <div>
-            <Header />
-            <div>{children}</div>
-          </div>
-          <AllNotification/>
+        <div className="overflow-hidden flex-1 lg:space-x-4 h-screen lg:flex lg:pl-5 lg:pr-2">
+          <Sidebar />
+            <div>
+              <Header />
+              {children}
+            </div>
+          <AllNotification />
         </div>
       </SocketProvider>
     </StoreProvider>

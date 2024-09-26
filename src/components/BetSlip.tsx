@@ -5,14 +5,24 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import CrossIcon from "./svg/CrossIcon";
 import { useEffect, useState } from "react";
 import { svgMap } from "./svg/SvgMap";
+import { useSocket } from "./SocketProvider";
+import { getOutright } from "@/lib/utils";
 
 const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
   const dispatch = useAppDispatch();
+  const { socket } = useSocket();
   const [amount, setAmount] = useState(betinfo.amount);
   const [show, setShow] = useState(true);
+  const [outright, setOutright] = useState(false);
+  const [error, setError] = useState<string>("");
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
+  const [betError, setBetError] = useState<{ message: string; type: string }[]>(
+    []
+  );
+  const oddsMismatch = useAppSelector((state) => state.bet.oddsMismatch);
+  const sportsCategories = useAppSelector((state) => state.sports.categories);
   const IconComponent = svgMap[currentCategory.toLowerCase()];
 
   useEffect(() => {
@@ -23,18 +33,45 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
     const newAmount = Number(e.target.value);
     setAmount(newAmount);
     dispatch(updateBetAmount({ betId: betinfo.id, amount: newAmount }));
+    socket?.emit("bet", {
+      action: "UPDATE_BET_AMOUNT",
+      payload: { bet: betinfo, amount: newAmount },
+    });
   };
 
   const handleRemove = (betId: string) => {
-    setShow(false);
-    setTimeout(() => {
-      dispatch(deleteBet({ betId: betId }));
-      setShow(true);
-    }, 300);
+    setShow(false); // Hide UI element (e.g., loading indicator or modal)
+
+    socket?.emit(
+      "bet",
+      {
+        action: "REMOVE_FROM_BETSLIP",
+        payload: { betId: betId },
+      },
+      (response: { status: string; message: string }) => {
+        if (response.status === "success") {
+          dispatch(deleteBet({ betId: betId }));
+          setShow(true);
+        } else {
+          console.error("Failed to remove bet:", response.message);
+          setError("Failed to remove bet");
+          setShow(true); // Optionally show UI again, even on failure
+        }
+      }
+    );
   };
+
+  useEffect(() => {
+    setOutright(getOutright(sportsCategories, betinfo.sport_title));
+  }, [betinfo.sport_title]);
+
+  useEffect(() => {
+    setBetError(oddsMismatch);
+  }, [oddsMismatch]);
+
   return (
     <div
-      className={`border-[1.5px] border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
+      className={`border-[1.5px] relative border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
         show ? "bet-slip-enter-active" : "bet-slip-exit-active"
       }`}
     >
@@ -48,25 +85,41 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
       </button>
       <div className="px-3 py-2 w-[85%]">
         <div className="flex space-x-4 md:gap-2 text-sm font-medium text-[#ffffff]">
-          <div className="relative w-[15px]">
-            {IconComponent}
-          </div>
-          <p className="text-md font-normal">
-            {betinfo.bet_on == "home_team"
-              ? betinfo.home_team.name
-              : betinfo.away_team.name}
-          </p>
+          <div className="relative w-[15px]">{IconComponent}</div>
+          <p className="text-md font-normal">{betinfo.sport_title}</p>
         </div>
-        <p className="text-[#dfdfdf9a] font-light text-sm whitespace-nowrap overflow-clip">
-          <span>{betinfo.home_team.name}</span> v/s{" "}
-          <span>{betinfo.away_team.name}</span>
+        <p className="text-[#dfdfdf9a] font-light text-sm overflow-clip">
+          {betinfo?.teams?.map((data: any, index: number) => (
+            <span
+              className={
+                betinfo.bet_on.name === data.name
+                  ? "text-yellow-500"
+                  : outright
+                  ? "hidden"
+                  : "text-[#dfdfdf9a]"
+              }
+              key={index}
+            >
+              {data.name}
+              <span className={outright ? "hidden" : "text-[#dfdfdf9a]"}>
+                {" "}
+                {index < betinfo.teams.length - 1 ? "v/s" : ""}{" "}
+              </span>
+            </span>
+          ))}
         </p>
         <p className="text-[#fff] font-medium text-sm">{betinfo.market}</p>
         <div className="grid grid-cols-4 items-center">
-          <p className="text-xl font-semibold col-span-3">
-            {betinfo.bet_on == "home_team"
-              ? betinfo.home_team.odds
-              : betinfo.away_team.odds}
+          <p
+            className={`text-xl font-semibold col-span-3 ${
+              betinfo.bet_on.odds > betinfo.bet_on.prevOdds
+                ? "text-green-500 animate-pulse"
+                : betinfo.bet_on.odds < betinfo.bet_on.prevOdds
+                ? "text-red-500 animate-pulse"
+                : "text-white"
+            }`}
+          >
+            {betinfo.bet_on.odds}
           </p>
           {betType === "single" && (
             <input
@@ -77,7 +130,37 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
             ></input>
           )}
         </div>
+        {betinfo.bet_on.prevOdds !== betinfo.bet_on.odds && (
+          <p className="text-[12px] pt-2 text-[#dfdfdf70]">
+            Odds changed from{" "}
+            <span className="text-white">{betinfo.bet_on.prevOdds}</span> to{" "}
+            <span className="text-white">{betinfo.bet_on.odds}</span>
+          </p>
+        )}
+        {error && <p className="text-red-500 text-[13px] italic">{error}</p>}
+        {betError &&
+          betType === "single" &&
+          betError.map((err: any, index) => {
+            return err.id === betinfo.id ? (
+              <p key={index} className="text-red-500 text-[12px] italic">
+                {err.message}
+              </p>
+            ) : null;
+          })}
       </div>
+      {/* Loader */}
+      {betinfo.loading && (
+        <div className="fixed z-[9999]  bg-black bg-opacity-50 top-0 left-0 w-full h-full">
+          <div className="relative w-full h-full">
+            <svg
+              className="loader absolute top-[45%] left-[48%]"
+              viewBox="25 25 50 50"
+            >
+              <circle r="20" cy="50" cx="50"></circle>
+            </svg>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

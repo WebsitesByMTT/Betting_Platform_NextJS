@@ -82,6 +82,7 @@ export const SocketProvider: React.FC<{
           default:
             break;
         }
+        //
       });
 
       socketInstance.on("message", (data: any) => {

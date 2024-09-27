@@ -83,7 +83,7 @@ const Sidebar = () => {
             <Logo />
           </Link>
         </div>
-        <div className="py-[0.5vw] space-y-[0.5vw] webkit-overflow-scrolling-touch   h-[calc(100vh-130px)] lg:h-[calc(100vh-160px)] scrollbar overflow-y-auto">
+        <div className="py-[0.5vw] space-y-[0.5vw] webkit-overflow-scrolling-touch h-[calc(100vh-200px)] scrollbar overflow-y-auto">
           {sidebar?.map((item, ind) => (
             <div key={ind}>
               <div className="bg-gradient-to-b from-[#D6A250] via-[#FFE500] to-[#ECB800] rounded-full font-light p-[1px] mx-1">

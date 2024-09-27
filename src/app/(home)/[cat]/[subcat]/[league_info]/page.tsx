@@ -254,7 +254,7 @@ const Page = ({ params }: any) => {
                             handleBet(event, outcome.name, item, outcome);
                           }}
                           key={outcomeIndex}
-                          className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${
+                          className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors hover:border-[#82FF60] border-[2px] ${
                             outcome?.point ? "block" : "flex space-x-.5"
                           } items-center justify-between px-1 group ${
                             isBetInAllBets(

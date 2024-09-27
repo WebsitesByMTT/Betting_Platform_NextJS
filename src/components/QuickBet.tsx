@@ -33,8 +33,7 @@ const QuickBet = () => {
   const totalBetOdds = useAppSelector((state) => state.bet.totalOdds);
   const bets = useAppSelector((state) => state.bet.allbets);
   const oddsMismatch = useAppSelector((state) => state.bet.oddsMismatch);
-
-  const myBets = useAppSelector((state) => state.bet.myBets);
+  const credits = useAppSelector((state) => state.user.credits);
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
   const betsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -73,6 +72,7 @@ const QuickBet = () => {
       })
     );
   }, [bets]);
+
 
   const handleSubmit = async () => {
     if (comboBetAmount <= 0) {
@@ -280,8 +280,9 @@ const QuickBet = () => {
                   {item}
                 </button>
               ))}
-            </div>
+              </div>
             <div className="space-y-1 py-4">
+                {(currentBetType === 'single' ? ((totalBetAmount > credits)) : (comboBetAmount > credits)) && <div className="text-red-500 italic text-[.9rem]">Insufficient Credits!</div>}
               {currentBetType === "combo" && (
                 <div className="flex px-2 text-sm text-[#dfdfdfa8]">
                   <p className="flex-1">Total Odds</p>
@@ -308,7 +309,7 @@ const QuickBet = () => {
               </button>
 
               <button
-                disabled={disabled || allBets?.some((bet) => bet.loading)}
+                disabled={disabled || (currentBetType==='single'?((totalBetAmount>credits)):(comboBetAmount>credits))||allBets?.some((bet) => bet.loading)}
                 onClick={handleSubmit}
                 className="w-full py-1 text-[#fff] uppercase border-[#D71B21] border-2 font-semibold rounded-full bg-gradient-to-b from-[#d71b2163] to-[#7800047a] text-lg "
               >

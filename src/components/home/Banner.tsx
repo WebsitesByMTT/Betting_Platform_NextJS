@@ -19,7 +19,7 @@ const Banner: React.FC = () => {
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
-
+//
   useEffect(() => {
     const fetchBanner = async (currentCategory: string) => {
       const data = await getCategoryBanners(currentCategory);

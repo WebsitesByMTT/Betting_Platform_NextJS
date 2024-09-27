@@ -118,7 +118,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       {!outright ? (
         <div
           onClick={handelLeagueInfo}
-          className="bg-[#17151A]  shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12 md:col-span-6 xl:col-span-3"
+          className="bg-[#17151A] hover:bg-gray-800 transition-all border-[2px] hover:border-gray-700 border-transparent  shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12 md:col-span-6 xl:col-span-3"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center space-x-[.5px] overflow-hidden">
@@ -173,7 +173,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
           </div>
           <div className="flex gap-2 w-full betPlaced relative">
             <button
-              className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
+              className={`flex-1 py-2  hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex group justify-between px-2 ${
                 isBetInAllBets(
                   generateId(
                     betsData.id,
@@ -234,7 +234,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                 data.name === "Draw" && (
                   <button
                     key={index}
-                    className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
+                    className={`flex-1 py-2 hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex group justify-between px-2 ${
                       isBetInAllBets(
                         generateId(
                           betsData.id,
@@ -295,7 +295,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                 )
             )}
             <button
-              className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
+              className={`flex-1 py-2 hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex justify-between px-2 group ${
                 isBetInAllBets(
                   generateId(
                     betsData.id,
@@ -380,7 +380,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
             {leagues.markets[0].outcomes.map((data: any, index: any) => (
               <button
                 key={index}
-                className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
+                className={`flex-1 py-2 hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex justify-between px-2 group ${
                   isBetInAllBets(
                     generateId(betsData.id, data.name, betsData.markets[0]?.key)
                   )

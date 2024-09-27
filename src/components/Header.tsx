@@ -67,9 +67,9 @@ const Header = () => {
               >
                 <Notification />
                 <span className="bg-[#D71B21] text-white w-[1rem] h-[1rem] md:w-[1.5rem] md:h-[1.5rem] pt-[1px] md:pt-[2px] rounded-full text-[.6rem] md:text-[.8rem] top-0 absolute">
-                  {notification?.length > 0 &&
+                  {notification?.length > 0 ?
                     notification?.filter((item: any) => item?.viewed === false)
-                      ?.length}
+                      ?.length:0}
                 </span>
               </button>
               <Notifications open={open} setOpen={setOpen} />

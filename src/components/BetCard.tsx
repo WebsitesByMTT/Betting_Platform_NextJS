@@ -118,7 +118,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
       {!outright ? (
         <div
           onClick={handelLeagueInfo}
-          className="bg-[#17151A] hover:bg-gray-800 transition-all border-[2px] hover:border-gray-700 border-transparent  shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12 md:col-span-6 xl:col-span-3"
+          className="bg-[#17151A]  shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12 md:col-span-6 xl:col-span-3"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-center space-x-[.5px] overflow-hidden">
@@ -173,7 +173,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
           </div>
           <div className="flex gap-2 w-full betPlaced relative">
             <button
-              className={`flex-1 py-2  hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex group justify-between px-2 ${
+              className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
                 isBetInAllBets(
                   generateId(
                     betsData.id,
@@ -234,7 +234,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                 data.name === "Draw" && (
                   <button
                     key={index}
-                    className={`flex-1 py-2 hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex group justify-between px-2 ${
+                    className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex group justify-between px-2 ${
                       isBetInAllBets(
                         generateId(
                           betsData.id,
@@ -295,7 +295,7 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
                 )
             )}
             <button
-              className={`flex-1 py-2 hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex justify-between px-2 group ${
+              className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
                 isBetInAllBets(
                   generateId(
                     betsData.id,
@@ -352,58 +352,57 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
             </button>
           </div>
         </div>
-      ) : (
-        <div className="bg-[#17151A]  shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center justify-center space-x-[.5px] overflow-hidden">
-              <div className=" whitespace-nowrap flex items-center space-x-2 justify-center text-white text-opacity-60 text-[.7rem] md:text-[.9rem]">
-                <div className="relative">{IconComponent}</div>
-                <p className="whitespace-nowrap">{leagues?.sport_title}</p>
-              </div>
-            </div>
-            <Favourite />
-          </div>
-          <p className="text-[#67ffff] capitalize text-sm">
-            {new Date(leagues.commence_time).toLocaleDateString([], {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}{" "}
-            |{" "}
-            {new Date(leagues.commence_time).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 py-4">
-            {leagues.markets[0].outcomes.map((data: any, index: any) => (
-              <button
-                key={index}
-                className={`flex-1 py-2 hover:border-[#82FF60] rounded-lg text-sm relative transition-colors border-[2px] flex justify-between px-2 group ${
-                  isBetInAllBets(
-                    generateId(betsData.id, data.name, betsData.markets[0]?.key)
-                  )
-                    ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
-                    : "bg-[#040404] border-transparent"
-                }`}
-                onClick={(event) => {
-                  handleBet(event, data.name, betsData);
-                }}
-              >
-                <p className="text-[#dfdfdf76] flex gap-3">
-                  <span className="flex-[0.5]">{index + 1}.</span>{" "}
-                  <span className="flex-1 whitespace-nowrap">
-                    {" "}
-                    {data?.name}
-                  </span>
-                </p>
-                <p className="text-white">{data.price}</p>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      ) : // <div className="bg-[#17151A]  shadow-xl flex flex-col gap-1 p-2 rounded-lg col-span-12">
+      //   <div className="flex items-center justify-between">
+      //     <div className="flex items-center justify-center space-x-[.5px] overflow-hidden">
+      //       <div className=" whitespace-nowrap flex items-center space-x-2 justify-center text-white text-opacity-60 text-[.7rem] md:text-[.9rem]">
+      //         <div className="relative">{IconComponent}</div>
+      //         <p className="whitespace-nowrap">{leagues?.sport_title}</p>
+      //       </div>
+      //     </div>
+      //     <Favourite />
+      //   </div>
+      //   <p className="text-[#67ffff] capitalize text-sm">
+      //     {new Date(leagues.commence_time).toLocaleDateString([], {
+      //       year: "numeric",
+      //       month: "short",
+      //       day: "numeric",
+      //     })}{" "}
+      //     |{" "}
+      //     {new Date(leagues.commence_time).toLocaleTimeString([], {
+      //       hour: "2-digit",
+      //       minute: "2-digit",
+      //       hour12: true,
+      //     })}
+      //   </p>
+      //   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-4 py-4">
+      //     {leagues.markets[0].outcomes.map((data: any, index: any) => (
+      //       <button
+      //         key={index}
+      //         className={`flex-1 py-2 rounded-lg text-sm relative transition-colors border-[1px] flex justify-between px-2 group ${
+      //           isBetInAllBets(
+      //             generateId(betsData.id, data.name, betsData.markets[0]?.key)
+      //           )
+      //             ? "bg-gradient-to-b from-[#82ff606a] to-[#4f993a6d] border-[#82FF60] shadow-inner"
+      //             : "bg-[#040404] border-transparent"
+      //         }`}
+      //         onClick={(event) => {
+      //           handleBet(event, data.name, betsData);
+      //         }}
+      //       >
+      //         <p className="text-[#dfdfdf76] flex gap-3">
+      //           <span className="flex-[0.5]">{index + 1}.</span>{" "}
+      //           <span className="flex-1 whitespace-nowrap">
+      //             {" "}
+      //             {data?.name}
+      //           </span>
+      //         </p>
+      //         <p className="text-white">{data.price}</p>
+      //       </button>
+      //     ))}
+      //   </div>
+      // </div>
+      null}
     </>
   );
 };

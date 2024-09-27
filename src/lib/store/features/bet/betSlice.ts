@@ -132,7 +132,6 @@ export const betSlice = createSlice({
     },
     updateBetSlipOdds: (state, action: PayloadAction<any>) => {
       const { eventId, latestOdds } = action.payload;
-      console.log(latestOdds);
       const bets: any[] = state.allbets.filter(
         (bet) => bet.event_id === eventId
       );

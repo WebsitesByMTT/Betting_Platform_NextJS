@@ -10,7 +10,7 @@ import Searchbar from "@/components/Searchbar";
 export default function Home({ params }: any) {
   return (
     <>
-      <div className="pb-5 px-2 lg:px-0 z-50 overflow-y-scroll h-[calc(100vh-40px)] space-y-[max(1vw,10px)] hideScrollBar">
+      <div className="pb-5 px-2 z-50 lg:overflow-y-scroll lg:h-[calc(100vh-60px)] space-y-[max(1vw,10px)] hideScrollBar">
         <Banner />
         <Categories />
         <EventsMenu cat={params} />
@@ -18,7 +18,6 @@ export default function Home({ params }: any) {
         <BetContainer cat={params} />
         <Footer />
       </div>
-      <QuickBet />
     </>
 
   );

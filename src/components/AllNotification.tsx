@@ -47,7 +47,7 @@ const AllNotification = () => {
         dispatch(setIsNotification(false));
     }
     return (
-        <div className={`${notification ? 'text-white w-[70%] md:w-[300px] xl:w-[400px] 2xl:w-[500px] ' : 'w-0'} hideScrollBar fixed  top-0 2xl:static right-0  bg-[#0C0B14] z-[99] lg:flex transition-all gap-2 flex-col scrollbar h-[calc(100vh-50px)] overflow-y-scroll`}>
+        <div className={`${notification ? 'text-white w-[80%] md:w-[300px] xl:w-[400px] 2xl:w-[500px] ' : 'w-0'} hideScrollBar fixed  top-0 2xl:static right-0  bg-[#0C0B14] z-[99] lg:flex transition-all gap-2 flex-col scrollbar h-[calc(100vh-50px)] overflow-y-scroll`}>
             <div className="text-white text-sm  lg:text-[1rem]  sticky top-0 bg-[#0C0B14] font-extralight flex items-center justify-between tracking-wide  px-2">
                 <span className="bg-[#1E1C22] px-3 py-1 rounded-2xl">All Notifications</span>
                 <button

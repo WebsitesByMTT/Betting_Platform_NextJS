@@ -129,7 +129,7 @@ input[type="number"] {
 }
 
 .no-scroll {
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 .scrollbar::-webkit-scrollbar {

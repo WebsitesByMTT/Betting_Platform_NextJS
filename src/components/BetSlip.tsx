@@ -71,65 +71,83 @@ const BetSlip: React.FC<any> = ({ betinfo, betType }) => {
 
   return (
     <div
-      className={`border-[1.5px] relative border-[#dfdfdf34] rounded-md flex items-stretch betslip ${
+      className={`border-[1.5px] px-2 relative border-[#dfdfdf34] rounded-md flex flex-col items-stretch betslip ${
         show ? "bet-slip-enter-active" : "bet-slip-exit-active"
       }`}
     >
-      <button
-        className="bg-[#2f2f2f] button group rounded-tl-md rounded-bl-md w-[15%] max-w-[2rem] whitespace-nowrap px-[0.4vw] lg:max-w-[3rem]  hover:bg-gradient-to-b from-[#d71b212b] to-[#7800047a] transition-all"
-        onClick={() => {
-          handleRemove(betinfo.id);
-        }}
-      >
-        <CrossIcon />
-      </button>
-      <div className="px-3 py-2 w-[85%]">
-        <div className="flex space-x-4 md:gap-2 text-sm font-medium text-[#ffffff]">
-          <div className="relative w-[15px]">{IconComponent}</div>
-          <p className="text-md font-normal">{betinfo.sport_title}</p>
-        </div>
-        <p className="text-[#dfdfdf9a] font-light text-sm overflow-clip">
-          {betinfo?.teams?.map((data: any, index: number) => (
-            <span
-              className={
-                betinfo.bet_on.name === data.name
-                  ? "text-yellow-500"
-                  : outright
-                  ? "hidden"
-                  : "text-[#dfdfdf9a]"
-              }
-              key={index}
-            >
-              {data.name}
-              <span className={outright ? "hidden" : "text-[#dfdfdf9a]"}>
-                {" "}
-                {index < betinfo.teams.length - 1 ? "v/s" : ""}{" "}
-              </span>
-            </span>
-          ))}
-        </p>
-        <p className="text-[#fff] font-medium text-sm">{betinfo.market}</p>
-        <div className="grid grid-cols-4 items-center">
+      <div className="flex items-end justify-end">
+        {/* remove button */}
+        <button
+          className="button group rounded-tl-md rounded-bl-md  whitespace-nowrap p-1 w-[1.5rem] transition-all -mx-1"
+          onClick={() => {
+            handleRemove(betinfo.id);
+          }}
+        >
+          <CrossIcon />
+        </button>
+      </div>
+      {/* bet data */}
+      <div className="flex flex-col gap-1">
+        {/* bet on and odds */}
+        <div className="flex justify-between space-x-4 md:gap-2 text-md font-medium text-[#ffffff]">
+          <p className="text-md font-normal">{betinfo.bet_on.name}</p>
           <p
-            className={`text-xl font-semibold col-span-3 ${
+            className={`text-md font-semibold col-span-3 ${
               betinfo.bet_on.odds > betinfo.bet_on.prevOdds
                 ? "text-green-500 animate-pulse"
                 : betinfo.bet_on.odds < betinfo.bet_on.prevOdds
                 ? "text-red-500 animate-pulse"
-                : "text-white"
+                : "text-yellow-500"
             }`}
           >
             {betinfo.bet_on.odds}
           </p>
+        </div>
+        {/* market */}
+        <div className="flex justify-between">
+          <p className="text-[#dfdfdf9a] font-light text-sm overflow-clip uppercase">
+            {betinfo.category}
+          </p>
+          {(betinfo.category === "totals" ||
+            betinfo.category === "spreads") && (
+            <p
+              className={`text-[#dfdfdf9a] font-light text-sm overflow-clip uppercase ${
+                betinfo?.bet_on?.points <= 0 ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              {betinfo?.bet_on?.points}
+            </p>
+          )}
+        </div>
+        {betinfo.category === "outrights" ? (
+          <p className="text-[#dfdfdf9a] font-light text-sm overflow-clip">
+            {betinfo.sport_title}
+          </p>
+        ) : (
+          <p className="text-[#dfdfdf9a] font-light text-[12px] overflow-clip">
+            <span>{betinfo.teams[0].name}</span> -{" "}
+            <span>{betinfo.teams[1].name}</span>
+          </p>
+        )}
+        <div>
           {betType === "single" && (
             <input
               value={amount}
               onChange={handleAmountChange}
               type="number"
-              className="text-center py-1 text-sm bg-gray-700 rounded-md outline-none appearance-none col-span-1 betamount border-[1px] border-transparent"
+              placeholder="Enter stake"
+              className="py-1 text-md bg-gray-700 rounded-sm outline-none appearance-none col-span-1 betamount border-[1px] border-[#dfdfdf5a] w-full my-2 px-2"
             ></input>
           )}
         </div>
+        {betType === "single" && (
+          <div className="flex justify-between pb-1">
+            <p className="text-sm">Possible win: </p>
+            <p className="text-sm text-green-500">
+              {(amount * betinfo.bet_on.odds).toFixed(2)} $
+            </p>
+          </div>
+        )}
         {betinfo.bet_on.prevOdds !== betinfo.bet_on.odds && (
           <p className="text-[12px] pt-2 text-[#dfdfdf70]">
             Odds changed from{" "}

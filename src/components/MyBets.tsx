@@ -137,7 +137,7 @@ const MyBets = () => {
           </button>
         ))}
       </div>
-      <div className="h-[calc(100vh-200px)] w-[96vw] md:w-full hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
+      <div className="h-[calc(100vh-230px)] lg:h-[calc(100vh-200px)] w-[96vw] md:w-full hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
         <table className=" overflow-x-scroll w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
           <thead>
             <tr className="text-xl">
@@ -198,43 +198,71 @@ const MyBets = () => {
                               {formatDateTime(data?.createdAt)}
                             </span>
                           </span>
-                          {data.category === "outrights" ? (
-                            <span className="text-[9px]  md:text-[13px] text-left text-[#FFC400]">
-                              {data.bet_on.name}
-                            </span>
-                          ) : (
-                            <span className="text-[9px]  md:text-[13px] text-left">
-                              {data?.teams?.map((team: any, index: number) => (
-                                <span
-                                  key={index}
-                                  className={
-                                    data.bet_on.name === team?.name
-                                      ? `${
-                                          data.status === "redeem"
-                                            ? "text-[#57555f]"
-                                            : "text-[#FFC400]"
-                                        }`
-                                      : `${
+                          {data?.bet_on?.name ? (
+                            data.category === "outrights" ? (
+                              <span className="text-[9px]  md:text-[13px] text-left text-[#FFC400]">
+                                {data.bet_on?.name}
+                              </span>
+                            ) : (
+                              <span className="text-[9px]  md:text-[13px] text-left">
+                                {data?.teams?.map(
+                                  (team: any, index: number) => (
+                                    <span
+                                      key={index}
+                                      className={
+                                        data.bet_on?.name === team?.name
+                                          ? `${
+                                              data.status === "redeem"
+                                                ? "text-[#57555f]"
+                                                : "text-[#FFC400]"
+                                            }`
+                                          : `${
+                                              data.status === "redeem"
+                                                ? "text-[#424149]"
+                                                : "text-white"
+                                            }`
+                                      }
+                                    >
+                                      {team?.name}{" "}
+                                      <span
+                                        className={`${
                                           data.status === "redeem"
                                             ? "text-[#424149]"
                                             : "text-white"
-                                        }`
-                                  }
-                                >
-                                  {team?.name}{" "}
-                                  <span
-                                    className={`${
-                                      data.status === "redeem"
-                                        ? "text-[#424149]"
-                                        : "text-white"
-                                    }`}
-                                  >
-                                    {index < data.teams?.length - 1
-                                      ? "v/s"
-                                      : ""}{" "}
-                                  </span>
-                                </span>
-                              ))}
+                                        }`}
+                                      >
+                                        {index < data.teams?.length - 1
+                                          ? "v/s"
+                                          : ""}{" "}
+                                      </span>
+                                    </span>
+                                  )
+                                )}
+                              </span>
+                            )
+                          ) : (
+                            <span
+                              className={`text-[9px] md:text-[13px] text-left`}
+                            >
+                              <span
+                                className={
+                                  data?.bet_on === "home_team"
+                                    ? "text-[#FFC400]"
+                                    : ""
+                                }
+                              >
+                                {data?.home_team?.name}
+                              </span>{" "}
+                              v/s{" "}
+                              <span
+                                className={
+                                  data?.bet_on === "away_team"
+                                    ? "text-[#FFC400]"
+                                    : ""
+                                }
+                              >
+                                {data?.away_team?.name}
+                              </span>
                             </span>
                           )}
                           <span
@@ -260,7 +288,20 @@ const MyBets = () => {
                           data.status === "redeem" ? "text-[#555458]" : ""
                         }`}
                       >
-                        {data.category}
+                        <div className="flex flex-col">
+                          {data?.category ? (
+                            <span>{data?.category}</span>
+                          ) : (
+                            <span>{data?.market}</span>
+                          )}
+                          <span
+                            className={`text-[.84rem] ${
+                              data.category == "h2h" && "hidden"
+                            } text-opacity-60 text-white dark:text-black`}
+                          >
+                            {data?.bet_on?.points}
+                          </span>
+                        </div>
                       </td>
                       <td className="text-sm md:text-lg">
                         <div className="flex flex-col gap-2">
@@ -273,13 +314,25 @@ const MyBets = () => {
                           >
                             {data.oddsFormat}
                           </span>
-                          <span
-                            className={`${
-                              data.status === "redeem" ? "text-[#555458]" : ""
-                            }`}
-                          >
-                            {data.bet_on.odds}
-                          </span>
+                          {data?.bet_on?.odds ? (
+                            <span
+                              className={`${
+                                data.status === "redeem" ? "text-[#555458]" : ""
+                              }`}
+                            >
+                              {data?.bet_on?.odds}
+                            </span>
+                          ) : (
+                            <span
+                              className={`${
+                                data.status === "redeem" ? "text-[#555458]" : ""
+                              }`}
+                            >
+                              {data?.bet_on === "away_team"
+                                ? data?.away_team?.odds
+                                : data?.home_team?.odds}
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td
@@ -368,39 +421,73 @@ const MyBets = () => {
                                 {formatDateTime(data?.createdAt)}
                               </span>
                             </span>
-                            <span className="text-[9px]  md:text-[13px] text-left">
-                              {data?.teams?.map((team: any, index: number) => (
+                            {data?.bet_on?.name ? (
+                              data.category === "outrights" ? (
+                                <span className="text-[9px]  md:text-[13px] text-left text-[#FFC400]">
+                                  {data.bet_on?.name}
+                                </span>
+                              ) : (
+                                <span className="text-[9px]  md:text-[13px] text-left">
+                                  {data?.teams?.map(
+                                    (team: any, index: number) => (
+                                      <span
+                                        key={index}
+                                        className={
+                                          data.bet_on?.name === team?.name
+                                            ? `${
+                                                data.status === "redeem"
+                                                  ? "text-[#57555f]"
+                                                  : "text-[#FFC400]"
+                                              }`
+                                            : `${
+                                                data.status === "redeem"
+                                                  ? "text-[#424149]"
+                                                  : "text-white"
+                                              }`
+                                        }
+                                      >
+                                        {team?.name}{" "}
+                                        <span
+                                          className={`${
+                                            data.status === "redeem"
+                                              ? "text-[#424149]"
+                                              : "text-white"
+                                          }`}
+                                        >
+                                          {index < data.teams?.length - 1
+                                            ? "v/s"
+                                            : ""}{" "}
+                                        </span>
+                                      </span>
+                                    )
+                                  )}
+                                </span>
+                              )
+                            ) : (
+                              <span
+                                className={`text-[9px] md:text-[13px] text-left`}
+                              >
                                 <span
-                                  key={index}
                                   className={
-                                    data.bet_on.name === team?.name
-                                      ? `${
-                                          data.status === "redeem"
-                                            ? "text-[#57555f]"
-                                            : "text-[#FFC400]"
-                                        }`
-                                      : `${
-                                          data.status === "redeem"
-                                            ? "text-[#424149]"
-                                            : "text-white"
-                                        }`
+                                    data?.bet_on === "home_team"
+                                      ? "text-[#FFC400]"
+                                      : ""
                                   }
                                 >
-                                  {team?.name}{" "}
-                                  <span
-                                    className={`${
-                                      data.status === "redeem"
-                                        ? "text-[#424149]"
-                                        : "text-white"
-                                    }`}
-                                  >
-                                    {index < data.teams?.length - 1
-                                      ? "v/s"
-                                      : ""}{" "}
-                                  </span>
+                                  {data?.home_team?.name}
+                                </span>{" "}
+                                v/s{" "}
+                                <span
+                                  className={
+                                    data?.bet_on === "away_team"
+                                      ? "text-[#FFC400]"
+                                      : ""
+                                  }
+                                >
+                                  {data?.away_team?.name}
                                 </span>
-                              ))}
-                            </span>
+                              </span>
+                            )}
                             <span
                               className={`text-[9px] md:text-[11px] p-1 ${
                                 data.status === "redeem"
@@ -420,7 +507,20 @@ const MyBets = () => {
                             data.status === "redeem" ? "text-[#555458]" : ""
                           }`}
                         >
-                          {data.category}
+                          <div className="flex flex-col">
+                            {data?.category ? (
+                              <span>{data?.category}</span>
+                            ) : (
+                              <span>{data?.market}</span>
+                            )}
+                            <span
+                              className={`text-[.84rem] ${
+                                data.category == "h2h" && "hidden"
+                              } text-opacity-60 text-white dark:text-black`}
+                            >
+                              {data?.bet_on?.points}
+                            </span>
+                          </div>
                         </td>
                         <td className="text-sm md:text-lg">
                           <div className="flex flex-col gap-2">
@@ -433,13 +533,29 @@ const MyBets = () => {
                             >
                               {data.oddsFormat}
                             </span>
-                            <span
-                              className={`${
-                                data.status === "redeem" ? "text-[#555458]" : ""
-                              }`}
-                            >
-                              {data.bet_on.odds}
-                            </span>
+                            {data?.bet_on?.odds ? (
+                              <span
+                                className={`${
+                                  data.status === "redeem"
+                                    ? "text-[#555458]"
+                                    : ""
+                                }`}
+                              >
+                                {data?.bet_on?.odds}
+                              </span>
+                            ) : (
+                              <span
+                                className={`${
+                                  data.status === "redeem"
+                                    ? "text-[#555458]"
+                                    : ""
+                                }`}
+                              >
+                                {data?.bet_on === "away_team"
+                                  ? data?.away_team?.odds
+                                  : data?.home_team?.odds}
+                              </span>
+                            )}
                           </div>
                         </td>
                         <td className="text-sm md:text-lg text-gray-500">

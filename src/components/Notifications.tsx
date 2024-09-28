@@ -73,7 +73,7 @@ const Notification_bell = ({
           </div>
         </div>
         <div className="p-2">
-          <div className="flex gap-2 flex-col max-h-[600px] md:max-h-[400px] scrollbar overflow-y-auto">
+          <div className="flex gap-2 flex-col  h-[calc(100vh-300px)]  md:max-h-[400px] scrollbar overflow-y-auto">
             {notification.length > 0 ? (
               notification?.map((item: any, index: number) => (
                 <div

@@ -105,12 +105,26 @@ const Page = ({ params }: any) => {
     event.stopPropagation();
     const betDetails: BetDetails = {
       id: generateId(leagues_Info.id, betOn, betsData.key),
-      teams: betsData.outcomes
-        .filter((team: { name: string; price: number }) => team.name !== "Draw")
-        .map((team: { name: string; price: number }) => ({
-          name: team.name,
-          odds: team.price,
-        })),
+      teams:
+        betsData.key === "totals"
+          ? [
+              {
+                name: leagues_Info?.home_team,
+                odds: 0,
+              },
+              {
+                name: leagues_Info?.away_team,
+                odds: 0,
+              },
+            ]
+          : betsData.outcomes
+              .filter(
+                (team: { name: string; price: number }) => team.name !== "Draw"
+              )
+              .map((team: { name: string; price: number }) => ({
+                name: team.name,
+                odds: team.price,
+              })),
       bet_on: {
         name: betOn,
         odds: betsData.outcomes.find((outcome: any) => outcome.name === betOn)
@@ -118,7 +132,9 @@ const Page = ({ params }: any) => {
         prevOdds: betsData.outcomes.find(
           (outcome: any) => outcome.name === betOn
         ).price,
-        points: betsData.outcomes.find((outcome:any) => outcome.name === betOn)?.point || 0,  
+        points:
+          betsData.outcomes.find((outcome: any) => outcome.name === betOn)
+            ?.point || 0,
       },
       event_id: leagues_Info.id,
       sport_title: leagues_Info.sport_title,
@@ -254,7 +270,7 @@ const Page = ({ params }: any) => {
                             handleBet(event, outcome.name, item, outcome);
                           }}
                           key={outcomeIndex}
-                          className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors border-[1px] ${
+                          className={`w-full py-2 rounded-lg group relative text-sm disabled:bg-[#27252A] disabled:border-[#4A484D] disabled:cursor-not-allowed transition-colors hover:border-[#82FF60] border-[2px] ${
                             outcome?.point ? "block" : "flex space-x-.5"
                           } items-center justify-between px-1 group ${
                             isBetInAllBets(

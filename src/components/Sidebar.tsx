@@ -94,12 +94,16 @@ const Sidebar = () => {
               </div>
               <div className="flex flex-col gap-3 text-lg font-light px-[.8vw] py-2">
                 {item?.subTitle?.map((subitem, subind) => {
-                  const IconComponent =
-                    svgMap[subitem?.category?.toLowerCase()];
+                  const IconComponent = svgMap[subitem?.category?.toLowerCase()];
+
+                  const eventKey = subitem.category === "All"
+                    ? "americanfootball_nfl"
+                    : subitem?.events[0]?.key;
+
                   return (
-                    <div key={subind} onClick={handeltoggle}                    >
+                    <div key={subind} onClick={handeltoggle}>
                       <Link
-                        href={`/${subitem?.category}/${subitem?.events[0].key}`}
+                        href={`/${subitem?.category}/${eventKey}`}
                         key={subind}
                         className={`duration-1000 ease-in-out cursor-pointer grid grid-cols-5 py-[0.6rem] transition-none  overflow-hidden hover:bg-gradient-to-b rounded-full from-[#2E2D30] to-[#201E2700] px-[1.2rem] ${subitem?.category === matchurl
                           ? "bg-gradient-to-b  border-[.5px] border-[#4A4940]  from-[#201E2700] to-[#30302D]"

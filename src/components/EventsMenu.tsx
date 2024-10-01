@@ -34,13 +34,22 @@ const EventsMenu = ({ cat }: any) => {
 
   useEffect(() => {
     if (category && sportsCategories) {
-      setEvents(
-        sportsCategories.find((item) => item.category === category)?.events ||
-        []
-      );
+      let allEvents = [...(sportsCategories.find((item) => item.category === category)?.events || [])];
+  
+      if (category === 'All') {
+        const nflIndex = allEvents.findIndex((event) => event.title === 'NFL');
+        if (nflIndex !== -1) {
+          const [nflEvent] = allEvents.splice(nflIndex, 1);
+          setEvents([nflEvent, ...allEvents]);
+        } else {
+          setEvents(allEvents);
+        }
+      } else {
+        setEvents(allEvents);
+      }
     }
   }, [category, sportsCategories]);
-
+  
   useEffect(() => {
     if (scrollRef.current && cat.subcat) {
       const activeIndex = events.findIndex((item) => item.key === cat?.subcat);

@@ -8,7 +8,7 @@ export default function middleware(request: NextRequest) {
 
   if ((isPublicPath || path === "/") && token) {
     const response = NextResponse.redirect(
-      new URL("/All/americanfootball_cfl", request.url)
+      new URL("/All/americanfootball_nfl", request.url)
     );
     return response;
   }

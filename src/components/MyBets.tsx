@@ -26,6 +26,8 @@ const MyBets = () => {
   const activeNotificationBetId = useAppSelector(
     (state) => state.bet.notificationBet
   );
+  const scrollableDivRef = useRef<HTMLDivElement | null>(null);
+  const [load, setLoad] = useState(false)
   const [pagecount, setPageCount] = useState(1)
   const [observerdata, setObserverData] = useState([])
   const isMounted = useRef(false);
@@ -56,22 +58,36 @@ const MyBets = () => {
     setSelectedOption(item);
     setPageCount(1);
     triggeredByOptionChange.current = true;
+
+    if (scrollableDivRef.current) {
+      scrollableDivRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth', // Smooth scroll
+      });
+    }
   }
 
   const fetchBet = async () => {
-    const response = await GetPlayerBets(selectedOption, pagecount, 10);
-    if (response?.error) {
-      return toast.error(response?.error || "Error fetching Bets");
-    }  if (triggeredByOptionChange.current) {
-      // Clear previous data and replace with new data on option change
-      setmyBets([...response?.responseData?.data]);
-      triggeredByOptionChange.current = false; // Reset the flag
-    } else {
-      // Otherwise, append the new data (for infinite scrolling or pagination)
-      setmyBets([...myBets,...response?.responseData?.data]);
+    try {
+      setLoad(true)
+      const response = await GetPlayerBets(selectedOption, pagecount, 10);
+      if (response?.error) {
+        return toast.error(response?.error || "Error fetching Bets");
+      } if (triggeredByOptionChange.current) {
+        // Clear previous data and replace with new data on option change
+        setmyBets([...response?.responseData?.data]);
+        triggeredByOptionChange.current = false; // Reset the flag
+      } else {
+        // Otherwise, append the new data (for infinite scrolling or pagination)
+        setmyBets([...myBets, ...response?.responseData?.data]);
+      }
+
+      setObserverData(response?.responseData?.data);
+      setLoad(false)
+    } catch (error) {
+      setLoad(false)
     }
 
-    setObserverData(response?.responseData?.data);
   };
 
   useEffect(() => {
@@ -179,7 +195,7 @@ const MyBets = () => {
             </button>
           ))}
         </div>
-        <div className="lg:h-[calc(100vh-200px)] w-[96vw] md:w-full hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
+        <div ref={scrollableDivRef} className="lg:h-[calc(100vh-200px)] w-[96vw] md:w-full hideScrollBar border-[1px] border-[#484848]  rounded-2xl overflow-y-scroll scroll-smooth">
           <table className=" overflow-x-scroll w-[750px] md:w-[calc(100%-2rem)] mx-auto h-auto">
             <thead>
               <tr className="text-xl">
@@ -196,7 +212,7 @@ const MyBets = () => {
                 ))}
               </tr>
             </thead>
-            <tbody className="">
+            <tbody>
               {myBets &&
                 myBets?.length > 0 &&
                 myBets?.flat()?.map((item, ind) =>
@@ -638,7 +654,13 @@ const MyBets = () => {
                 )}
               <tr ref={lastElementRef} style={{ height: '1px', width: '100%' }} />
             </tbody>
+
           </table>
+          {load &&
+            Array.from({ length: 2 }).map((_, index) => (
+              <div key={index} className="bg-gray-700 mt-2 bg-opacity-30 rounded-lg w-[98%] mx-auto h-[8%] animate-pulse"></div>
+            ))
+          }
         </div>
         {loading && <Loader />}
         {open && (

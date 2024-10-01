@@ -38,6 +38,7 @@ const QuickBet = () => {
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
   const betsContainerRef = useRef<HTMLDivElement | null>(null);
+  const [modalElement, setModalElement] = useState<HTMLElement | null>(null);
 
   const betAmount = [20, 50, 100, 500];
   const betType = ["single", "combo"];
@@ -76,6 +77,7 @@ const QuickBet = () => {
 
 
   const handleSubmit = async () => {
+    
     if (comboBetAmount <= 0) {
       return toast.error("Betting Amount can't be zero");
     }
@@ -149,7 +151,15 @@ const QuickBet = () => {
   }, [allBets]);
 
 
-  const modalElement = document.getElementById("betslip");
+
+  useEffect(() => {
+    // Ensure this code runs only on the client side
+    if (typeof document !== 'undefined') {
+      const element = document.getElementById("betslip");
+      setModalElement(element);
+    }
+  }, []);
+
   if (!modalElement) {
     return null;
   }

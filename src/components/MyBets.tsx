@@ -657,10 +657,11 @@ const MyBets = () => {
           <div ref={lastElementRef} style={{ height: '4px', width: '100%' }} />
           {load &&
             Array.from({ length: 2 }).map((_, index) => (
-              <div key={index} className="bg-gray-700 mt-2 bg-opacity-30 rounded-lg w-[98%] mx-auto h-[8%] animate-pulse"></div>
+              <div key={index} className="bg-gray-200 mt-2 bg-opacity-30 rounded-lg w-[98%] mx-auto h-[40px] animate-pulse"></div>
             ))
           }
         </div>
+       
         {loading && <Loader />}
         {open && (
           <Modal

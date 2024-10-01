@@ -142,14 +142,14 @@ const BetCard: React.FC<any> = ({ betsData, cat }) => {
               hour12: true,
             })}
           </p>
-          <div className="flex flex-col py-1.5 justify-between">
+          <div className="flex flex-col space-y-2 py-1.5 justify-between">
             <button className="grid grid-cols-5 space-x-2">
               <div className="flex col-span-4 gap-2 items-center whitespace-nowrap -mx-2 overflow-hidden">
                 <p className="text-white text-[.8rem] pl-2 md:text-[.9rem]">
                   {betsData?.home_team}
                 </p>
               </div>
-              <p className="text-[#dfdfdf89] border-[1px] border-[#818181] rounded-md py-[1px]">
+              <p className="text-[#dfdfdf89]  border-[1px] border-[#818181] rounded-md py-[1px]">
                 {betsData?.scores?.find(
                   (item: any) => item?.name === betsData?.home_team
                 )?.score || 0}

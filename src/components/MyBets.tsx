@@ -652,10 +652,9 @@ const MyBets = () => {
                     </>
                   )
                 )}
-              <tr ref={lastElementRef} style={{ height: '1px', width: '100%' }} />
             </tbody>
-
           </table>
+          <div ref={lastElementRef} style={{ height: '4px', width: '100%' }} />
           {load &&
             Array.from({ length: 2 }).map((_, index) => (
               <div key={index} className="bg-gray-700 mt-2 bg-opacity-30 rounded-lg w-[98%] mx-auto h-[8%] animate-pulse"></div>

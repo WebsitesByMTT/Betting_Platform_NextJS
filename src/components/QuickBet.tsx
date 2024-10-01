@@ -9,6 +9,7 @@ import Placebet from "./svg/Placebet";
 import Dropdown from "./svg/Dropdown";
 import DeleteIcon from "./svg/DeleteIcon";
 import BetSlip from "./BetSlip";
+import ReactDOM from "react-dom";
 import {
   calculatePotentialWin,
   calculateTotalBetAmount,
@@ -147,10 +148,17 @@ const QuickBet = () => {
     }
   }, [allBets]);
 
-  return (
+
+  const modalElement = document.getElementById("betslip");
+  if (!modalElement) {
+    return null;
+  }
+
+  return ReactDOM.createPortal(
+    <>
     <div
       className={`transition-all text-white  ${
-        open ? "bottom-0" : "-bottom-[1rem]"
+        open ? "bottom-0" : "bottom-[-.8rem]"
       }  fixed  z-[100]  md:right-10 w-[100%] mx-auto md:w-[360px] max-h-[80vh]`}
     >
       <div
@@ -319,7 +327,9 @@ const QuickBet = () => {
           </>
         )}
       </div>
-    </div>
+      </div>,
+    </>,
+    modalElement
   );
 };
 

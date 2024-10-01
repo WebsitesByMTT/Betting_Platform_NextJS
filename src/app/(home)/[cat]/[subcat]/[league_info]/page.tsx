@@ -167,7 +167,7 @@ const Page = ({ params }: any) => {
   };
 
   return (
-    <div className="h-[calc(100vh-110px)] hideScrollBar overflow-y-scroll">
+    <div className="h-[calc(100vh-110px)]  hideScrollBar overflow-y-scroll">
       <Categories />
       <div className="w-full px-2 lg:px-0 pb-14 mx-auto">
         <div className="py-5">
@@ -322,7 +322,6 @@ const Page = ({ params }: any) => {
           </div>
         ))}
       </div>
-      <QuickBet />
     </div>
   );
 };

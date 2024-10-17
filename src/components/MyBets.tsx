@@ -55,6 +55,7 @@ const MyBets = () => {
     { icon: <Sport />, text: "sport" },
     { icon: <Bet />, text: "Stake" },
     { icon: <Market />, text: "Category" },
+    { icon: <Odds />, text: "bet on" },
     { icon: <Odds />, text: "odds" },
     { icon: <Amount />, text: "Possible Winning" },
     { icon: <Status />, text: "status" },
@@ -390,6 +391,13 @@ const MyBets = () => {
                               </span>
                             </div>
                           </td>
+                          <td
+                            className={`capitalize text-sm ${
+                              data?.status === "redeem" ? "text-[#555458]" : ""
+                            }`}
+                          >
+                            {data?.bet_on?.name}
+                          </td>
                           <td className="text-sm md:text-lg">
                             <div className="flex flex-col gap-2">
                               <span
@@ -689,6 +697,15 @@ const MyBets = () => {
                                   {data?.bet_on?.points}
                                 </span>
                               </div>
+                            </td>
+                            <td
+                              className={`capitalize text-sm ${
+                                data?.status === "redeem"
+                                  ? "text-[#555458]"
+                                  : ""
+                              }`}
+                            >
+                              {data?.bet_on?.name}
                             </td>
                             <td className="text-sm md:text-lg">
                               <div className="flex flex-col gap-2">

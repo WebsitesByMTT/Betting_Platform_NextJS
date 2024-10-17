@@ -61,7 +61,11 @@ export const getUser = async () => {
   }
 };
 
-export const GetPlayerBets = async (status?: string,page?:number,limit?:number) => {
+export const GetPlayerBets = async (
+  status?: string,
+  page?: number,
+  limit?: number
+) => {
   const player = (await getCurrentUser()) as Player;
   const token = await getCookie();
   try {
@@ -202,6 +206,28 @@ export const markBetAsViewed = async (notificationId: string) => {
       const error = await response.json();
       return { error: error.message };
     }
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
+export const getScores = async (eventId: string | null) => {
+  const token = await getCookie();
+  try {
+    const response = await fetch(`${config.server}/api/score/${eventId}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `userToken=${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: error.message };
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
     console.log("error:", error);
   }

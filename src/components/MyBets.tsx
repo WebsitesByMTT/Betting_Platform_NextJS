@@ -39,6 +39,7 @@ const MyBets = () => {
     eventId: null,
   });
   const [scoresData, setScoresData] = useState<any>();
+  const [scoresLoading, setScoresLoading] = useState(false);
   const triggeredByOptionChange = useRef(false);
 
   const options = [
@@ -181,12 +182,13 @@ const MyBets = () => {
   //for fetching score
   useEffect(() => {
     const fetchScores = async () => {
+      setScoresLoading(true);
       const scores = await getScores(openDropdownId?.eventId);
+      setScoresLoading(false);
       if (scores?.error) {
         return toast.error(scores?.error);
       }
       setScoresData(scores);
-      console.log(scores);
     };
     fetchScores();
   }, [openDropdownId]);
@@ -245,16 +247,6 @@ const MyBets = () => {
                     item?.data?.map((data: any, dataIndex: any) => (
                       <>
                         <tr
-                          onClick={() =>
-                            data.status !== "pending" &&
-                            setOpenDropdownId({
-                              uniqueId:
-                                openDropdownId.uniqueId === item._id
-                                  ? null
-                                  : item._id,
-                              eventId: data?.event_id,
-                            })
-                          }
                           id={item?._id}
                           key={`${item?._id}-${dataIndex}-single`}
                           className={`text-center font-extralight hover:bg-[#8585851A]  border-[#414141] ${
@@ -465,11 +457,27 @@ const MyBets = () => {
                             >
                               Redeem
                             </button>
+                            <button
+                              disabled={data.status === "pending"}
+                              className={`rotate-180 mx-2`}
+                              onClick={() =>
+                                data.status !== "pending" &&
+                                setOpenDropdownId({
+                                  uniqueId:
+                                    openDropdownId.uniqueId === item._id
+                                      ? null
+                                      : item._id,
+                                  eventId: data?.event_id,
+                                })
+                              }
+                            >
+                              <Dropdown />
+                            </button>
                           </td>
                         </tr>
-                        {openDropdownId.uniqueId === item._id && scoresData && (
+                        {openDropdownId.uniqueId === item._id && (
                           <>
-                            <tr className="">
+                            <tr>
                               <td
                                 className="font-light uppercase px-4"
                                 colSpan={7}
@@ -477,40 +485,46 @@ const MyBets = () => {
                                 Scores
                               </td>
                             </tr>
-                            {scoresData.length > 0 ? (
-                              <tr className="text-white text-center">
-                                <td
-                                  className="font-extralight py-2 text-[#FFC400]"
-                                  colSpan={2}
-                                >
-                                  {scoresData[0]?.home_team}
-                                </td>
-                                <td className="font-semibold py-2">
-                                  {scoresData[0]?.home_score}
-                                </td>
-                                <td
-                                  className="text-center text-[#dfdfdf74] font-extralight"
-                                  colSpan={1}
-                                >
-                                  vs
-                                </td>
-                                <td
-                                  className="font-extralight py-2 text-[#FFC400]"
-                                  colSpan={2}
-                                >
-                                  {scoresData[0]?.away_team}
-                                </td>
-                                <td className="font-semibold py-2">
-                                  {scoresData[0]?.away_score}
-                                </td>
-                              </tr>
+                            {!scoresLoading ? (
+                              scoresData &&
+                              scoresData.teams &&
+                              scoresData.teams.length > 0 ? (
+                                <tr>
+                                  <td colSpan={7}>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      {scoresData.teams.map((team: any) => (
+                                        <div
+                                          key={team._id}
+                                          className="bg-gray-800 p-4 rounded"
+                                        >
+                                          <div className="font-extralight text-[#FFC400]">
+                                            {team.name}
+                                          </div>
+                                          <div className="font-semibold">
+                                            {team.score}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </td>
+                                </tr>
+                              ) : (
+                                <tr>
+                                  <td
+                                    className="font-light text-[#FFC400] text-center"
+                                    colSpan={7}
+                                  >
+                                    Scores not available
+                                  </td>
+                                </tr>
+                              )
                             ) : (
-                              <tr className="">
-                                <td
-                                  className="font-light text-[#FFC400] text-center"
-                                  colSpan={7}
-                                >
-                                  Scores not available
+                              <tr>
+                                <td colSpan={7}>
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div className="bg-gray-800 p-4 py-10 rounded animatePulse"></div>
+                                    <div className="bg-gray-800 p-4 py-10 rounded animatePulse"></div>
+                                  </div>
                                 </td>
                               </tr>
                             )}
@@ -528,15 +542,6 @@ const MyBets = () => {
                       {item?.data?.map((data: any, dataIndex: any) => (
                         <>
                           <tr
-                            onClick={() =>
-                              setOpenDropdownId({
-                                uniqueId:
-                                  openDropdownId.uniqueId === data._id
-                                    ? null
-                                    : data._id,
-                                eventId: data?.event_id,
-                              })
-                            }
                             id={item._id}
                             key={`${item._id}-${dataIndex}-combo`}
                             className={`${
@@ -734,59 +739,78 @@ const MyBets = () => {
                               {data.status}
                             </td>
                             <td className="text-sm md:text-lg text-gray-500">
-                              --/--
+                              <button
+                                disabled={data.status === "pending"}
+                                className={`rotate-180 mx-2`}
+                                onClick={() =>
+                                  setOpenDropdownId({
+                                    uniqueId:
+                                      openDropdownId.uniqueId === data._id
+                                        ? null
+                                        : data._id,
+                                    eventId: data?.event_id,
+                                  })
+                                }
+                              >
+                                <Dropdown />
+                              </button>
                             </td>
                           </tr>
-                          {openDropdownId.uniqueId === data._id &&
-                            scoresData && (
-                              <>
-                                <tr className="">
-                                  <td
-                                    className="font-light uppercase px-4 border-x-[1px] border-[#f3aa357c]"
-                                    colSpan={7}
-                                  >
-                                    Scores
-                                  </td>
-                                </tr>
-                                {scoresData.length > 0 ? (
-                                  <tr className="text-white text-center border-b-[1px] border-[#dfdfdf35]">
-                                    <td
-                                      className="font-extralight py-2 text-[#FFC400]  border-l-[1px] border-[#f3aa357c] "
-                                      colSpan={2}
-                                    >
-                                      {scoresData[0]?.home_team}
-                                    </td>
-                                    <td className="font-semibold py-2">
-                                      {scoresData[0]?.home_score}
-                                    </td>
-                                    <td
-                                      className="text-center text-[#dfdfdf74] font-extralight "
-                                      colSpan={1}
-                                    >
-                                      vs
-                                    </td>
-                                    <td
-                                      className="font-extralight py-2 text-[#FFC400]"
-                                      colSpan={2}
-                                    >
-                                      {scoresData[0]?.away_team}
-                                    </td>
-                                    <td className="font-semibold py-2  border-r-[1px] border-[#f3aa357c]">
-                                      {scoresData[0]?.away_score}
+                          {openDropdownId.uniqueId === data._id && (
+                            <>
+                              <tr>
+                                <td
+                                  className="font-light uppercase px-4 border-[#f3aa3589] border-x-[1px]"
+                                  colSpan={7}
+                                >
+                                  Scores
+                                </td>
+                              </tr>
+                              {!scoresLoading ? (
+                                scoresData &&
+                                scoresData.teams &&
+                                scoresData.teams.length > 0 ? (
+                                  <tr className="border-[#f3aa3589] border-x-[1px]">
+                                    <td colSpan={7}>
+                                      <div className="grid grid-cols-2 gap-4">
+                                        {scoresData.teams.map((team: any) => (
+                                          <div
+                                            key={team._id}
+                                            className="bg-gray-800 p-4 rounded"
+                                          >
+                                            <div className="font-extralight text-[#FFC400]">
+                                              {team.name}
+                                            </div>
+                                            <div className="font-semibold">
+                                              {team.score}
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
                                     </td>
                                   </tr>
                                 ) : (
-                                  <tr className="">
+                                  <tr>
                                     <td
-                                      className="font-light text-[#FFC400] text-center border-x-[1px] border-[#f3aa357c]"
+                                      className="font-light text-[#FFC400] text-center border-[#f3aa3589] border-x-[1px]"
                                       colSpan={7}
                                     >
                                       Scores not available
                                     </td>
                                   </tr>
-                                )}
-                              </>
-                            )}
+                                )
+                              ) : (
+                                <tr className="border-[#f3aa3589] border-x-[1px]">
+                                  <td colSpan={7}>
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div className="bg-gray-800 p-4 py-10 rounded animatePulse"></div>
+                                      <div className="bg-gray-800 p-4 py-10 rounded animatePulse"></div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </>
+                          )}
                         </>
                       ))}
                       <tr className="text-center font-extralight bg-gradient-to-b from-[#1c1a2176] to-[#0d0c156d] border-[1px] border-[#f3aa357c]">

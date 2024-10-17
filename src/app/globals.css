@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -158,14 +158,13 @@ input[type="number"] {
   }
 }
 
-
 @keyframes pulse {
   50% {
-      opacity: .5;
+    opacity: 0.5;
   }
 }
 .animatePulse {
-  animation: pulse .7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse 0.7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .loader {

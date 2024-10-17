@@ -10,7 +10,6 @@ import Autoplay from "embla-carousel-autoplay";
 import { useAppSelector } from "@/lib/store/hooks";
 import { getCategoryBanners } from "@/utils/actions";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 
 const Banner: React.FC = () => {
   const router = useRouter();
@@ -19,7 +18,6 @@ const Banner: React.FC = () => {
   const currentCategory = useAppSelector(
     (state) => state.sports.selectedCategory
   );
-//
   useEffect(() => {
     const fetchBanner = async (currentCategory: string) => {
       const data = await getCategoryBanners(currentCategory);

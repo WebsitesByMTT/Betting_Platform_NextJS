@@ -16,6 +16,8 @@ import Back from "./svg/Back";
 import { usePathname, useRouter } from "next/navigation";
 import Footer from "./Footer";
 import Dropdown from "./svg/Dropdown";
+import Category from "./svg/mybets/Category";
+import BetOn from "./svg/mybets/BetOn";
 
 const MyBets = () => {
   const [myBets, setmyBets] = useState<any[]>([]);
@@ -54,8 +56,8 @@ const MyBets = () => {
   const headers = [
     { icon: <Sport />, text: "sport" },
     { icon: <Bet />, text: "Stake" },
-    { icon: <Market />, text: "Category" },
-    { icon: <Odds />, text: "bet on" },
+    { icon: <Category />, text: "Category" },
+    { icon: <BetOn />, text: "bet on" },
     { icon: <Odds />, text: "odds" },
     { icon: <Amount />, text: "Possible Winning" },
     { icon: <Status />, text: "status" },
